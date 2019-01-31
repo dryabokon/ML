@@ -10,7 +10,7 @@ These are tutorials on ML
 - ROC curve 
 - Benchmark classifiers 
 - Object detection by cascades 
-- Object detection by CNN
+- Object detection by CNN 
 - Anomaly detection 
 - Stereo vision 
 - OCR
