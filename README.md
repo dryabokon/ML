@@ -25,7 +25,8 @@ Tutorial | Description
 ------------ | -------------
 ![alt text](/data/ex00/image15.jpg)| Classifiers
 ![alt text](/data/ex00/image16.jpg)| Linear discrimination 
-![alt text](/data/ex00/image110.jpg)| Adaboost
+![alt text](/data/ex00/image17.jpg)| Adaboost
+![alt text](/data/ex00/image110.jpg)| Unsupervised learning
 ![alt text](/data/ex00/image115.jpg)| Stereovision
 ![alt text](/data/ex00/image22.jpg)| Convolution in CNN
 ![alt text](/data/ex00/image23.jpg)| Feature extraction
