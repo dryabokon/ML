@@ -23,9 +23,9 @@ Reconstruct features back into images
 
 Tutorial | Description
 ------------ | -------------
-![alt text](/data/ex00/Image15.jpg)| Classifiers
-![alt text](/data/ex00/Image16.jpg)| Linear discrimination 
-![alt text](/data/ex00/Image110.jpg)| Adaboost
-![alt text](/data/ex00/Image115.jpg)| Stereovision
-![alt text](/data/ex00/Image22.jpg)| Convolution in CNN
-![alt text](/data/ex00/Image23.jpg)| Feature extraction
+![alt text](data/ex00/Image15.jpg)| Classifiers
+![alt text](data/ex00/Image16.jpg)| Linear discrimination 
+![alt text](data/ex00/Image110.jpg)| Adaboost
+![alt text](data/ex00/Image115.jpg)| Stereovision
+![alt text](data/ex00/Image22.jpg)| Convolution in CNN
+![alt text](data/ex00/Image23.jpg)| Feature extraction
