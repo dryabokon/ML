@@ -1,16 +1,27 @@
 # About
-These are tutorials on ML
+Welcome to ML tutorials of for Computer Vision. 
 
 
 ## Content 
-- Generating some features
-- Bayesian classifier 
-- Gaussian classifier 
-- Linear discrimination 
-- ROC curve 
-- Benchmark classifiers 
-- Object detection by cascades 
-- Object detection by CNN 
-- Anomaly detection 
-- Stereo vision 
-- OCR
+Bayesian approach 
+Naive Bayesian classifier 
+Gaussian classifier 
+Linear discrimination 
+Adaboost
+ROC-Curve
+Unsupervised learning 
+Object detection
+Detection of patterns and anomalies
+Stereo Vision
+CNNs out of box
+Basic operations with CNN
+Feature extraction 
+Transfer learning 
+Fine Tuning
+Benchmarking the CNNs
+Reconstruct features back into images
+
+Tutorial | Description
+------------ | -------------
+![alt text](/images/ex00/Image15.jpg)| Classifiers
+![alt text](/images/ex00/Image16.jpg)| Linear discrimination 
