@@ -13,7 +13,7 @@ from keras import backend as K
 # ----------------------------------------------------------------------------------------------------------------------
 def visualize_layers_TF_Alexnet():
 
-    filename_input = 'data/ex-natural/dog/dog_0000.jpg'
+    filename_input = 'data/ex09-natural/dog/dog_0000.jpg'
     #filename_input = 'data/ex-natural/fruit/fruit_0082.jpg'
     path_output = 'data/output/'
 
@@ -96,7 +96,7 @@ def visualize_layers_keras_MobileNet():
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     K.set_image_dim_ordering('tf')
-    #visualize_layers_TF_Alexnet()
+    visualize_layers_TF_Alexnet()
     #visualize_layers_keras_MobileNet()
     #visualize_layers_keras_Xception()
-    visualize_layers_keras_custom()
+    #visualize_layers_keras_custom()

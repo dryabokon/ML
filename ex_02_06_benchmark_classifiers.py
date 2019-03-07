@@ -19,7 +19,7 @@ import tools_IO
 import matplotlib.pyplot as plt
 # ----------------------------------------------------------------------------------------------------------------------
 def benchmark_classifiers_on_extractor(use_cashed_predictions=True):
-    path_features = 'data/features-natural/FC_dummy/'
+    path_features = 'data/features-natural/FC/'
     path_output = 'data/features-natural/'
 
     C1 = classifier_XGBoost.classifier_XGBoost()
