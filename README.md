@@ -1,5 +1,5 @@
 # About
-Welcome to ML tutorials of for Computer Vision. 
+Welcome to ML tutorials on Computer Vision. 
 
 
 ## Content 

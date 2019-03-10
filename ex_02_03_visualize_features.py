@@ -128,7 +128,7 @@ def example_natural():
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def example_animation():
-    tools_animation.folders_to_animated_gif('data/output_gen_FC/','data/output3/'    ,mask='.jpg',framerate=1,resize_H=64,resize_W=64)
+    tools_animation.folder_to_animated_gif_imageio('data/output_gen_FC/','data/output3/'    ,mask='.jpg',framerate=1,resize_H=64,resize_W=64)
     #tools_animation.folders_to_animated_gif('data/ex-natural/','data/output3/',mask='.jpg',framerate=3,resize_H=100,resize_W=100)
 
     return
