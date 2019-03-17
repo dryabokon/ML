@@ -116,14 +116,14 @@ def average_images_from_subfolders(path_input,path_output,mask,resize_W=8, resiz
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def example_natural():
-    path_input_features = 'data/features-natural/FC/'
-    path_input_images,mask = 'data/ex09-natural/','*.jpg'
+    path_input_features = 'data/features-mnist/CNN_AlexNet_TF/'
+    path_input_images,mask = 'data/ex09-mnist/','*.png'
     path_output = 'data/output/'
 
     #average_images_from_subfolders('data/output_gen_FC/','data/output/','*.jpg',resize_H=64,resize_W=64)
     #plot_features_PCA(path_input_features)
     #save_features_as_tensors(path_input_features,path_output)
-    plot_images_PCA(path_input_images,mask,resize_W=64,resize_H=64,grayscaled=False)
+    plot_images_PCA(path_input_images,mask,resize_W=8,resize_H=8,grayscaled=True)
 
     return
 # ----------------------------------------------------------------------------------------------------------------------

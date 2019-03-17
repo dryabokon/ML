@@ -9,7 +9,7 @@ import generator_FC_Keras
 import tools_IO
 import tools_ML
 import tools_image
-import ex05_visualize_features
+#import ex05_visualize_features
 # ----------------------------------------------------------------------------------------------------------------------
 def do_learn(folder_features,folder_images,folder_output,model_output,resize_H=8, resize_W = 8,grayscale=False):
 
@@ -43,8 +43,8 @@ def do_learn(folder_features,folder_images,folder_output,model_output,resize_H=8
 # ----------------------------------------------------------------------------------------------------------------------
 def do_generate(folder_features,filename_model,folder_output,resize_H=8, resize_W = 8,grayscale=False):
 
-    tools_IO.remove_files(folder_output)
-    tools_IO.remove_folders(folder_output)
+    #tools_IO.remove_files(folder_output)
+    #tools_IO.remove_folders(folder_output)
     G = generator_FC_Keras.generator_FC_Keras()
     G.load_model(filename_model)
     shape = (resize_H, resize_W) if grayscale else (resize_H, resize_W, 3)
@@ -73,12 +73,12 @@ def do_generate(folder_features,filename_model,folder_output,resize_H=8, resize_
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def example_mnist():
-    folder_features = 'data/features-mnist/FC/'
-    folder_images = 'data/ex-mnist/'
+    folder_features = 'data/features-mnist/CNN_AlexNet_TF/'
+    folder_images = 'data/ex09-mnist/'
     mask = '*.png'
     folder_output = 'data/output/'
-    filename_model = 'data/ex42/GAN_mnist.h5'
-    resize_H, resize_W = 32,32
+    filename_model = 'data/output/GAN_mnist_Alex.h5'
+    resize_H, resize_W = 8,8
     grayscale = True
 
     do_learn(folder_features,folder_images,folder_output,filename_model,resize_W=resize_W, resize_H = resize_H,grayscale=grayscale)
@@ -104,5 +104,5 @@ def example_natural():
 # ----------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    #example_mnist()
-    example_natural()
+    example_mnist()
+    #example_natural()
