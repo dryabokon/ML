@@ -16,6 +16,7 @@ import generator_Bay
 import generator_Gauss
 import generator_Other
 import generator_Manual
+
 # ---------------------------------------------------------------------------------------------------------------------
 def generate_data_syntetic(folder_output,dim = 2):
     if not os.path.exists(folder_output):
@@ -30,8 +31,7 @@ def generate_data_syntetic(folder_output,dim = 2):
     Generator.create_pos_neg_samples(folder_output + 'data_pos.txt', folder_output + 'data_neg.txt')
     tools_IO.plot_2D_samples_from_folder(folder_output,  add_noice=1)
     plt.show()
-    return
-
+    return 0
 # ---------------------------------------------------------------------------------------------------------------------
 def classify_data(filename_data_pos,filename_data_neg,folder_out):
 
@@ -52,11 +52,11 @@ def classify_data(filename_data_pos,filename_data_neg,folder_out):
     ML = tools_ML.tools_ML(Classifier)
     ML.E2E_features_2_classes(folder_out, filename_data_pos, filename_data_neg,filename_scrs_pos=filename_scrs_pos, filename_scrs_neg=filename_scrs_neg,fig=fig)
 
-    return
-
+    return 0
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     folder_in = 'data/ex04/'
     folder_out = 'data/output/'
-    classify_data(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)
+    #classify_data(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)
+

@@ -44,8 +44,24 @@ def demo_cascade():
 
     return
 # ---------------------------------------------------------------------------------------------------------------------
+def demo_IP_Cam():
 
+    cap = cv2.VideoCapture('rtsp://user:password@IP:554/axis-media/media.amp')
+
+    while (True):
+        ret, frame = cap.read()
+        cv2.imshow('frame', frame)
+        key = cv2.waitKey(1)
+        if key & 0xFF == 27:
+            break
+
+
+    if USE_CAMERA:
+        cap.release()
+
+    cv2.destroyAllWindows()
+
+    return
+# ---------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
-
-
     demo_cascade()
