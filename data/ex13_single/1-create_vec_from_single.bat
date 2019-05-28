@@ -1,1 +1,0 @@
-..\opencv_createsamples -vec pos_single.vec -img pos_single\object.jpg -bg neg\neg_create.txt -num 100 -bgcolor 255 -bgthresh 0 -w 40 -h 40 -maxxangle 0.50 -maxyangle 0.50 -maxzangle 0.50 -maxidev 10

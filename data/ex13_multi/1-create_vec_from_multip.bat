@@ -1,1 +1,0 @@
-opencv_createsamples -vec pos_multip.vec -info pos_multip\pos.txt -num 4 -w 28 -h 28 

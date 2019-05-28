@@ -1,1 +1,0 @@
-opencv_createsamples.exe -vec pos_multip.vec -show

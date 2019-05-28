@@ -1,4 +1,0 @@
-Image1.jpg 1 0 0 27 27 
-Image2.jpg 1 0 0 27 27
-Image3.jpg 1 0 0 27 27
-Image4.jpg 1 0 0 27 27
