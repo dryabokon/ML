@@ -26,6 +26,6 @@ def classify_data(filename_data_pos,filename_data_neg,folder_out):
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    folder_in = 'data/ex05/'
+    folder_in = 'data/ex_pos_neg_gauss/'
     folder_out = 'data/output/'
     classify_data(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)

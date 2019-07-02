@@ -78,7 +78,7 @@ def benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,noic
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    path_in  = 'data/ex04/'
+    path_in  = 'data/ex_pos_neg_gauss/'
     path_out = 'data/output/'
     filename_data_pos = path_in + 'pos.txt'
     filename_data_neg = path_in + 'neg.txt'

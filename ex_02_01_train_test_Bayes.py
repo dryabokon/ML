@@ -56,7 +56,7 @@ def classify_data(filename_data_pos,filename_data_neg,folder_out):
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    folder_in = 'data/ex04/'
+    folder_in = 'data/ex_pos_neg_bayes/'
     folder_out = 'data/output/'
-    #classify_data(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)
+    classify_data(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)
 

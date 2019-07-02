@@ -1,3 +1,4 @@
+#http://pandas.pydata.org/pandas-docs/version/0.15/10min.html
 # ----------------------------------------------------------------------------------------------------------------------
 import numpy
 import math
@@ -11,24 +12,16 @@ import TS_LinearRegression
 import TS_AutoRegression
 import TS_Holt
 import TS_VAR
+import TS_LSTM
 import TS_ARIMA
 # ---------------------------------------------------------------------------------------------------------------------
 import tools_TS
 import tools_IO
 # ---------------------------------------------------------------------------------------------------------------------
-# mat = tools_IO.load_mat(folder_in+filename,delim=',',dtype=numpy.chararray)[:,1:]
-# tools_IO.save_mat(mat.astype(numpy.float32),folder_in+'Daily-test.txt')
-# ---------------------------------------------------------------------------------------------------------------------
 def generate_data():
     G = generator_TS.generator_TS()
     G.generate_linear('data/ex50/YX_linear.txt')
     G.generate_sine('data/ex50/YX_sine.txt')
-    return
-# ---------------------------------------------------------------------------------------------------------------------
-def series_to_YX_lookback():
-    TS = tools_TS.tools_TS(None)
-    mat = tools_IO.load_mat('data/ex50/aust.txt',dtype=numpy.float32,delim='\t')
-    tools_IO.save_mat(TS.series_to_YX_lookback(mat), 'data/ex50/YX_aust.txt')
     return
 # ---------------------------------------------------------------------------------------------------------------------
 def predict_series(filename_series, folder_out, target_column, fit_only):
@@ -39,10 +32,9 @@ def predict_series(filename_series, folder_out, target_column, fit_only):
     C3 = TS_AutoRegression.TS_AutoRegression()
     C4 = TS_Holt.TS_Holt()
     C5 = TS_VAR.TS_VAR()
-    import TS_LSTM
     C6 = TS_LSTM.TS_LSTM()
 
-    TS = tools_TS.tools_TS(C6)
+    TS = tools_TS.tools_TS(C1)
 
     if fit_only==True:
         TS.E2E_fit(filename_series, folder_out, target_column=target_column, verbose=True)
@@ -101,17 +93,11 @@ def benchmark_predictors(filename_series, folder_out,target_column, fit_only):
     return
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
+
+    folder_in = 'data/ex_TS/'
     folder_out = 'data/output/'
-    folder_in = 'data/ex50/'
 
-    #http://pandas.pydata.org/pandas-docs/version/0.15/10min.html
-    #generate_data()
-
-    #filename = 'YX_linear.txt'
-    #filename = 'YX_sine.txt'
-    #filename = 'YX_passengers.txt'
-    #filename = 'YX_BTCUSD.txt'
     filename = 'Monthly-test.txt'
 
-    predict_series(folder_in + filename, folder_out,target_column=-1,fit_only=True)
+    predict_series(folder_in + filename, folder_out,target_column=-1,fit_only=False)
     #benchmark_predictors(folder_in + filename, folder_out,target_column=-1,fit_only=True)
