@@ -3,14 +3,14 @@ Welcome to ML tutorials
 
 
 ## Content 
-Bayesian approach 
-Naive Bayesian classifier 
-Gaussian classifier 
-Linear discrimination 
-Adaboost
-ROC-Curve
-Time Series
-Back propagations
+1. Bayesian approach 
+2. Naive Bayesian classifier 
+3. Gaussian classifier 
+4. Linear discrimination 
+5. Adaboost
+6. ROC-Curve
+7. Time Series
+8. Back propagations
 
 Tutorial | Description
 ------------ | -------------
