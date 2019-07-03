@@ -24,8 +24,8 @@ def generate_data_syntetic(folder_output,dim = 2):
     else:
         tools_IO.remove_files(folder_output)
 
-    Generator = generator_Bay.generator_Bay(dim)
-    #Generator = generator_Gauss.generator_Gauss(dim)
+    #Generator = generator_Bay.generator_Bay(dim)
+    Generator = generator_Gauss.generator_Gauss(dim)
     #Generator = generator_Other.generator_Other(dim)
 
     Generator.create_pos_neg_samples(folder_output + 'data_pos.txt', folder_output + 'data_neg.txt')
@@ -33,16 +33,16 @@ def generate_data_syntetic(folder_output,dim = 2):
     plt.show()
     return 0
 # ---------------------------------------------------------------------------------------------------------------------
-def classify_data(filename_data_pos,filename_data_neg,folder_out):
+def classify_data_2_classes(filename_data_pos,filename_data_neg,folder_out):
 
     filename_scrs_pos = folder_out+'scores_pos.txt'
     filename_scrs_neg = folder_out+'scores_neg.txt'
 
-    Classifier = classifier_Bayes.classifier_Bayes()
+    #Classifier = classifier_Bayes.classifier_Bayes()
     #Classifier = classifier_KNN.classifier_KNN()
     #Classifier = classifier_Ada.classifier_Ada()
     #Classifier = classifier_SVM.classifier_SVM()
-    #Classifier = classifier_RF.classifier_RF()
+    Classifier = classifier_RF.classifier_RF()
     #Classifier = classifier_LM.classifier_LM()
     #Classifier = classifier_Gauss.classifier_Gauss()
 
@@ -56,7 +56,11 @@ def classify_data(filename_data_pos,filename_data_neg,folder_out):
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    folder_in = 'data/ex_pos_neg_bayes/'
+    #folder_in = 'data/ex_features_digits_mnist/CNN_AlexNet_TF/'
+    folder_in = 'data/ex_features_ex_natural_images/CNN_AlexNet_TF/'
     folder_out = 'data/output/'
-    classify_data(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)
+
+    #generate_data_syntetic(folder_out, dim=3)
+    classify_data_2_classes(folder_in+'cat.txt', folder_in+'dog.txt',folder_out)
+
 
