@@ -31,7 +31,7 @@ def generate_data_syntetic(folder_output,dim = 2):
     Generator.create_pos_neg_samples(folder_output + 'data_pos.txt', folder_output + 'data_neg.txt')
     tools_IO.plot_2D_samples_from_folder(folder_output,  add_noice=1)
     plt.show()
-    return 0
+    return
 # ---------------------------------------------------------------------------------------------------------------------
 def classify_data_2_classes(filename_data_pos,filename_data_neg,folder_out):
 
@@ -52,15 +52,15 @@ def classify_data_2_classes(filename_data_pos,filename_data_neg,folder_out):
     ML = tools_ML.tools_ML(Classifier)
     ML.E2E_features_2_classes(folder_out, filename_data_pos, filename_data_neg,filename_scrs_pos=filename_scrs_pos, filename_scrs_neg=filename_scrs_neg,fig=fig)
 
-    return 0
+    return
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     #folder_in = 'data/ex_features_digits_mnist/CNN_AlexNet_TF/'
-    folder_in = 'data/ex_features_ex_natural_images/CNN_AlexNet_TF/'
+    folder_in = 'data/ex_features_LPR/CNN_AlexNet_TF/'
     folder_out = 'data/output/'
 
     #generate_data_syntetic(folder_out, dim=3)
-    classify_data_2_classes(folder_in+'cat.txt', folder_in+'dog.txt',folder_out)
+    classify_data_2_classes(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)
 
 
