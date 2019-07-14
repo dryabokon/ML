@@ -28,15 +28,12 @@ def generate_data_syntetic(folder_output,dim = 2):
     Generator = generator_Gauss.generator_Gauss(dim)
     #Generator = generator_Other.generator_Other(dim)
 
-    Generator.create_pos_neg_samples(folder_output + 'data_pos.txt', folder_output + 'data_neg.txt')
+    Generator.create_pos_neg_samples(folder_output + 'pos.txt', folder_output + 'neg.txt')
     tools_IO.plot_2D_samples_from_folder(folder_output,  add_noice=1)
-    plt.show()
+
     return
 # ---------------------------------------------------------------------------------------------------------------------
-def classify_data_2_classes(filename_data_pos,filename_data_neg,folder_out):
-
-    filename_scrs_pos = folder_out+'scores_pos.txt'
-    filename_scrs_neg = folder_out+'scores_neg.txt'
+def E2E_features_2_classes_dim_2(filename_data_pos,filename_data_neg,folder_out):
 
     #Classifier = classifier_Bayes.classifier_Bayes()
     #Classifier = classifier_KNN.classifier_KNN()
@@ -46,21 +43,18 @@ def classify_data_2_classes(filename_data_pos,filename_data_neg,folder_out):
     #Classifier = classifier_LM.classifier_LM()
     #Classifier = classifier_Gauss.classifier_Gauss()
 
-
-    fig = plt.figure(figsize=(12, 6))
-    fig.subplots_adjust(hspace=0.01)
     ML = tools_ML.tools_ML(Classifier)
-    ML.E2E_features_2_classes(folder_out, filename_data_pos, filename_data_neg,filename_scrs_pos=filename_scrs_pos, filename_scrs_neg=filename_scrs_neg,fig=fig)
+    ML.E2E_features_2_classes_dim_2(folder_out, filename_data_pos, filename_data_neg)
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    #folder_in = 'data/ex_features_digits_mnist/CNN_AlexNet_TF/'
-    folder_in = 'data/ex_features_LPR/CNN_AlexNet_TF/'
+
+    folder_in = 'data/ex_pos_neg_linear/'
     folder_out = 'data/output/'
 
-    #generate_data_syntetic(folder_out, dim=3)
-    classify_data_2_classes(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)
+
+    E2E_features_2_classes_dim_2(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)
 
 
