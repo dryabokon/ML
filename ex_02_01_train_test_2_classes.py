@@ -50,14 +50,14 @@ def classify_data_2_classes(filename_data_pos,filename_data_neg,folder_out):
     fig = plt.figure(figsize=(12, 6))
     fig.subplots_adjust(hspace=0.01)
     ML = tools_ML.tools_ML(Classifier)
-    ML.E2E_features_2_classes(folder_out, filename_data_pos, filename_data_neg,filename_scrs_pos=filename_scrs_pos, filename_scrs_neg=filename_scrs_neg,fig=fig)
+    ML.E2E_features_2_classes_multi_dim(folder_out, filename_data_pos, filename_data_neg)
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     #folder_in = 'data/ex_features_digits_mnist/CNN_AlexNet_TF/'
-    folder_in = 'data/ex_features_LPR/CNN_AlexNet_TF/'
+    folder_in = 'data/ex_apnea/'
     folder_out = 'data/output/'
 
     #generate_data_syntetic(folder_out, dim=3)

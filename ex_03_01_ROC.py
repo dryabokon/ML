@@ -59,11 +59,28 @@ def benchmark_classifiers_ROC(filename_data_pos,filename_data_neg,path_out):
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
+import tools_draw_numpy
+import cv2
+
+def xxx():
+    image = numpy.full((200,200,3),255,dtype=numpy.uint8)
+
+    row, col = 100,100
+    r_radius, c_radius = 20, 10
+
+    image = tools_draw_numpy.draw_ellipse(image, row, col, r_radius, c_radius, (128,128,128), alpha_transp=0)
+
+    #image = cv2.ellipse(image, (row,col),          0, 0, 360, 1, (128,128,128))
+    #image = cv2.ellipse(image, (row,col), (row, col), 0, 0, 360,color=(128,128,128), thickness=4)
+    cv2.imwrite('./data/output/res.png',image)
+    return
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    path_in  = 'data/ex_features_LPR/'
-    path_out = 'data/output/'
-    filename_data_pos = path_in + 'pos.txt'
-    filename_data_neg = path_in + 'neg.txt'
+    #path_in  = 'data/ex_features_LPR/'
+    #path_out = 'data/output/'
+    #filename_data_pos = path_in + 'pos.txt'
+    #filename_data_neg = path_in + 'neg.txt'
 
-    benchmark_classifiers_ROC(filename_data_pos,filename_data_neg,path_out)
+    #benchmark_classifiers_ROC(filename_data_pos,filename_data_neg,path_out)
+    xxx()

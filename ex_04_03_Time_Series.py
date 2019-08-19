@@ -101,3 +101,5 @@ if __name__ == '__main__':
 
     predict_series(folder_in + filename, folder_out,target_column=-1,fit_only=False)
     #benchmark_predictors(folder_in + filename, folder_out,target_column=-1,fit_only=True)
+
+
