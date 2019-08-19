@@ -14,37 +14,23 @@ import classifier_KNN
 # ---------------------------------------------------------------------------------------------------------------------
 import generator_Bay
 import generator_Gauss
-import generator_Other
-import generator_Manual
-
 # ---------------------------------------------------------------------------------------------------------------------
-def generate_data_syntetic(folder_output,dim = 2):
-    if not os.path.exists(folder_output):
-        os.makedirs(folder_output)
-    else:
-        tools_IO.remove_files(folder_output)
-
-    #Generator = generator_Bay.generator_Bay(dim)
-    Generator = generator_Gauss.generator_Gauss(dim)
-    #Generator = generator_Other.generator_Other(dim)
-
-    Generator.create_pos_neg_samples(folder_output + 'pos.txt', folder_output + 'neg.txt')
-    tools_IO.plot_2D_samples_from_folder(folder_output,  add_noice=1)
-
-    return
+from ex_02_01_train_test_2_classes import generate_data_syntetic
 # ---------------------------------------------------------------------------------------------------------------------
-def E2E_features_2_classes_dim_2(filename_data_pos,filename_data_neg,folder_out):
+def E2E_features_2_classes_multi_dim(filename_data_pos,filename_data_neg,folder_out):
+
+    filename_scrs_pos = folder_out+'scores_pos.txt'
+    filename_scrs_neg = folder_out+'scores_neg.txt'
 
     #Classifier = classifier_Bayes.classifier_Bayes()
     #Classifier = classifier_KNN.classifier_KNN()
     #Classifier = classifier_Ada.classifier_Ada()
-    #Classifier = classifier_SVM.classifier_SVM()
-    Classifier = classifier_RF.classifier_RF()
+    Classifier = classifier_SVM.classifier_SVM()
+    #Classifier = classifier_RF.classifier_RF()
     #Classifier = classifier_LM.classifier_LM()
     #Classifier = classifier_Gauss.classifier_Gauss()
 
     ML = tools_ML.tools_ML(Classifier)
-
     ML.E2E_features_2_classes_multi_dim(folder_out, filename_data_pos, filename_data_neg)
 
     return
@@ -52,10 +38,11 @@ def E2E_features_2_classes_dim_2(filename_data_pos,filename_data_neg,folder_out)
 if __name__ == '__main__':
 
 
-    #folder_in = 'data/ex_features_digits_mnist/CNN_AlexNet_TF/'
-    folder_in = 'data/ex_apnea/'
-    folder_out = 'data/output/'
+    folder_in = 'data/ex_features_LPR/CNN_AlexNet_TF/'
 
-    E2E_features_2_classes_dim_2(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)
+    folder_out = 'data/output/'
+    #generate_data_syntetic(folder_out,5)
+
+    E2E_features_2_classes_multi_dim(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)
 
 
