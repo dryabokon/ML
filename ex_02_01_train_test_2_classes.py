@@ -50,10 +50,8 @@ def E2E_features_2_classes_dim_2(filename_data_pos,filename_data_neg,folder_out)
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-
     folder_in = 'data/ex_pos_neg_linear/'
     folder_out = 'data/output/'
-
 
     E2E_features_2_classes_dim_2(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)
 
