@@ -17,7 +17,7 @@ import classifier_XGBoost2
 # ---------------------------------------------------------------------------------------------------------------------
 import tools_IO
 # ----------------------------------------------------------------------------------------------------------------------
-def benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,noice_needed=0):
+def benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,has_header,has_labels_first_col,noice_needed=0):
 
     filename_scrs_pos = path_out+'scores_pos.txt'
     filename_scrs_neg = path_out+'scores_neg.txt'
@@ -56,16 +56,16 @@ def benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,noic
         ML = tools_ML.tools_ML(Classifiers[i])
         if i==0:ML.generate_data_grid(filename_data_pos, filename_data_neg, filename_data_grid)
 
-        ML.learn_on_pos_neg_files(filename_data_pos, filename_data_neg, '\t', idx_pos_train,idx_neg_train)
-        ML.score_feature_file(filename_data_pos, filename_scrs=filename_scrs_pos, delimeter='\t', append=0,rand_sel=idx_pos_test)
-        ML.score_feature_file(filename_data_neg, filename_scrs=filename_scrs_neg, delimeter='\t', append=0,rand_sel=idx_neg_test)
-        ML.score_feature_file(filename_data_grid, filename_scrs=filename_scores_grid)
+        ML.learn_on_pos_neg_files(filename_data_pos, filename_data_neg, '\t', idx_pos_train,idx_neg_train,has_header=has_header,has_labels_first_col=has_labels_first_col)
+        ML.score_feature_file(filename_data_pos, filename_scrs=filename_scrs_pos, delimeter='\t', append=0,rand_sel=idx_pos_test,has_header=has_header,has_labels_first_col=has_labels_first_col)
+        ML.score_feature_file(filename_data_neg, filename_scrs=filename_scrs_neg, delimeter='\t', append=0,rand_sel=idx_neg_test,has_header=has_header,has_labels_first_col=has_labels_first_col)
+        ML.score_feature_file(filename_data_grid, filename_scrs=filename_scores_grid,has_header=False,has_labels_first_col=True)
 
-        ML.learn_on_pos_neg_files(filename_data_pos, filename_data_neg, '\t', idx_pos_test,idx_neg_test)
-        ML.score_feature_file(filename_data_pos, filename_scrs=filename_scrs_pos, delimeter='\t', append=1,rand_sel=idx_pos_train)
-        ML.score_feature_file(filename_data_neg, filename_scrs=filename_scrs_neg, delimeter='\t', append=1,rand_sel=idx_neg_train)
+        ML.learn_on_pos_neg_files(filename_data_pos, filename_data_neg, '\t', idx_pos_test,idx_neg_test,has_header=has_header,has_labels_first_col=has_labels_first_col)
+        ML.score_feature_file(filename_data_pos, filename_scrs=filename_scrs_pos, delimeter='\t', append=1,rand_sel=idx_pos_train,has_header=has_header,has_labels_first_col=has_labels_first_col)
+        ML.score_feature_file(filename_data_neg, filename_scrs=filename_scrs_neg, delimeter='\t', append=1,rand_sel=idx_neg_train,has_header=has_header,has_labels_first_col=has_labels_first_col)
 
-        ML.score_feature_file(filename_data_grid, filename_scrs=filename_scores_grid)
+        ML.score_feature_file(filename_data_grid, filename_scrs=filename_scores_grid,has_header=False,has_labels_first_col=True)
         th = ML.get_th(filename_scrs_pos, filename_scrs_neg)
         tpr, fpr, roc_auc = tools_IO.get_roc_data_from_scores_file_v2(filename_scrs_pos, filename_scrs_neg)
         tools_IO.plot_2D_scores(plt.subplot(2, 5, i+1), fig, filename_data_pos, filename_data_neg, filename_data_grid,filename_scores_grid, th, noice_needed=noice_needed, caption=Classifiers[i].name + ' %1.2f'%roc_auc)
@@ -76,11 +76,13 @@ def benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,noic
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
+#has_header,has_labels_first_col = True, True
+#path_in = 'data/ex_pos_neg_apnea/'
+# ----------------------------------------------------------------------------------------------------------------------
+has_header,has_labels_first_col = False, True
+path_in = 'data/ex_pos_neg_linear/'
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    path_in  = 'data/ex_pos_neg_gauss/'
     path_out = 'data/output/'
-    filename_data_pos = path_in + 'pos.txt'
-    filename_data_neg = path_in + 'neg.txt'
-
-    benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,noice_needed=1)
+    benchmark_classifiers_grid(path_in + 'pos.txt',path_in + 'neg.txt',path_out,has_header,has_labels_first_col)

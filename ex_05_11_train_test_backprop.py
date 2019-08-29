@@ -6,7 +6,7 @@ import tools_ML
 import classifier_FC_numpy
 import classifier_SVM
 # ---------------------------------------------------------------------------------------------------------------------
-def classify_data(filename_data_pos,filename_data_neg,folder_out):
+def classify_data(filename_data_pos,filename_data_neg,folder_out,has_header,has_labels_first_col):
 
     filename_scrs_pos = folder_out+'scores_pos.txt'
     filename_scrs_neg = folder_out+'scores_neg.txt'
@@ -18,12 +18,14 @@ def classify_data(filename_data_pos,filename_data_neg,folder_out):
 
     fig = plt.figure(figsize=(12, 6))
     fig.subplots_adjust(hspace=0.01)
-    ML.E2E_features_2_classes(folder_out, filename_data_pos, filename_data_neg,filename_scrs_pos=filename_scrs_pos, filename_scrs_neg=filename_scrs_neg,fig=fig)
+    ML.E2E_features_2_classes_multi_dim(folder_out, filename_data_pos, filename_data_neg,has_header,has_labels_first_col)
     return
 
 # ----------------------------------------------------------------------------------------------------------------------
+has_header,has_labels_first_col = False, True
+folder_in = 'data/ex_pos_neg_linear/'
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    folder_in = 'data/ex_pos_neg_linear/'
     folder_out = 'data/output/'
-    classify_data(folder_in+'pos.txt', folder_in+'neg.txt',folder_out)
+    classify_data(folder_in+'pos.txt', folder_in+'neg.txt',folder_out,has_header,has_labels_first_col)

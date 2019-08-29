@@ -99,5 +99,7 @@ if __name__ == '__main__':
 
     filename = 'Monthly-test.txt'
 
-    predict_series(folder_in + filename, folder_out,target_column=-1,fit_only=False)
-    #benchmark_predictors(folder_in + filename, folder_out,target_column=-1,fit_only=True)
+    #predict_series(folder_in + filename, folder_out,target_column=-1,fit_only=False)
+    benchmark_predictors(folder_in + filename, folder_out,target_column=-1,fit_only=True)
+
+

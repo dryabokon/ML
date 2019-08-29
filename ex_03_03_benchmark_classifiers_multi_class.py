@@ -12,9 +12,8 @@ import tools_IO
 # ---------------------------------------------------------------------------------------------------------------------
 import matplotlib.pyplot as plt
 # ----------------------------------------------------------------------------------------------------------------------
-def benchmark_classifiers(use_cashed_predictions=True):
-    path_features = 'data/ex09/'
-    path_output = 'data/output/'
+def benchmark_classifiers(path_features,path_output,has_header,has_labels_first_col):
+
 
     C1 = classifier_SVM.classifier_SVM()
     C2 = classifier_RF.classifier_RF()
@@ -23,18 +22,13 @@ def benchmark_classifiers(use_cashed_predictions=True):
     C5 = classifier_Gauss2.classifier_Gauss2()
     C6 = classifier_KNN.classifier_KNN()
 
-
-
     Classifiers = [C1, C2, C3, C4, C5, C6]
 
 
     for i in range(0,len(Classifiers)):
-
         folder_predictions = path_output + 'predictions/' + Classifiers[i].name + '/'
-        filename_predictions = folder_predictions + Classifiers[i].name + '_predictions.txt'
-        if use_cashed_predictions==False or not os.path.isfile(filename_predictions):
-            ML = tools_ML.tools_ML(Classifiers[i])
-            ML.E2E_features(path_features, folder_predictions,mask = '.txt',limit_classes=20, limit_instances=100)
+        ML = tools_ML.tools_ML(Classifiers[i])
+        ML.E2E_features(path_features, folder_predictions,mask = '.txt',limit_classes=20, limit_instances=100,has_header=has_header,has_labels_first_col=has_labels_first_col)
 
 
     fig = plt.figure(figsize=(12, 6))
@@ -51,5 +45,10 @@ def benchmark_classifiers(use_cashed_predictions=True):
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
+has_header,has_labels_first_col = False, True
+path_features = 'data/ex_features_LPR/CNN_App_Keras/'
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
-    benchmark_classifiers(False)
+
+    path_output = 'data/output/'
+    benchmark_classifiers(path_features,path_output,has_header,has_labels_first_col)

@@ -16,7 +16,7 @@ import classifier_Gauss_indep
 # ---------------------------------------------------------------------------------------------------------------------
 import tools_IO
 # ----------------------------------------------------------------------------------------------------------------------
-def benchmark_classifiers_ROC(filename_data_pos,filename_data_neg,path_out):
+def benchmark_classifiers_ROC(filename_data_pos,filename_data_neg,path_out,has_header,has_labels_first_col):
 
     filename_scrs_pos = path_out+'scores_pos.txt'
     filename_scrs_neg = path_out+'scores_neg.txt'
@@ -40,7 +40,7 @@ def benchmark_classifiers_ROC(filename_data_pos,filename_data_neg,path_out):
     for each in Classifiers:
         ML = tools_ML.tools_ML(each)
 
-        tpr, fpr, auc = ML.E2E_features_2_classes(path_out,filename_data_pos, filename_data_neg,filename_scrs_pos,filename_scrs_neg)
+        tpr, fpr, auc = ML.E2E_features_2_classes_dim_2(path_out,filename_data_pos, filename_data_neg,has_header=has_header,has_labels_first_col=has_labels_first_col)
 
         AUC.append(auc)
         TP.append(tpr)
@@ -54,16 +54,16 @@ def benchmark_classifiers_ROC(filename_data_pos,filename_data_neg,path_out):
     AUC = numpy.array(AUC)[idx]
     DESC = numpy.array(DESC)[idx]
 
-    tools_IO.plot_multiple_tp_fp(TP, FP, AUC, DESC)
-    plt.show()
+    tools_IO.plot_multiple_tp_fp(TP, FP, AUC, DESC,filename_out=path_out+'ROC.png')
+
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
+has_header,has_labels_first_col = True, True
+path_in = 'data/ex_pos_neg_apnea/'
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    path_in  = 'data/ex_features_LPR/'
     path_out = 'data/output/'
-    filename_data_pos = path_in + 'pos.txt'
-    filename_data_neg = path_in + 'neg.txt'
+    benchmark_classifiers_ROC(path_in+ 'pos.txt',path_in+'neg.txt',path_out,has_header,has_labels_first_col)
 
-    benchmark_classifiers_ROC(filename_data_pos,filename_data_neg,path_out)
