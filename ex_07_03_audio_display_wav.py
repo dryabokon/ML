@@ -9,6 +9,7 @@ from scipy.io import wavfile
 from playsound import playsound
 from scipy import signal
 import librosa
+from librosa import tempo_frequencies
 import tools_audio
 # ----------------------------------------------------------------------------------------------------------------------
 matplotlib.rcParams['toolbar'] = 'None'
@@ -74,6 +75,7 @@ def display_current_sound(filename_in):
         if subplot3_data is None:
             subplot3_data = subplot3.specgram(X, NFFT=chunk, Fs=fs)
             subplot3.set_ylim([0, 2000])
+
 
         fig.canvas.draw()
         fig.canvas.flush_events()

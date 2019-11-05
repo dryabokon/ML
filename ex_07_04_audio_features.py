@@ -39,6 +39,35 @@ def onclick(event):
         g_click_flag=True
     return
 # ----------------------------------------------------------------------------------------------------------------------
+def get_features_welch(X,fs,nperseg):
+    f, Pxx_spec = signal.welch(X, fs, 'flattop', nperseg, scaling='spectrum')
+    return numpy.sqrt(Pxx_spec)
+# ----------------------------------------------------------------------------------------------------------------------
+def get_features_mfcc(X,fs,nperseg):
+    #fch = numpy.mean(librosa.feature.mfcc(X, sr=fs, n_mfcc=40).T, axis=0)
+    fch = numpy.array(librosa.feature.mfcc(X, sr=fs,n_mfcc=40)).flatten()
+    return fch
+# ----------------------------------------------------------------------------------------------------------------------
+def get_features_chroma_stft(X,fs,nperseg):
+    fch = numpy.array(librosa.feature.chroma_stft(X, sr=fs)).flatten()
+    return fch
+# ----------------------------------------------------------------------------------------------------------------------
+def get_features_mel(X,fs,nperseg):
+    fch = numpy.array(librosa.feature.melspectrogram(X, sr=fs)).flatten()
+    #contrast, tonnetz
+    return fch
+# ----------------------------------------------------------------------------------------------------------------------
+def get_features_contrast(X,fs,nperseg):
+    fch = numpy.array(librosa.feature.spectral_contrast(X, sr=fs)).flatten()
+    #tonnetz
+    return fch
+# ----------------------------------------------------------------------------------------------------------------------
+def get_features_tonnetz(X,fs,nperseg):
+    fch = numpy.array(librosa.feature.tonnetz(X, sr=fs)).flatten()
+    return fch
+# ----------------------------------------------------------------------------------------------------------------------
+#https://www.analyticsvidhya.com/blog/2017/08/audio-voice-processing-deep-learning/
+# ----------------------------------------------------------------------------------------------------------------------
 def extract_features_from_sound_file(filename_in,filaname_out):
     X, fs = librosa.load(filename_in)
     X *= 0x7FFF
@@ -52,8 +81,14 @@ def extract_features_from_sound_file(filename_in,filaname_out):
         start += int(step*3/4)
         stop  += int(step*3/4)
 
-        f, Pxx_spec = signal.welch(X[start:stop], fs, 'flattop', chunk, scaling='spectrum')
-        features.append(numpy.sqrt(Pxx_spec))
+        #feature= get_features_welch(X[start:stop], fs, chunk)
+        #feature= get_features_mfcc(X[start:stop], fs, chunk)
+        #feature = get_features_chroma_stft(X[start:stop], fs, chunk)
+        #feature = get_features_mel(X[start:stop], fs, chunk)
+        #feature = get_features_contrast(X[start:stop], fs, chunk)  #good!
+        feature = get_features_tonnetz(X[start:stop], fs, chunk)
+
+        features.append(feature)
         markup.append(filename_in+'_%d_%d'%(start,stop))
 
 
