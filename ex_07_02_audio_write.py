@@ -25,7 +25,7 @@ def write_loop_current_sound_wav(filename_out,dev_index=1):
 
     while True:
         frames = []
-        while len(frames)<20:
+        while len(frames)<100:
             data = stream.read(chunk)
             frames.append(data)
 
@@ -62,8 +62,8 @@ def write_loop_current_sound_bin(filename_out,dev_index=1):
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    write_loop_current_sound_bin('./data/output/sound.dat')
-    #write_loop_current_sound_wav('./data/output/sound.wav')
+    #write_loop_current_sound_bin('./data/output/sound.dat')
+    write_loop_current_sound_wav('./data/output/sound.wav')
     #p = pyaudio.PyAudio()
     #for ii in range(p.get_device_count()): print(p.get_device_info_by_index(ii).get('name'))
 
