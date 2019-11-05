@@ -9,6 +9,7 @@ from scipy.io import wavfile
 from playsound import playsound
 from scipy import signal
 import librosa
+import tools_audio
 # ----------------------------------------------------------------------------------------------------------------------
 matplotlib.rcParams['toolbar'] = 'None'
 # ----------------------------------------------------------------------------------------------------------------------
@@ -58,6 +59,7 @@ def display_current_sound(filename_in):
     while True:
         #fs0, Y = wavfile.read(filename_in)
         X, fs = librosa.load(filename_in)
+
         X*= 0x7FFF
         playsound(filename_in, False)
         start, stop = 0, chunk
@@ -100,11 +102,11 @@ def display_current_sound(filename_in):
 if __name__ == '__main__':
 
     #display_current_sound('./data/output/sound.wav')
-    #display_current_sound('./data/ex_wave/440.wav')
+    display_current_sound('./data/ex_wave/440.wav')
     #display_current_sound('./data/ex_wave/440_gen.wav')
     #display_current_sound('./data/ex_wave/clarinet_c6.wav')
     #display_current_sound('./data/ex_wave/prelude_cmaj.wav')
-    display_current_sound('./data/ex_wave/simple_piano.wav')
+    #display_current_sound('./data/ex_wave/simple_piano.wav')
 
     #display_current_sound('./data/ex_wave/Sound_20140.mp3')
     #display_current_sound('./data/ex_wave/Sound_21728.mp3')

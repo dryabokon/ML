@@ -1,46 +1,36 @@
 # ----------------------------------------------------------------------------------------------------------------------
 import numpy
 import pyaudio
-import wave
+import tools_audio
+import progressbar
+from playsound import playsound
 # ----------------------------------------------------------------------------------------------------------------------
 form_1 = pyaudio.paInt16
 chans = 1
 samp_rate = 44100
 chunk = 4096
 # ----------------------------------------------------------------------------------------------------------------------
-def save_steam_wav(filename_out,frames,audio,chans = 1,form_1=pyaudio.paInt16,samp_rate=44100,):
-    with wave.open(filename_out, 'wb') as wavefile:
-        width = audio.get_sample_size(form_1)
-        wavefile.setnchannels(chans)
-        wavefile.setsampwidth(width)
-        wavefile.setframerate(samp_rate)
-        wavefile.writeframes(b''.join(frames))
-        wavefile.close()
-    return
-# ----------------------------------------------------------------------------------------------------------------------
 def write_loop_current_sound_wav(filename_out,dev_index=1):
 
     audio = pyaudio.PyAudio()
     stream = audio.open(format = form_1,rate = samp_rate,channels = chans, input_device_index = dev_index,input = True, frames_per_buffer=chunk)
+    frames = []
 
-    while True:
-        frames = []
-        while len(frames)<100:
-            data = stream.read(chunk)
-            frames.append(data)
+    N = 200
+    bar = progressbar.ProgressBar(max_value=N)
 
-        save_steam_wav(filename_out, frames, audio)
+    for b in range(N):
+        bar.update(b)
+        data = stream.read(chunk)
+        frames.append(data)
 
-        #f_handle = open('./data/output/sound.dat', "wb")
-        #f_handle.write(numpy.fromstring(data, dtype=numpy.int16))
-        #f_handle.close()
-
-        print('.')
+    tools_audio.save_steam_wav(filename_out, frames, audio)
 
     stream.stop_stream()
     stream.close()
     audio.terminate()
 
+    #playsound(filename_out, False)
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def write_loop_current_sound_bin(filename_out,dev_index=1):
@@ -67,12 +57,3 @@ if __name__ == '__main__':
     #p = pyaudio.PyAudio()
     #for ii in range(p.get_device_count()): print(p.get_device_info_by_index(ii).get('name'))
 
-
-'''
-Microsoft Sound Mapper - Input
-Headset Microphone (Jabra UC VO
-Microphone (High Definition Aud
-Microsoft Sound Mapper - Output
-Headset Earphone (Jabra UC VOIC
-Speakers (High Definition Audio
-'''

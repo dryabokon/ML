@@ -63,9 +63,11 @@ def display_current_sound0(filename_in):
             Pxx_spec = numpy.sqrt(Pxx_spec)
             subplot2_data, = subplot2.plot(Pxx_spec, f0)
 
-        #if i%N ==0:
-        #    subplot3.specgram(X_hist, NFFT=chunk, Fs=fs,vmin=0, vmax=50)
-        #    subplot3.set_ylim([0, 2000])
+        if i%N ==0:
+            subplot3.specgram(X_hist, NFFT=chunk, Fs=fs,vmin=0, vmax=50)
+            subplot3.set_ylim([0, 2000])
+            plt.tight_layout()
+            i=0
 
 
         if len(X)!=size:continue
@@ -78,9 +80,7 @@ def display_current_sound0(filename_in):
         subplot2_data.set_xdata(Pxx_spec)
         subplot2_data.set_ydata(f)
 
-        #X_hist = numpy.roll(X_hist,len(X))
-        #X_hist[0:len(X)]=X
-
+        X_hist[i*len(X):(i+1)*len(X)]=X
 
         subplot1.set_title('%d'%i)
         fig.canvas.draw()
