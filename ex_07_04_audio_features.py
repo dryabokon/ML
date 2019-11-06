@@ -1,4 +1,6 @@
+#https://www.analyticsvidhya.com/blog/2017/08/audio-voice-processing-deep-learning/
 # ----------------------------------------------------------------------------------------------------------------------
+import os
 import numpy
 import pyaudio
 from os import listdir
@@ -9,7 +11,6 @@ import tools_IO
 import tools_ML
 import matplotlib
 import matplotlib.pyplot as plt
-from sklearn import decomposition
 from sklearn.manifold import TSNE
 from playsound import playsound
 import tools_audio
@@ -54,19 +55,15 @@ def get_features_chroma_stft(X,fs,nperseg):
 # ----------------------------------------------------------------------------------------------------------------------
 def get_features_mel(X,fs,nperseg):
     fch = numpy.array(librosa.feature.melspectrogram(X, sr=fs)).flatten()
-    #contrast, tonnetz
     return fch
 # ----------------------------------------------------------------------------------------------------------------------
 def get_features_contrast(X,fs,nperseg):
     fch = numpy.array(librosa.feature.spectral_contrast(X, sr=fs)).flatten()
-    #tonnetz
     return fch
 # ----------------------------------------------------------------------------------------------------------------------
 def get_features_tonnetz(X,fs,nperseg):
     fch = numpy.array(librosa.feature.tonnetz(X, sr=fs)).flatten()
     return fch
-# ----------------------------------------------------------------------------------------------------------------------
-#https://www.analyticsvidhya.com/blog/2017/08/audio-voice-processing-deep-learning/
 # ----------------------------------------------------------------------------------------------------------------------
 def extract_features_from_sound_file(filename_in,filaname_out):
     X, fs = librosa.load(filename_in)
@@ -74,21 +71,22 @@ def extract_features_from_sound_file(filename_in,filaname_out):
     features = []
     markup=[]
 
-    step = 10 * chunk
+    step = 15 * chunk
     start, stop = 0, step
 
     while stop < len(X):
         start += int(step*3/4)
         stop  += int(step*3/4)
 
-        #feature= get_features_welch(X[start:stop], fs, chunk)
-        #feature= get_features_mfcc(X[start:stop], fs, chunk)
-        #feature = get_features_chroma_stft(X[start:stop], fs, chunk)
-        #feature = get_features_mel(X[start:stop], fs, chunk)
-        #feature = get_features_contrast(X[start:stop], fs, chunk)  #good!
-        feature = get_features_tonnetz(X[start:stop], fs, chunk)
+        feature = []
+        feature.append(get_features_welch(X[start:stop], fs, chunk))
+        #feature.append(get_features_mfcc(X[start:stop], fs, chunk))
+        #feature.append(get_features_chroma_stft(X[start:stop], fs, chunk))
+        #feature.append(get_features_mel(X[start:stop], fs, chunk))
+        #feature.append(get_features_contrast(X[start:stop], fs, chunk))
+        #feature.append(get_features_tonnetz(X[start:stop], fs, chunk))
 
-        features.append(feature)
+        features.append(numpy.concatenate(feature))
         markup.append(filename_in+'_%d_%d'%(start,stop))
 
 
@@ -107,12 +105,19 @@ def extract_features_from_sound_file(filename_in,filaname_out):
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def extract_features_from_sound_folder(folder_in,folder_out):
-    tools_IO.remove_files(folder_out)
-    filenames = tools_IO.get_filenames(folder_in,'*.wav,*.mp3')
+    all_filenames = tools_IO.get_filenames(folder_out,'*.*')
+    filenames_in  = tools_IO.get_filenames(folder_in,'*.wav,*.mp3')
+    filenames_out = [filename.split('.')[0] + '.txt' for filename in filenames_in]
 
-    for filename in filenames:
-        extract_features_from_sound_file(folder_in+filename, folder_out+filename.split('.')[0]+'.txt')
+    for all_filename in all_filenames:
+        if all_filename not in filenames_out:
+            tools_IO.remove_file(folder_out+all_filename)
 
+    for filename_in,filename_out in zip(filenames_in,filenames_out):
+        if not os.path.exists(folder_out + filename_out):
+            extract_features_from_sound_file(folder_in+filename_in, folder_out + filename_out)
+
+    print('extract_features_from_sound_folder OK')
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def get_index(XY,x,y):
@@ -122,7 +127,7 @@ def get_index(XY,x,y):
 
     return idx
 # ----------------------------------------------------------------------------------------------------------------------
-def plot_features_PCA(folder_in, folder_out):
+def plot_features_PCA(folder_in, folder_out,has_header=True,has_labels_first_col=True):
 
 
     patterns = fnmatch.filter(listdir(folder_in), '*.txt')
@@ -132,7 +137,7 @@ def plot_features_PCA(folder_in, folder_out):
     patterns = numpy.array(patterns)
     ML = tools_ML.tools_ML(None)
 
-    X,Y,  filenames = ML.prepare_arrays_from_feature_files(folder_in, patterns=patterns, feature_mask='.txt')
+    X,Y,  filenames = ML.prepare_arrays_from_feature_files(folder_in, patterns=patterns, feature_mask='.txt',has_header=has_header,has_labels_first_col=has_labels_first_col)
     X_TSNE = TSNE(n_components=2).fit_transform(X)
 
     plt.ion()
@@ -185,7 +190,7 @@ def plot_features_PCA(folder_in, folder_out):
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    folder_in  = './data/ex_wave/'
+    folder_in  = './data/output_sounds/'
     folder_out = './data/output/'
     extract_features_from_sound_folder(folder_in,folder_out)
-    plot_features_PCA(folder_out,folder_out)
+    plot_features_PCA(folder_out,folder_out,has_header=False,has_labels_first_col=True)

@@ -43,7 +43,9 @@ def benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,has_
 
     Pos = (tools_IO.load_mat(filename_data_pos, numpy.chararray, '\t')).shape[0]
     Neg = (tools_IO.load_mat(filename_data_neg, numpy.chararray, '\t')).shape[0]
-
+    if has_header:
+        Pos-= 1
+        Neg-= 1
 
     numpy.random.seed(125)
     idx_pos_train = numpy.random.choice(Pos, int(Pos/2),replace=False)
@@ -54,7 +56,8 @@ def benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,has_
 
     for i in range(0,len(Classifiers)):
         ML = tools_ML.tools_ML(Classifiers[i])
-        if i==0:ML.generate_data_grid(filename_data_pos, filename_data_neg, filename_data_grid)
+        if i==0:
+            ML.generate_data_grid(filename_data_pos, filename_data_neg, filename_data_grid,has_header=has_header,has_labels_first_col=has_labels_first_col)
 
         ML.learn_on_pos_neg_files(filename_data_pos, filename_data_neg, '\t', idx_pos_train,idx_neg_train,has_header=has_header,has_labels_first_col=has_labels_first_col)
         ML.score_feature_file(filename_data_pos, filename_scrs=filename_scrs_pos, delimeter='\t', append=0,rand_sel=idx_pos_test,has_header=has_header,has_labels_first_col=has_labels_first_col)
@@ -68,7 +71,8 @@ def benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,has_
         ML.score_feature_file(filename_data_grid, filename_scrs=filename_scores_grid,has_header=False,has_labels_first_col=True)
         th = ML.get_th(filename_scrs_pos, filename_scrs_neg)
         tpr, fpr, roc_auc = tools_IO.get_roc_data_from_scores_file_v2(filename_scrs_pos, filename_scrs_neg)
-        tools_IO.plot_2D_scores(plt.subplot(2, 5, i+1), fig, filename_data_pos, filename_data_neg, filename_data_grid,filename_scores_grid, th, noice_needed=noice_needed, caption=Classifiers[i].name + ' %1.2f'%roc_auc)
+        #tools_IO.plot_2D_scores(plt.subplot(2, 5, i+1), fig, filename_data_pos, filename_data_neg, filename_data_grid,filename_scores_grid, th, noice_needed=noice_needed, caption=Classifiers[i].name + ' %1.2f'%roc_auc)
+        tools_IO.plot_tp_fp(plt.subplot(2, 5, i+1),fig,tpr,fpr,roc_auc,caption=Classifiers[i].name + ' %1.2f'%roc_auc)
 
 
     plt.tight_layout()
@@ -79,8 +83,11 @@ def benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,has_
 #has_header,has_labels_first_col = True, True
 #path_in = 'data/ex_pos_neg_apnea/'
 # ----------------------------------------------------------------------------------------------------------------------
-has_header,has_labels_first_col = False, True
-path_in = 'data/ex_pos_neg_linear/'
+#has_header,has_labels_first_col = False, True
+#path_in = 'data/ex_pos_neg_linear/'
+# ----------------------------------------------------------------------------------------------------------------------
+has_header,has_labels_first_col = True, True
+path_in = 'data/ex_pos_neg_apnea/'
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 

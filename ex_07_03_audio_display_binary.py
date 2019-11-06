@@ -1,5 +1,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 import cv2
+import librosa
 import numpy
 import pyaudio
 import matplotlib
@@ -52,6 +53,7 @@ def display_current_sound0(filename_in):
     while True:
         f_handle = open(filename_in, "rb");data = f_handle.read();f_handle.close()
         X = numpy.fromstring(data, dtype=numpy.int16)
+        X = numpy.array(X, dtype=numpy.float)
         size = len(X)
 
         if subplot1_data is None:
@@ -59,28 +61,28 @@ def display_current_sound0(filename_in):
             X_hist = numpy.zeros((len(X)*N))
 
         if subplot2_data is None:
-            f0, Pxx_spec = signal.welch(X, fs, 'flattop', chunk, scaling='spectrum')
-            Pxx_spec = numpy.sqrt(Pxx_spec)
-            subplot2_data, = subplot2.plot(Pxx_spec, f0)
+            f0, features = signal.welch(X, fs, 'flattop', chunk, scaling='spectrum')
+            features = numpy.sqrt(features)
 
-        if i%N ==0:
-            subplot3.specgram(X_hist, NFFT=chunk, Fs=fs,vmin=0, vmax=50)
-            subplot3.set_ylim([0, 2000])
-            plt.tight_layout()
-            i=0
+            subplot2_data, = subplot2.plot(features, f0)
+
+        #if i%N ==0:
+            #subplot3.specgram(X_hist, NFFT=chunk, Fs=fs,vmin=0, vmax=50)
+            #subplot3.set_ylim([0, 2000])
+            #plt.tight_layout()
+            #i=0
 
 
         if len(X)!=size:continue
 
         subplot1_data.set_ydata(X)
-        f, Pxx_spec = signal.welch(X, fs, 'flattop', chunk, scaling='spectrum')
-        Pxx_spec = numpy.sqrt(Pxx_spec)
+        f, features = signal.welch(X, fs, 'flattop', chunk, scaling='spectrum')
+        features = numpy.sqrt(features)
+
         if len(f)!=len(f0):continue
 
-        subplot2_data.set_xdata(Pxx_spec)
+        subplot2_data.set_xdata(features)
         subplot2_data.set_ydata(f)
-
-        X_hist[i*len(X):(i+1)*len(X)]=X
 
         subplot1.set_title('%d'%i)
         fig.canvas.draw()
@@ -100,7 +102,7 @@ def signal_to_image(X,image,low,high):
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    display_current_sound0('./data/output/sound.dat')
+    display_current_sound0('./data/output_sounds/sound.dat')
 
 
 

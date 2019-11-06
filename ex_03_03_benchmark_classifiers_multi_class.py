@@ -45,10 +45,14 @@ def benchmark_classifiers(path_features,path_output,has_header,has_labels_first_
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
-has_header,has_labels_first_col = False, True
-path_features = 'data/ex_features_LPR/CNN_App_Keras/'
+#has_header,has_labels_first_col = True, True
+#path_in = 'data/ex_pos_neg_apnea/'
 # ----------------------------------------------------------------------------------------------------------------------
+has_header,has_labels_first_col = False, True
+path_in = 'data/ex_features_digits_mnist/CNN_AlexNet_TF/'
+# ----------------------------------------------------------------------------------------------------------------------
+
 if __name__ == '__main__':
 
     path_output = 'data/output/'
-    benchmark_classifiers(path_features,path_output,has_header,has_labels_first_col)
+    benchmark_classifiers(path_in,path_output,has_header,has_labels_first_col)
