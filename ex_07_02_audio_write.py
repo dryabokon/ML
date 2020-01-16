@@ -34,7 +34,7 @@ def get_next_filename_out(base_folder_out,list_of_masks):
     return base_folder_out + filename_out
 
 # ----------------------------------------------------------------------------------------------------------------------
-def write_loop_current_sound_wav(filename_out,dev_index,duration=100):
+def write_loop_current_sound_wav(filename_out,dev_index,duration=150):
 
     audio = pyaudio.PyAudio()
     stream = audio.open(format = form_1,rate = samp_rate,channels = chans, input_device_index = dev_index,input = True, frames_per_buffer=chunk)

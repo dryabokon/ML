@@ -6,7 +6,7 @@ import tools_ML
 import classifier_SVM
 import classifier_RF
 import classifier_Ada
-import classifier_Gauss
+import classifier_Gaussgit commit
 import classifier_Gauss2
 import classifier_Gauss_indep
 import classifier_Bayes
@@ -14,6 +14,7 @@ import classifier_Bayes2
 import classifier_LM
 import classifier_KNN
 import classifier_XGBoost2
+import classifier_FC_Keras
 # ---------------------------------------------------------------------------------------------------------------------
 import tools_IO
 # ----------------------------------------------------------------------------------------------------------------------
@@ -86,10 +87,12 @@ def benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,has_
 #has_header,has_labels_first_col = False, True
 #path_in = 'data/ex_pos_neg_linear/'
 # ----------------------------------------------------------------------------------------------------------------------
-has_header,has_labels_first_col = True, True
-path_in = 'data/ex_pos_neg_apnea/'
+#has_header,has_labels_first_col = True, True
+#path_in = 'data/ex_pos_neg_apnea/'
 # ----------------------------------------------------------------------------------------------------------------------
+has_header,has_labels_first_col = True, True
+folder_in = 'data/ex_pos_neg_football/'
 if __name__ == '__main__':
 
     path_out = 'data/output/'
-    benchmark_classifiers_grid(path_in + 'pos.txt',path_in + 'neg.txt',path_out,has_header,has_labels_first_col)
+    benchmark_classifiers_grid(folder_in + 'pos.txt',folder_in + 'neg.txt',path_out,has_header,has_labels_first_col)
