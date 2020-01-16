@@ -54,8 +54,8 @@ def benchmark_classifiers_ROC(filename_data_pos,filename_data_neg,path_out,has_h
     AUC = numpy.array(AUC)[idx]
     DESC = numpy.array(DESC)[idx]
 
-    tools_IO.plot_multiple_tp_fp(TP, FP, AUC, DESC,filename_out=path_out+'ROC.png')
-
+    tools_IO.plot_multiple_tp_fp(TP, FP, AUC, DESC)
+    plt.savefig(path_out + 'fig_roc.png')
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
