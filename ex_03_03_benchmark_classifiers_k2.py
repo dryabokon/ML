@@ -6,7 +6,7 @@ import tools_ML
 import classifier_SVM
 import classifier_RF
 import classifier_Ada
-import classifier_Gaussgit commit
+import classifier_Gauss
 import classifier_Gauss2
 import classifier_Gauss_indep
 import classifier_Bayes
