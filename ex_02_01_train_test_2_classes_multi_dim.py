@@ -25,8 +25,8 @@ def E2E_features_2_classes_multi_dim(filename_data_pos,filename_data_neg,folder_
     #Classifier = classifier_Bayes.classifier_Bayes()
     #Classifier = classifier_KNN.classifier_KNN()
     #Classifier = classifier_Ada.classifier_Ada()
-    #Classifier = classifier_SVM.classifier_SVM()
-    Classifier = classifier_RF.classifier_RF()
+    Classifier = classifier_SVM.classifier_SVM()
+    #Classifier = classifier_RF.classifier_RF()
     #Classifier = classifier_LM.classifier_LM()
     #Classifier = classifier_Gauss.classifier_Gauss()
 
