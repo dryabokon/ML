@@ -35,8 +35,8 @@ def E2E_features_2_classes_multi_dim(filename_data_pos,filename_data_neg,folder_
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
-has_header,has_labels_first_col = False, True
-folder_in = 'data/ex_pos_neg_linear/'
+#has_header,has_labels_first_col = False, True
+#folder_in = 'data/ex_pos_neg_linear/'
 # ----------------------------------------------------------------------------------------------------------------------
 #has_header,has_labels_first_col = True, True
 #folder_in = 'data/ex_pos_neg_apnea/'
@@ -45,7 +45,7 @@ folder_in = 'data/ex_pos_neg_linear/'
 #folder_in = 'data/ex_features_LPR/CNN_App_Keras/'
 # ----------------------------------------------------------------------------------------------------------------------
 has_header,has_labels_first_col = True, True
-folder_in = 'data/ex_pos_neg_football/'
+folder_in = 'data/ex_pos_neg_football2/'
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
