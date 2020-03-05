@@ -25,7 +25,19 @@ Classifier = classifier_RF.classifier_RF()
 #Classifier = classifier_LM.classifier_LM()
 #Classifier = classifier_Gauss.classifier_Gauss()
 # ----------------------------------------------------------------------------------------------------------------------
-def E2E_features_2_classes_multi_dim(filename_data_pos, filename_data_neg, folder_out, has_header,has_labels_first_col):
+def E2E_features_2_classes_multi_dim(filename_data_pos,filename_data_neg,folder_out,has_header,has_labels_first_col):
+
+    filename_scrs_pos = folder_out+'scores_pos.txt'
+    filename_scrs_neg = folder_out+'scores_neg.txt'
+
+    #Classifier = classifier_Bayes.classifier_Bayes()
+    #Classifier = classifier_KNN.classifier_KNN()
+    #Classifier = classifier_Ada.classifier_Ada()
+    Classifier = classifier_SVM.classifier_SVM()
+    #Classifier = classifier_RF.classifier_RF()
+    #Classifier = classifier_LM.classifier_LM()
+    #Classifier = classifier_Gauss.classifier_Gauss()
+
     ML = tools_ML.tools_ML(Classifier)
     ML.E2E_features_2_classes_multi_dim(folder_out, filename_data_pos, filename_data_neg, has_header,has_labels_first_col)
     return
