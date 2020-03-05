@@ -70,7 +70,7 @@ def benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,has_
         ML.score_feature_file(filename_data_neg, filename_scrs=filename_scrs_neg, delimeter='\t', append=1,rand_sel=idx_neg_train,has_header=has_header,has_labels_first_col=has_labels_first_col)
 
         ML.score_feature_file(filename_data_grid, filename_scrs=filename_scores_grid,has_header=False,has_labels_first_col=True)
-        th = ML.get_th(filename_scrs_pos, filename_scrs_neg)
+        th = ML.get_th_pos_neg(filename_scrs_pos, filename_scrs_neg)
         tpr, fpr, roc_auc = tools_IO.get_roc_data_from_scores_file_v2(filename_scrs_pos, filename_scrs_neg)
         #tools_IO.plot_2D_scores(plt.subplot(2, 5, i+1), fig, filename_data_pos, filename_data_neg, filename_data_grid,filename_scores_grid, th, noice_needed=noice_needed, caption=Classifiers[i].name + ' %1.2f'%roc_auc)
         tools_IO.plot_tp_fp(plt.subplot(2, 5, i+1),fig,tpr,fpr,roc_auc,caption=Classifiers[i].name + ' %1.2f'%roc_auc)
@@ -91,7 +91,8 @@ def benchmark_classifiers_grid(filename_data_pos,filename_data_neg,path_out,has_
 #path_in = 'data/ex_pos_neg_apnea/'
 # ----------------------------------------------------------------------------------------------------------------------
 has_header,has_labels_first_col = True, True
-folder_in = 'data/ex_pos_neg_football/'
+folder_in = 'data/ex_pos_neg_football6/'
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     path_out = 'data/output/'
