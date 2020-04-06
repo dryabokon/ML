@@ -104,9 +104,9 @@ def display_current_sound(filename_in):
 if __name__ == '__main__':
 
     #display_current_sound('./data/output/sound.wav')
-    display_current_sound('./data/ex_wave/440.wav')
+    #display_current_sound('./data/ex_wave/440.wav')
     #display_current_sound('./data/ex_wave/440_gen.wav')
-    #display_current_sound('./data/ex_wave/clarinet_c6.wav')
+    display_current_sound('./data/ex_wave/clarinet_c6.wav')
     #display_current_sound('./data/ex_wave/prelude_cmaj.wav')
     #display_current_sound('./data/ex_wave/simple_piano.wav')
 
