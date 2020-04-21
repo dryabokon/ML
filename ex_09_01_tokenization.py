@@ -9,10 +9,6 @@ import warnings
 # ----------------------------------------------------------------------------------------------------------------------
 warnings.filterwarnings('ignore')
 # ----------------------------------------------------------------------------------------------------------------------
-text = """Founded in 2002, SpaceX’s mission is to enable humans to become a spacefaring civilization and a multi-planet 
-species by building a self-sustaining city on, Mars. In 2008, SpaceX’s Falcon 1 became the first privately developed 
-liquid-fuel launch vehicle to orbit the Earth."""
-# ----------------------------------------------------------------------------------------------------------------------
 def tokenize_split(text):
     tokens = text.split()
     return tokens
@@ -103,19 +99,14 @@ def example_displacy_entities(text):
     displacy.serve(tokens, style="ent")
     return
 # ----------------------------------------------------------------------------------------------------------------------
+the_text = "At Unicsoft, we embody learning and caring culture, attracting the best talent, who stay with us and our customers for years. That's how we live, learn, grow, and succeed together. We are motivated experts seeking out challenges. We look for partners, rather than just customers."
+#the_text = "Gerard (died 1108) was Archbishop of York between 1100 and 1108 and Lord Chancellor of England from 1085 until 1092. A Norman, he was a member of the cathedral clergy at Rouen before becoming a royal clerk under King William I of England, who appointed him Lord Chancellor. He continued in that office under King William II Rufus, who rewarded him with the Bishopric of Hereford in 1096. Soon after Henry I's coronation, Gerard was appointed to the recently vacant see of York, and became embroiled in the dispute between York and the see of Canterbury concerning which archbishopric had primacy over England. He secured papal recognition of York's jurisdiction over the church in Scotland but was forced to accept Canterbury's authority over York. He also worked on reconciling the Investiture Controversy between the king and the papacy over the right to appoint bishops until the controversy's resolution in 1107. Because of rumours, as a student of astrology, that he was a magician and a sorcerer, and also because of his unpopular attempts to reform his clergy, he was denied a burial inside York Minster"
+#the_text = "Founded in 2002, SpaceX’s mission is to enable humans to become a spacefaring civilization and a multi-planet species by building a self-sustaining city on, Mars. In 2008, SpaceX’s Falcon 1 became the first privately developed liquid-fuel launch vehicle to orbit the Earth."
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    nlp = spacy.load('en_core_web_sm')
-    kb = KnowledgeBase(vocab=nlp.vocab, entity_vector_length=3)
 
-    # adding entities
-    kb.add_entity(entity="Q1004791", freq=6, entity_vector=[0, 3, 5])
-    kb.add_entity(entity="Q42", freq=342, entity_vector=[1, 9, -3])
-    kb.add_entity(entity="Q5301561", freq=12, entity_vector=[-2, 4, 2])
+    #example_displacy_dependency("I love to drink coffee every morning")
+    #example_displacy_entities(the_text)
 
-    # adding aliases
-    kb.add_alias(alias="Douglas", entities=["Q1004791", "Q42", "Q5301561"], probabilities=[0.6, 0.1, 0.2])
-
-    candidates = kb.get_candidates("Douglas")
-    for c in candidates:
-        print(" ", c.entity_, c.prior_prob, c.entity_vector)
+    example_similarity("Apples and Oranges are my lovely fruits.")

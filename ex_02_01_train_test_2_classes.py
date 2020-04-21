@@ -1,3 +1,4 @@
+import numpy
 import os
 import matplotlib.pyplot as plt
 # ----------------------------------------------------------------------------------------------------------------------
@@ -17,46 +18,70 @@ import generator_Gauss
 import generator_Other
 import generator_Manual
 
+
 # ---------------------------------------------------------------------------------------------------------------------
-def generate_data_syntetic(folder_output,dim = 2):
+def generate_data_syntetic(folder_output, dim=2):
     if not os.path.exists(folder_output):
         os.makedirs(folder_output)
     else:
         tools_IO.remove_files(folder_output)
 
-    #Generator = generator_Bay.generator_Bay(dim)
+    # Generator = generator_Bay.generator_Bay(dim)
     Generator = generator_Gauss.generator_Gauss(dim)
-    #Generator = generator_Other.generator_Other(dim)
+    # Generator = generator_Other.generator_Other(dim)
 
     Generator.create_pos_neg_samples(folder_output + 'pos.txt', folder_output + 'neg.txt')
-    tools_IO.plot_2D_samples_from_folder(folder_output,  add_noice=1)
+    tools_IO.plot_2D_samples_from_folder(folder_output, add_noice=1)
 
     return
-# ---------------------------------------------------------------------------------------------------------------------
-def E2E_features_2_classes_dim_2(filename_data_pos,filename_data_neg,folder_out,has_header=False,has_labels_first_col=True):
 
-    #Classifier = classifier_Bayes.classifier_Bayes()
-    #Classifier = classifier_KNN.classifier_KNN()
-    #Classifier = classifier_Ada.classifier_Ada()
-    #Classifier = classifier_SVM.classifier_SVM()
+
+# ---------------------------------------------------------------------------------------------------------------------
+def E2E_features_2_classes_dim_2(filename_data_pos, filename_data_neg, folder_out, has_header=False,
+                                 has_labels_first_col=True):
+    # Classifier = classifier_Bayes.classifier_Bayes()
+    # Classifier = classifier_KNN.classifier_KNN()
+    # Classifier = classifier_Ada.classifier_Ada()
+    # Classifier = classifier_SVM.classifier_SVM()
     Classifier = classifier_RF.classifier_RF()
-    #Classifier = classifier_LM.classifier_LM()
-    #Classifier = classifier_Gauss.classifier_Gauss()
+    # Classifier = classifier_LM.classifier_LM()
+    # Classifier = classifier_Gauss.classifier_Gauss()
 
     ML = tools_ML.tools_ML(Classifier)
 
-    ML.E2E_features_2_classes_dim_2(folder_out, filename_data_pos, filename_data_neg,has_header=has_header,has_labels_first_col=has_labels_first_col)
+    # ML.E2E_features_2_classes_dim_2(folder_out, filename_data_pos, filename_data_neg,has_header=has_header,has_labels_first_col=has_labels_first_col)
 
     return
+
+
 # ----------------------------------------------------------------------------------------------------------------------
-has_header,has_labels_first_col = False, True
-folder_in = 'data/ex_pos_neg_linear/'
-#folder_in = 'data/ex_pos_neg_bayes/'
-#folder_in = 'data/ex_pos_neg_gauss/'
+def E2E_features_2_classes_multi_dim_train_test(filename_train, filename_test, has_header=False,
+                                                has_labels_first_col=True):
+    Classifier = classifier_RF.classifier_RF()
+    ML = tools_ML.tools_ML(Classifier)
+
+    ML.E2E_features_2_classes_multi_dim_train_test(folder_out, filename_train, filename_test, has_header=True,
+                                                   has_labels_first_col=True)
+    return
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# has_header,has_labels_first_col = False, True
+# folder_in = 'data/ex_pos_neg_linear/'
+# folder_in = 'data/ex_pos_neg_bayes/'
+# folder_in = 'data/ex_pos_neg_gauss/'
+# ----------------------------------------------------------------------------------------------------------------------
+has_header, has_labels_first_col = False, True
+folder_in = 'data/ex_pocker/'
+# ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
+    folder_out = './data/output/'
+    #2E_features_2_classes_dim_2(folder_in+'pos.txt', folder_in+'neg.txt',folder_out,has_header,has_labels_first_col)
+    #E2E_features_2_classes_multi_dim_train_test(folder_in+'train3.txt',folder_in+'train3.txt',has_header,has_labels_first_col)
 
-    folder_out = 'data/output/'
-    E2E_features_2_classes_dim_2(folder_in+'pos.txt', folder_in+'neg.txt',folder_out,has_header,has_labels_first_col)
+
+
+
 
 

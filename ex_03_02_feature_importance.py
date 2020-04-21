@@ -5,6 +5,7 @@ from xgboost import XGBClassifier
 from xgboost import plot_importance
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_IO
+import tools_plot
 # ----------------------------------------------------------------------------------------------------------------------
 def example_01():
     dataset = load_wine()
@@ -51,7 +52,7 @@ def example_02():
     Y = numpy.hstack((numpy.full(Pos, 1), numpy.full(Neg, 0)))
 
     fig = plt.figure(figsize=(12, 6))
-    tools_IO.plot_feature_importance(plt.subplot(1, 1, 1), fig, X, Y, header)
+    tools_plot.plot_feature_importance(plt.subplot(1, 1, 1), fig, X, Y, header)
     plt.show()
 
     return
