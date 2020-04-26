@@ -1,11 +1,14 @@
+#http://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/
 # ----------------------------------------------------------------------------------------------------------------------
 import numpy
-from numpy.random import randn
 import matplotlib.pyplot as plt
-import tools_filter
+
+# ----------------------------------------------------------------------------------------------------------------------
+import detector_landmarks
 import generator_TS
+import tools_filter
 import tools_IO
-import sklearn
+import tools_plot
 # ----------------------------------------------------------------------------------------------------------------------
 D = detector_landmarks.detector_landmarks('..//_weights//shape_predictor_68_face_landmarks.dat')
 # ----------------------------------------------------------------------------------------------------------------------
@@ -22,44 +25,36 @@ def example_1D():
 
     tools_IO.save_mat(tools_filter.do_filter_average(S1, 11), filename2)
     tools_IO.save_mat(tools_filter.do_filter_median(S1, 11), filename3)
-    tools_IO.save_mat(tools_filter.do_filter_kalman(S1, 0.2), filename4)
+    tools_IO.save_mat(tools_filter.do_filter_kalman_1D(S1, 0.2), filename4)
 
-    tools_IO.plot_multiple_series(filename0, [filename1, filename2, filename3, filename4])
+    tools_plot.plot_multiple_series(filename0, [filename1, filename2, filename3, filename4])
     plt.show()
     return
 # ----------------------------------------------------------------------------------------------------------------------
-def MAE(S1,S2):
-    return sklearn.metrics.mean_absolute_error(S1,S2)
-# ----------------------------------------------------------------------------------------------------------------------
-def plot_2D_samples(S,labels):
-
-    colors_list = list(('red', 'blue', 'green', 'orange', 'cyan', 'purple', 'black', 'gray', 'pink', 'darkblue'))
-
-    for i in range(len(S)):
-        label = labels[i]
-        XY = S[i]
-        plt.plot(XY[:, 0], XY[:, 1], 'ro', color=colors_list[i%len(colors_list)], alpha=0.4,lw=1, linestyle='--')
-
-    plt.tight_layout()
-    plt.grid()
+def example_1D_02(X):
+    Y = tools_filter.do_filter_kalman_1D(X, noise_level=1, Q=0.001)
+    times = range(len(X))
+    plt.plot(times, X, 'bo',times, Y[:, 0], 'b--')
+    plt.show()
     return
 # ----------------------------------------------------------------------------------------------------------------------
-def example_2D():
-    filename0x = './data/output/original_x.txt'
-    filename0y = './data/output/original_x.txt'
+def example_2D(X):
 
-    G = generator_TS.generator_TS(2, 50)
-    S0x = G.generate_sine(filename0x, 15, 0.00)[:, 0]
-    S0y = G.generate_sine(filename0y, 13, 0.00)[:, 0]
-    S0 = numpy.vstack((S0x, S0y)).T
-
-    S1x = G.generate_sine(filename0x, 15, 0.05)[:, 0]
-    S1y = G.generate_sine(filename0y, 13, 0.05)[:, 0]
-    S1 = numpy.vstack((S1x, S1y)).T
-
-    plot_2D_samples([S0,S1],['original','noise'])
+    plt.figure()
+    Y = tools_filter.do_filter_kalman_2D(X)
+    times = range(X.shape[0])
+    #plt.plot(times, X[:, 0], 'bo',times, X[:, 1], 'ro',times, Y[:, 0], 'b--',times, Y[:, 1], 'r--', )
+    plt.plot(X[:, 0], X[:, 1])
+    plt.plot(Y[:, 0], Y[:, 1])
     plt.show()
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+X = numpy.asarray([(399, 293), (403, 299), (409, 308), (416, 315), (418, 318), (420, 323), (429, 326), (423, 328), (429, 334),
+(431, 337), (433, 342), (434, 352), (434, 349), (433, 350), (431, 350), (430, 349), (428, 347), (427, 345),
+(425, 341), (429, 338), (431, 328), (410, 313), (406, 306), (402, 299), (397, 291), (391, 294), (376, 270),
+(372, 272), (351, 248), (336, 244), (327, 236), (307, 220)])
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    example_1D()
+    example_2D(X)
+
