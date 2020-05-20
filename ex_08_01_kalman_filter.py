@@ -54,7 +54,29 @@ X = numpy.asarray([(399, 293), (403, 299), (409, 308), (416, 315), (418, 318), (
 (425, 341), (429, 338), (431, 328), (410, 313), (406, 306), (402, 299), (397, 291), (391, 294), (376, 270),
 (372, 272), (351, 248), (336, 244), (327, 236), (307, 220)])
 # ----------------------------------------------------------------------------------------------------------------------
+
 if __name__ == '__main__':
 
-    example_2D(X)
+    data = tools_IO.load_mat('./data/ex_kalman/annotation.txt',delim=' ')[1:]
+    filenames = numpy.array(data[:,0],dtype=numpy.str)
+    P1s = numpy.array(data[:,[1,2]],dtype=int)
+    P2s = numpy.array(data[:,[3,4]],dtype=int)
+    IDs = numpy.array(data[:, 5],dtype=int)
+    idx = numpy.where(IDs==0)
+
+    ID = 7
+    X = P1s[IDs==ID,0]
+    Y = P1s[IDs==ID,1]
+
+    X_filtered = tools_filter.do_filter_kalman_1D(X)
+    Y_filtered = tools_filter.do_filter_kalman_1D(Y)
+
+
+    times = range(len(X))
+    plt.plot(times, X, 'bo',times,X_filtered,'b-',times, Y, 'ro',times,Y_filtered,'r-')
+    plt.show()
+
+
+
+
 

@@ -13,7 +13,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
 from playsound import playsound
+# ----------------------------------------------------------------------------------------------------------------------
 import tools_audio
+import tools_plot
 # ----------------------------------------------------------------------------------------------------------------------
 matplotlib.rcParams['toolbar'] = 'None'
 # ----------------------------------------------------------------------------------------------------------------------
@@ -147,9 +149,9 @@ def plot_features_PCA(folder_in, folder_out,has_header=True,has_labels_first_col
 
     fig.subplots_adjust(hspace =0.01)
 
-    tools_IO.plot_2D_scores_multi_Y(plt.subplot(1,1,1),X_TSNE, Y, labels=patterns)
+    tools_plot.plot_2D_features_multi_Y(plt,X_TSNE, Y, labels=patterns)
 
-    plt.tight_layout()
+    #plt.tight_layout()
 
     dict_sound,dict_fs = {},{}
 
@@ -190,7 +192,7 @@ def plot_features_PCA(folder_in, folder_out,has_header=True,has_labels_first_col
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    folder_in  = './data/output_sounds/'
+    folder_in  = './data/ex_wave/'
     folder_out = './data/output/'
     extract_features_from_sound_folder(folder_in,folder_out)
     plot_features_PCA(folder_out,folder_out,has_header=False,has_labels_first_col=True)

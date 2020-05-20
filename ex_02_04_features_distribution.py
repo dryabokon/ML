@@ -3,18 +3,19 @@ import tools_IO
 import tools_ML
 import matplotlib.pyplot as plt
 from scipy import stats
+import tools_plot
 # ----------------------------------------------------------------------------------------------------------------------
 ML = tools_ML.tools_ML(None)
 # ----------------------------------------------------------------------------------------------------------------------
 has_header,has_labels_first_col = True, True
-folder_in = 'data/ex_pos_neg_football6/'
+folder_in = 'data/ex_pos_neg_football/'
 # ----------------------------------------------------------------------------------------------------------------------
 def preprocess_array(X):
     #Y = numpy.array([x for x in X if x>0])
     Y = X
     return Y
 # ----------------------------------------------------------------------------------------------------------------------
-def analyze_pos_neg(filename_data_pos,filename_data_neg,folder_out):
+def analyze_pos_neg_1d(filename_data_pos,filename_data_neg,folder_out):
 
     tools_IO.remove_files(folder_out,create=True)
 
@@ -50,6 +51,38 @@ def analyze_pos_neg(filename_data_pos,filename_data_neg,folder_out):
         f_handle.write("%s %f\n" % (filename_out, st))
         f_handle.close()
         plt.clf()
+
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+def analyze_pos_neg_2d(filename_data_pos,filename_data_neg,folder_out):
+
+    tools_IO.remove_files(folder_out,create=True)
+
+    f_handle = open(folder_out + "descript.ion", "w+")
+    f_handle.close()
+
+    data_pos = tools_IO.load_mat(filename_data_pos, numpy.chararray, '\t')
+    data_neg = tools_IO.load_mat(filename_data_neg, numpy.chararray, '\t')
+    header, first_col, x_pos = ML.preprocess_header(data_pos, has_header, has_labels_first_col)
+    header, first_col, x_neg = ML.preprocess_header(data_neg, has_header, has_labels_first_col)
+
+
+    for i1 in range(len(header)-1):
+        x_p1 = x_pos[:, i1]
+        x_n1 = x_neg[:, i1]
+        for i2 in range(i1+1,len(header)):
+            leg = [header[i1], header[i2]]
+
+            x_p2 = x_pos[:, i2]
+            x_n2 = x_neg[:, i2]
+
+            plt.plot(x_n1,x_n2, 'ro', color='darkgray', alpha=0.4)
+            plt.plot(x_p1,x_p2, 'ro', color='darkred', alpha=0.4)
+            plt.legend(leg, loc='upper left')
+
+            filename_out = '%02d_%02d.png' % (i1,i2)
+            plt.savefig(folder_out + filename_out)
+            plt.clf()
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
@@ -109,9 +142,9 @@ def analyze_train_test(filename_train,filename_test,folder_out):
 if __name__ == '__main__':
 
     folder_out = 'data/output/'
-    filename_data_pos,filename_data_neg = folder_in + 'pos.txt', folder_in + 'neg.txt'
-    filename_train, filename_test = folder_in + 'train.txt', folder_in + 'test.txt'
+    filename_data_pos,filename_data_neg = folder_in + 'elli_good.txt', folder_in + 'elli_bad.txt'
+    analyze_pos_neg_2d(filename_data_pos,filename_data_neg,folder_out)
 
-    analyze_pos_neg(filename_data_pos,filename_data_neg,folder_out)
+    #filename_train, filename_test = folder_in + 'train.txt', folder_in + 'test.txt'
     #analyze_train_test(filename_train,filename_test,folder_out)
 
