@@ -101,19 +101,65 @@ def display_current_sound(filename_in):
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
+def edit_me():
+
+
+    filename_in = 'D://au.mp3'
+    #filename_out = 'D://part1.mp3'
+    #X, fs = librosa.load(filename_in,offset=8,duration=19-8)
+
+    #filename_out = 'D://part2.mp3'
+    #X, fs = librosa.load(filename_in,offset=38,duration=52-38)
+
+    #filename_out = 'D://part3.mp3'
+    #X, fs = librosa.load(filename_in,offset=60+43,duration=51-43)
+
+    #filename_out = 'D://part4.mp3'
+    #X, fs = librosa.load(filename_in,offset=2*60+33,duration=45.5-33)
+
+    #filename_out = 'D://part5.mp3'
+    #X, fs = librosa.load(filename_in,offset=3*60+17,duration=25-17)
+
+    #librosa.output.write_wav(filename_out, X, fs)
+
+    #X, fs = librosa.load('D://part1.mp3')
+    #librosa.output.write_wav('D://part1_trm.mp3', X[:-int(1.5*fs)], fs)
+
+    res = []
+
+
+    x1, fs = librosa.load('D://part1.mp3')
+    x2, fs = librosa.load('D://part2.mp3')
+    x3, fs = librosa.load('D://part3.mp3')
+    x4, fs = librosa.load('D://part4.mp3')
+    x5, fs = librosa.load('D://part5.mp3')
+
+    res.append(numpy.zeros(fs*6,dtype=numpy.float32))
+    res.append(x1[int(fs*0.5):-int(1.5*fs)])
+    res.append(x2)
+    res.append(numpy.zeros(fs * 5, dtype=numpy.float32))
+    res.append(x3)
+    res.append(x4)
+    res.append(numpy.zeros(fs * 6, dtype=numpy.float32))
+    res.append(x5)
+    res = numpy.concatenate(res)
+
+    bg, fs0 = librosa.load('D://bg_v2x.mp3')
+
+    bg[:len(res)] = res*0.9 + bg[:len(res)]*0.1
+    bg[len(res):]*=0.1
+
+    librosa.output.write_wav('D://merged.mp3',bg, fs)
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     #display_current_sound('./data/output/sound.wav')
-    #display_current_sound('./data/ex_wave/440.wav')
+    display_current_sound('./data/ex_wave/440.wav')
     #display_current_sound('./data/ex_wave/440_gen.wav')
-    display_current_sound('./data/ex_wave/clarinet_c6.wav')
+    #display_current_sound('./data/ex_wave/clarinet_c6.wav')
     #display_current_sound('./data/ex_wave/prelude_cmaj.wav')
     #display_current_sound('./data/ex_wave/simple_piano.wav')
 
     #display_current_sound('./data/ex_wave/Sound_20140.mp3')
     #display_current_sound('./data/ex_wave/Sound_21728.mp3')
-
-
-
-
 

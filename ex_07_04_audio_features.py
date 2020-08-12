@@ -151,7 +151,7 @@ def plot_features_PCA(folder_in, folder_out,has_header=True,has_labels_first_col
 
     tools_plot.plot_2D_features_multi_Y(plt,X_TSNE, Y, labels=patterns)
 
-    #plt.tight_layout()
+
 
     dict_sound,dict_fs = {},{}
 
