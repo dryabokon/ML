@@ -39,8 +39,7 @@ class DB_connector(object):
         return
 # ----------------------------------------------------------------------------------------------------------------------
     def get_cursor(self):
-        #conn = pyodbc.connect('DRIVER={SQL Server};SERVER=apiqa.orgweaver.com;DATABASE=Seksjon2;UID=d.ryabokon;PWD=vrw308nrv2tg4')
-        conn = pymssql.connect("apiqa.orgweaver.com", "d.ryabokon", "vrw308nrv2tg4", "Seksjon2")
+        conn = pymssql.connect("apiqa.orgweaver.com", "usr", "pwd", "Seksjon2")
         cursor = conn.cursor()
         return cursor
     # ----------------------------------------------------------------------------------------------------------------------
