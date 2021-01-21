@@ -16,6 +16,17 @@ def ex_regression_plot_df(df, idx_target, idx_num, idx_cat, filename_out):
         plt.savefig(filename_out)
     return
 # ----------------------------------------------------------------------------------------------------------------------
+def ex_regression_plot_YX(Y,X,filename_out):
+    columns = ['Y','X']
+    A = numpy.hstack((Y,X))
+    df = pd.DataFrame(data=A, columns=columns)
+
+    seaborn.lmplot(data=df, x=columns[1], y=columns[0], y_jitter=.02, logistic=True,truncate=False)
+    if filename_out is not None:
+        plt.savefig(filename_out)
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+
 if __name__ == '__main__':
     df = seaborn.load_dataset('titanic')
     ex_regression_plot_df(df, 0, 3, 1, folder_out + 'pairplot.png')

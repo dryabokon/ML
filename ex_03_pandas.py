@@ -165,3 +165,7 @@ if __name__ == '__main__':
     # ex_07_slicing_rows_v2(df_ts)
     ex_09_aggregates(df_meal, 0)
 
+    #df.drop(labels = ['age', 'deck'], axis = 1, inplace = True)
+    # hashing
+    # sex = {'male': 0, 'female': 1}
+    # data['sex'] = data['sex'].map(sex)

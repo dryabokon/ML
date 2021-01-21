@@ -2,18 +2,19 @@
 import pandas as pd
 # ----------------------------------------------------------------------------------------------------------------------
 import classifier_KNN
-import classifier_SVM
+#import classifier_SVM
 import classifier_LM
-#import classifier_DTree
+import classifier_DTree
 # ----------------------------------------------------------------------------------------------------------------------
-C = classifier_SVM.classifier_SVM()
+C = classifier_KNN.classifier_KNN()
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_ML_v2
+import tools_ML_enhanced
 # ----------------------------------------------------------------------------------------------------------------------
 folder_in = './data/ex_datasets/'
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    df = pd.read_csv(folder_in+'dataset_linear.txt', sep='\t')
+    df = pd.read_csv(folder_in+'dataset_moons.txt', sep='\t')
     ML = tools_ML_v2.tools_ML_enhanced(C)
     ML.E2E_train_test_df(df,idx_target=0,idx_columns=[1,2])

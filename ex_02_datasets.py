@@ -11,6 +11,7 @@ dataset_boston = sklearn.datasets.load_boston()
 dataset_diabetes = sklearn.datasets.load_diabetes()
 dataset_moons = sklearn.datasets.make_moons(n_samples=100)
 dataset_circles = sklearn.datasets.make_circles(n_samples=100)
+# ----------------------------------------------------------------------------------------------------------------------
 dataset_linear = [None,None]
 dataset_linear[0],dataset_linear[1] = sklearn.datasets.make_classification(n_features=2, n_redundant=0, n_informative=2,random_state=1, n_clusters_per_class=1)
 dataset_linear[0] = numpy.array(dataset_linear[0]) + 2*numpy.random.uniform(size=dataset_linear[0].shape)
@@ -48,6 +49,9 @@ if __name__ == '__main__':
     df = import_dataset_sklearn(dataset_wine)
     df.to_csv(folder_out + 'dataset_wine.txt', index=False, sep='\t')
 
+    df = import_dataset_sklearn(dataset_diabetes)
+    df.to_csv(folder_out + 'dataset_diabetes.txt', index=False, sep='\t')
+
     df = seaborn.load_dataset('tips')
     df.to_csv(folder_out + 'dataset_tips.txt', index=False, sep='\t')
 
@@ -59,6 +63,8 @@ if __name__ == '__main__':
 
     df = seaborn.load_dataset('titanic')
     df.to_csv(folder_out + 'dataset_titanic.txt', index=False, sep='\t')
+
+
 
 
 

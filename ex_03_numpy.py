@@ -288,3 +288,4 @@ if __name__ == '__main__':
     ex_10_IO_text()
     ex_11_copies()
     ex_12_ravel()
+    #numpy.set_printoptions(precision=3)
