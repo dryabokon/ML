@@ -1,5 +1,7 @@
 import numpy
 import pickle
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_01_create():
     A = numpy.zeros(4)
@@ -134,9 +136,6 @@ def ex_08_order():
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000)))
 
-
-
-
     B_fail = numpy.sort(A, axis=0)
     C_fail = numpy.sort(A, axis=1)
 
@@ -170,8 +169,6 @@ def ex_09_aggregates():
          ('Milk  ', 0, 2000),
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000)))
-
-
 
     AA = A[:, [1, 2]].astype(numpy.int)
 
@@ -247,13 +244,13 @@ def ex_11_copies():
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000)))
 
+
     B = A.copy()
     C = A
+    #
 
     B[0, 0] = 'Orange'  # Updates B
     C[0, 0] = 'Peach'  # Updates both A and C (!!)
-
-
 
     return
 
@@ -267,20 +264,27 @@ def ex_12_ravel():
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000)))
 
-    F1 = numpy.ravel(A)
+    F1 = numpy.ravel(A.copy())
     F2 = A.flatten()
 
     idx_cr = numpy.unravel_index([2, 4, 5], A.shape)
 
     A[idx_cr] = numpy.nan
+    #idx_cr_custom  = numpy.array([[0, 2], [1, 1], [1, 2]])
+    A[idx_cr] = numpy.nan
 
-    #print(A)
+    B = numpy.zeros((2,2))
+    B[0,0] = numpy.nan
+
+    is_nan = numpy.isnan(B)
+    A_has_any_nan = numpy.any(numpy.isnan(B))
+
+    # print(A)
     return
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
-
     ex_01_create()
     ex_02_inspect()
     ex_03_combine()
@@ -295,4 +299,14 @@ if __name__ == '__main__':
     ex_10_IO_text()
     ex_11_copies()
     ex_12_ravel()
+
+    A = numpy.array([[1.00002]])
+    print(A)
+
     numpy.set_printoptions(precision=3)
+    print(A)
+
+
+
+
+

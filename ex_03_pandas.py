@@ -156,14 +156,18 @@ if __name__ == '__main__':
     ex_01_create_data_series()
     df_ts = ex_01_create_data_frame_TS()
     df_meal = ex_01_create_data_frame_meal()
-    # ex_02_inspect_body(df)
-    # ex_02_inspect_header(df)
-    # ex_02_inspect_index(df)
-    # ex_08_order(df)
+
+    #ex_02_inspect_quick(df_meal)
+    #ex_02_inspect_body(df_meal)
+    #ex_02_inspect_header(df_meal)
+    #ex_02_inspect_index(df_meal)
+
+    #ex_08_order(df_meal)
     # ex_07_slicing_columns(df)
     # ex_07_slicing_rows(df)
     # ex_07_slicing_rows_v2(df_ts)
-    ex_09_aggregates(df_meal, 0)
+    #ex_09_aggregates(df_meal, 0)
+    ex_09_interpolate()
 
     #df.drop(labels = ['age', 'deck'], axis = 1, inplace = True)
     # hashing
