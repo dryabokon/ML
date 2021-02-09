@@ -134,6 +134,9 @@ def ex_08_order():
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000)))
 
+
+
+
     B_fail = numpy.sort(A, axis=0)
     C_fail = numpy.sort(A, axis=1)
 
@@ -168,8 +171,11 @@ def ex_09_aggregates():
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000)))
 
+
+
     AA = A[:, [1, 2]].astype(numpy.int)
 
+    A_sum = numpy.sum(AA, axis=0)
     A_sum = numpy.sum(AA, axis=0)
     A_avg = numpy.mean(AA, axis=0)
     A_min = numpy.min(AA, axis=0)
@@ -274,6 +280,7 @@ def ex_12_ravel():
 
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
+
     ex_01_create()
     ex_02_inspect()
     ex_03_combine()
@@ -288,4 +295,4 @@ if __name__ == '__main__':
     ex_10_IO_text()
     ex_11_copies()
     ex_12_ravel()
-    #numpy.set_printoptions(precision=3)
+    numpy.set_printoptions(precision=3)

@@ -28,7 +28,15 @@ def ex_regression_plot_YX(Y,X,filename_out):
 # ----------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
+
     df = seaborn.load_dataset('titanic')
-    ex_regression_plot_df(df, 0, 3, 1, folder_out + 'pairplot.png')
+    #survived (age,pclass)
+    # ex_regression_plot_df(df, 0, 3, 1, folder_out + 'pairplot.png')
+
+    #survived (class, sex)
+    #ex_regression_plot_df(df, 0, 1, 2, folder_out + 'pairplot.png')
+
+    #survived (age, sex)
+    ex_regression_plot_df(df, 0, 3, 2, folder_out + 'pairplot.png')
 
 
