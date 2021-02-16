@@ -2,6 +2,7 @@ import numpy
 import pandas as pd
 import sklearn.datasets
 import seaborn
+from sklearn.datasets import fetch_openml
 # ----------------------------------------------------------------------------------------------------------------------
 folder_out = './data/output/'
 # ----------------------------------------------------------------------------------------------------------------------
@@ -64,7 +65,7 @@ if __name__ == '__main__':
     df = seaborn.load_dataset('titanic')
     df.to_csv(folder_out + 'dataset_titanic.txt', index=False, sep='\t')
 
-
-
-
+    survey = fetch_openml(data_id=534,return_X_y=False)
+    df = pd.DataFrame(data=numpy.hstack((numpy.expand_dims(survey.target, axis=1), survey.data)), columns=['target'] + survey.feature_names)
+    df.to_csv(folder_out + 'dataset_survey.txt', index=False, sep='\t')
 

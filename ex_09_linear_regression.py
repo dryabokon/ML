@@ -3,6 +3,8 @@ import math
 from sklearn import linear_model
 from sklearn.datasets import make_regression
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
+
 # ----------------------------------------------------------------------------------------------------------------------
 import pandas as pd
 # ----------------------------------------------------------------------------------------------------------------------
@@ -38,9 +40,10 @@ if __name__ == '__main__':
     regr = linear_model.LinearRegression()
     regr.fit(X_train, Y_train)
     Y_pred1 = regr.predict(X_test).flatten()
+    print('R2 score = %f\n' % r2_score(Y_pred1, Y_test))
     print('LinReg loss = %f\n'%math.sqrt(((Y_pred1 - Y_test)**2).mean()))
-    a1 = numpy.hstack((regr.coef_.flatten().reshape((1,-1)),numpy.array(regr.intercept_).reshape(1,1)))
 
+    a1 = numpy.hstack((regr.coef_.flatten().reshape((1,-1)),numpy.array(regr.intercept_).reshape(1,1)))
     X1_train = numpy.hstack((X_train,numpy.full((X_train.shape[0],1),1)))
     X1_test  = numpy.hstack((X_test, numpy.full((X_test.shape[0], 1), 1)))
     a2 = numpy.matmul(numpy.linalg.inv(numpy.matmul(X1_train.T,X1_train)),X1_train.T).dot(Y_train).reshape((-1,1))

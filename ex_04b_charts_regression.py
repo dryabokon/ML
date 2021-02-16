@@ -37,6 +37,7 @@ if __name__ == '__main__':
     #ex_regression_plot_df(df, 0, 1, 2, folder_out + 'pairplot.png')
 
     #survived (age, sex)
-    ex_regression_plot_df(df, 0, 3, 2, folder_out + 'pairplot.png')
+    ex_regression_plot_df(df, idx_target=0, idx_num=3, idx_cat=2, filename_out = folder_out + 'regression.png')
+
 
 

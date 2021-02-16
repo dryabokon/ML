@@ -1,3 +1,4 @@
+import cv2
 import numpy
 import pandas as pd
 # ----------------------------------------------------------------------------------------------------------------------
@@ -148,9 +149,13 @@ def ex_09_interpolate():
 
 def ex_10_IO():
     A = pd.read_csv('A.txt', sep='/t').values
+
+
     return
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+folder_out = './data/output/'
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     ex_01_create_data_series()
@@ -167,9 +172,10 @@ if __name__ == '__main__':
     # ex_07_slicing_rows(df)
     # ex_07_slicing_rows_v2(df_ts)
     #ex_09_aggregates(df_meal, 0)
-    ex_09_interpolate()
+    #ex_09_interpolate()
 
     #df.drop(labels = ['age', 'deck'], axis = 1, inplace = True)
     # hashing
     # sex = {'male': 0, 'female': 1}
     # data['sex'] = data['sex'].map(sex)
+    cv2.imwrite(folder_out+'nans.png',255*(df_meal.isnull()).to_numpy())

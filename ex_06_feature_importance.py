@@ -1,11 +1,9 @@
 import numpy
 import pandas as pd
-import seaborn as sns
 from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import f_regression
+from sklearn.feature_selection import f_regression, f_classif
 from sklearn import linear_model
-from sklearn.datasets import make_regression
-from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_DF
 import tools_plot_v2
@@ -23,7 +21,11 @@ def select_features(X, Y):
             X[:, c]+=-min_value
 
     fs.fit(X, Y)
-    return fs.scores_/fs.scores_.sum()
+    xxx = fs.scores_
+    norm = fs.scores_.sum()
+    result =  xxx/norm
+
+    return result
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_feature_imporance_LM(df, idx_target=0):
 
@@ -33,77 +35,86 @@ def ex_feature_imporance_LM(df, idx_target=0):
     columns = df.columns.to_numpy()
     idx = numpy.delete(numpy.arange(0, len(columns)), idx_target)
 
-    feature_names = columns[idx]
     X = df.iloc[:,idx].to_numpy()
     Y = df.iloc[:,idx_target].to_numpy()
 
     f_scores = select_features(X, Y)
     f_scores = f_scores/f_scores.sum()
 
-    idx = numpy.argsort(-f_scores)
-    print('\nscore\tfeature\n--------------')
-    for feature_name,f_score in zip(feature_names[idx], f_scores[idx]):
-        print('%1.2f\t%s'%(f_score,feature_name))
-
-    return
+    return f_scores
 # ----------------------------------------------------------------------------------------------------------------------
-def ex_feature_imporance_LM_v2(df, idx_target=0):
+def ex_feature_imporance_C(df, idx_target=0):
+    #https://scikit-learn.org/stable/auto_examples/inspection/plot_linear_model_coefficient_interpretation.html#sphx-glr-auto-examples-inspection-plot-linear-model-coefficient-interpretation-py
+    df = df.dropna()
+    df = tools_DF.hash_categoricals(df)
+
+    columns = df.columns.to_numpy()
+    idx = numpy.delete(numpy.arange(0, len(columns)), idx_target)
+
+    X = df.iloc[:,idx].to_numpy()
+    Y = df.iloc[:,idx_target].to_numpy()
+    ridgereg = linear_model.Ridge(alpha=0.001, normalize=True)
+    ridgereg.fit(X, Y)
+
+    values = numpy.abs(ridgereg.coef_ * X.std(axis=0))
+    return  values
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_feature_imporance_R2(df, idx_target=0):
 
     df = df.dropna()
     df = tools_DF.hash_categoricals(df)
-    columns = df.columns.to_numpy()
     regr = linear_model.LinearRegression()
-    idx = numpy.delete(numpy.arange(0, df.shape[1]), idx_target)
-    feature_names = columns[idx]
-    X = df.iloc[:, idx].to_numpy()
     Y = df.iloc[:, idx_target].to_numpy()
-    regr.fit(X, Y)
-    A = regr.coef_.flatten()
-    stdevs = numpy.array([df[c].std() for c in columns[idx]])
 
-    values = numpy.abs(A)*stdevs
-    values = values/values.sum()
+    columns = df.columns.to_numpy()
+    idx = numpy.delete(numpy.arange(0, len(columns)), idx_target)
 
-    idx = numpy.argsort(-values)
-    print('\nscore\tfeature\n--------------')
-    for feature_name, f_score in zip(feature_names[idx], values[idx]):
-        print('%1.2f\t%s' % (f_score, feature_name))
+    X = df.iloc[:, idx].to_numpy()
+
+    R2s = []
+    for i in range(X.shape[1]):
+        idx = numpy.delete(numpy.arange(0, X.shape[1]), i)
+        x = X[:,idx]
+        regr.fit(x, Y)
+        Y_pred = regr.predict(x).flatten()
+        R2s.append(100*r2_score(Y, Y_pred))
+
+    return numpy.array(R2s)
+# ----------------------------------------------------------------------------------------------------------------------
+def evaluate_feature_imporance(df,idx_target):
+    columns = df.columns.to_numpy()[numpy.delete(numpy.arange(0, df.shape[1]), idx_target)]
+    S1 = ex_feature_imporance_LM(df, idx_target)
+    S2 = ex_feature_imporance_R2(df, idx_target)
+    S3 = ex_feature_imporance_C(df, idx_target)
+
+    idx = numpy.argsort(-S1)
+    print('\nscore\texclR2\tC     \tfeature\n-------------------------')
+    for feature_name, s1, s2, s3 in zip(columns[idx], S1[idx], S2[idx], S3[idx]):
+        print('%1.2f\t%1.2f\t%1.2f\t%s' % (s1, s2, s3, feature_name))
+    return
+
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_titanic():
+
+    df,idx_target = pd.read_csv(folder_in + 'dataset_titanic.txt', delimiter='\t'),0
+    df.drop(labels = ['alive'], axis = 1, inplace = True)
+    evaluate_feature_imporance(df, idx_target)
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
-def ex_feature_importance_df(df,idx_target):
+def ex_houses():
 
-    df=tools_DF.hash_categoricals(df)
-
-    X,Y = tools_DF.df_to_XY(df,idx_target,keep_categoirical=False)
-    feature_names = tools_DF.get_names(df,idx_target,keep_categoirical=False)
-    tools_plot_v2.plot_feature_importance_LM(X, Y, feature_names, filename_out=folder_out + 'FI_LM.png')
-    tools_plot_v2.plot_feature_importance_XGB(X, Y, feature_names, filename_out = folder_out + 'FI_XGB.png')
-
+    df,idx_target = pd.read_csv(folder_in + 'dataset_kc_house_data.csv', delimiter=','),2
+    evaluate_feature_imporance(df, idx_target)
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
-def ex_feature_imporance_carts(df, idx_target=0):
-
-    df = df.dropna()
-    df = tools_DF.hash_categoricals(df)
-    columns = df.columns.to_numpy()
-    regr = linear_model.LinearRegression()
-    idx = numpy.delete(numpy.arange(0, df.shape[1]), idx_target)
-    feature_names = columns[idx]
-    X = df.iloc[:, idx].to_numpy()
-    Y = df.iloc[:, idx_target].to_numpy()
-
-    for feature_name,x in zip(feature_names,X.T):
-        tools_plot_v2.plot_regression_YX(Y, x, logistic=False, filename_out=folder_out+'%s.png'%feature_name)
-
+def ex_fuel():
+    df,idx_target = pd.read_csv(folder_in + 'dataset_fuel.csv', delimiter='\t'),0
+    df.drop(labels=['name'], axis=1, inplace=True)
+    evaluate_feature_imporance(df, idx_target)
     return
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    #df,idx_target = pd.read_csv(folder_in + 'dataset_kc_house_data.csv', delimiter=','),2
-    df,idx_target = pd.read_csv(folder_in + 'dataset_titanic.txt', delimiter='\t'),0
-
-    ex_feature_imporance_LM(df, idx_target)
-    #ex_feature_imporance_carts(df, idx_target)
-    ex_feature_importance_df(df,idx_target)
+    ex_houses()

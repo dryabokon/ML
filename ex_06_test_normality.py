@@ -2,12 +2,14 @@
 # ----------------------------------------------------------------------------------------------------------------------
 import numpy
 import matplotlib.pyplot as plt
-from scipy.stats import normaltest, probplot
+from scipy.stats import normaltest, probplot, kstest
 import statsmodels.api as sm
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_normality_test(X):
 
-    value_stat, p_value = normaltest(X)
+    #value_stat, p_value = normaltest(X)
+    value_stat, p_value = kstest(X, 'norm')
+
     a_significance_level = 0.05
 
     if p_value <= a_significance_level:
