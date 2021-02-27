@@ -1,7 +1,7 @@
 import numpy
 import pandas as pd
 from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import f_regression, f_classif
+from sklearn.feature_selection import f_regression, f_classif, mutual_info_classif
 from sklearn import linear_model
 from sklearn.metrics import r2_score
 # ----------------------------------------------------------------------------------------------------------------------
@@ -12,8 +12,9 @@ folder_in = './data/ex_datasets/'
 folder_out = './data/output/'
 # ----------------------------------------------------------------------------------------------------------------------
 def select_features(X, Y):
-
-    fs = SelectKBest(score_func=f_regression, k='all')
+    #score_func = mutual_info_classif
+    score_func = f_regression
+    fs = SelectKBest(score_func=score_func, k='all')
 
     for c in range(X.shape[1]):
         min_value = X[:,c].min()
@@ -27,7 +28,7 @@ def select_features(X, Y):
 
     return result
 # ----------------------------------------------------------------------------------------------------------------------
-def ex_feature_imporance_LM(df, idx_target=0):
+def ex_feature_imporance_F_score(df, idx_target=0):
 
     df = df.dropna()
     df = tools_DF.hash_categoricals(df)
@@ -83,11 +84,11 @@ def ex_feature_imporance_R2(df, idx_target=0):
 # ----------------------------------------------------------------------------------------------------------------------
 def evaluate_feature_imporance(df,idx_target):
     columns = df.columns.to_numpy()[numpy.delete(numpy.arange(0, df.shape[1]), idx_target)]
-    S1 = ex_feature_imporance_LM(df, idx_target)
+    S1 = ex_feature_imporance_F_score(df, idx_target)
     S2 = ex_feature_imporance_R2(df, idx_target)
     S3 = ex_feature_imporance_C(df, idx_target)
 
-    idx = numpy.argsort(-S1)
+    idx = numpy.argsort(S2)
     print('\nscore\texclR2\tC     \tfeature\n-------------------------')
     for feature_name, s1, s2, s3 in zip(columns[idx], S1[idx], S2[idx], S3[idx]):
         print('%1.2f\t%1.2f\t%1.2f\t%s' % (s1, s2, s3, feature_name))
@@ -117,4 +118,4 @@ def ex_fuel():
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    ex_houses()
+    ex_fuel()

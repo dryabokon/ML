@@ -6,6 +6,7 @@ import matplotlib.cm as cm
 folder_out = './data/output/'
 # ----------------------------------------------------------------------------------------------------------------------
 import classifier_KNN
+import classifier_LM
 import tools_DF
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_01_ugly():
@@ -49,7 +50,8 @@ def ex_density():
     X0 = X[Y <= 0]
     X1 = X[Y > 0]
 
-    Classifier = classifier_KNN.classifier_KNN()
+    #Classifier = classifier_KNN.classifier_KNN()
+    Classifier = classifier_LM.classifier_LM()
 
     Classifier.learn(X, Y)
 

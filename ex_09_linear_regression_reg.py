@@ -29,7 +29,7 @@ def prepare_data():
 if __name__ == '__main__':
     X_train, X_test, y_train, y_test = prepare_data()
 
-
+    print('Method  \tTrain\tTest\n'+'-'*30)
     linreg = LinearRegression()
     linreg.fit(X_train, y_train)
     print('R2  linrg:\t%1.4f\t%1.4f'%(r2_score(y_train, linreg.predict(X_train)),r2_score(y_test, linreg.predict(X_test))))

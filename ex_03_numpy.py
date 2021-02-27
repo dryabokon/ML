@@ -71,9 +71,9 @@ def ex_03_combine():
 
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_04_insert():
-    A = numpy.full((2, 3), 1)
-    B = numpy.full((5, 3), 3)
-    C = numpy.full((2, 4), 2)
+    A = numpy.full((2, 3), 'a')
+    B = numpy.full((5, 3), 'b')
+    C = numpy.full((2, 4), 'c')
 
     K = numpy.insert(A, [2], B, axis=0)
     L = numpy.insert(A, [1], C, axis=1)
@@ -168,8 +168,10 @@ def ex_09_aggregates():
          ('Lemon ', 0, 0000),
          ('Milk  ', 0, 2000),
          ('Banana', 9, 3000),
-         ('Coffee', 7, 6000)))
+         ('Coffee', 7, 6000))).astype(numpy.chararray)
 
+    #AA = A.copy()
+    #AA = A[:, [1, 2]].astype(numpy.chararray)
     AA = A[:, [1, 2]].astype(numpy.int)
 
     A_sum = numpy.sum(AA, axis=0)
@@ -259,7 +261,7 @@ def ex_11_copies():
 def ex_12_ravel():
     A = numpy.array(
         (('Apple ', 2, 4000),
-         ('Lemon ', 3, 1000),
+         ('Lemon ', 3, numpy.nan),
          ('Milk  ', 7, 2000),
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000)))
@@ -273,16 +275,27 @@ def ex_12_ravel():
     #idx_cr_custom  = numpy.array([[0, 2], [1, 1], [1, 2]])
     A[idx_cr] = numpy.nan
 
-    B = numpy.zeros((2,2))
-    B[0,0] = numpy.nan
-
-    is_nan = numpy.isnan(B)
-    A_has_any_nan = numpy.any(numpy.isnan(B))
-
     # print(A)
     return
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_13_printoptions():
+    A = numpy.array([[1.00002]])
+    print(A)
+
+    numpy.set_printoptions(precision=3)
+    print(A)
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_14_nan():
+    A = numpy.zeros((2, 2))
+    A[0, 0] = numpy.nan
+
+    mask_is_nan = numpy.isnan(A)
+    A_has_any_nan = numpy.any(numpy.isnan(A))
+
+    return
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     ex_01_create()
@@ -299,12 +312,9 @@ if __name__ == '__main__':
     ex_10_IO_text()
     ex_11_copies()
     ex_12_ravel()
+    ex_13_printoptions()
 
-    A = numpy.array([[1.00002]])
-    print(A)
 
-    numpy.set_printoptions(precision=3)
-    print(A)
 
 
 

@@ -9,7 +9,7 @@ gapminder = px.data.gapminder()
 fig_gapminder = px.scatter(gapminder.query("year==2007"), x="gdpPercap", y="lifeExp", size="pop", color="continent",hover_name="country", log_x=True, size_max=60)
 # ----------------------------------------------------------------------------------------------------------------------
 app = dash.Dash()
-app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
+#app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 # ----------------------------------------------------------------------------------------------------------------------
 app.layout = html.Div([
 
@@ -26,7 +26,7 @@ app.layout = html.Div([
             }
     ),
 
-    html.Hr(),
+    #html.Hr(),
     html.Div(id='res1'),
 
 ], className='container')

@@ -102,5 +102,5 @@ def ex_coin():
 if __name__ == '__main__':
 
 
-    #ex_coin()
-    ex_dice()
+    ex_coin()
+    #ex_dice()

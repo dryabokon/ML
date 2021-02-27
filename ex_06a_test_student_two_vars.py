@@ -2,7 +2,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 import numpy
 import matplotlib.pyplot as plt
-from scipy.stats import norm, ttest_ind, ttest_1samp, t
+from scipy.stats import ttest_ind, t
+# ----------------------------------------------------------------------------------------------------------------------
+folder_out = './data/output/'
 # ----------------------------------------------------------------------------------------------------------------------
 def plot_t_stats(stat_value,deg_of_freedom,a_significance_level=0.05):
 
@@ -23,15 +25,12 @@ def plot_t_stats(stat_value,deg_of_freedom,a_significance_level=0.05):
 
     plt.plot(stat_value,0,marker)
     plt.tight_layout()
-    plt.show()
+    plt.savefig(folder_out+'T_stat_two_vars.png')
     return
 # ----------------------------------------------------------------------------------------------------------------------
-def is_fit_by_p_value(X,expexted_mean,a_significance_level=0.05,deg_of_freedom = None):
+def is_fit_by_p_value(X1_obs, X2_obs,a_significance_level=0.05):
 
-    t_stat, p_value = ttest_1samp(X, expexted_mean)
-    if deg_of_freedom is None:
-        deg_of_freedom = len(X) - 1
-
+    t_stat, p_value = ttest_ind(X1_obs, X2_obs, equal_var=False)
 
     if p_value <= a_significance_level:
         print("p value <= significance_level")
@@ -45,11 +44,16 @@ def is_fit_by_p_value(X,expexted_mean,a_significance_level=0.05,deg_of_freedom =
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
-def is_fit_by_critical_value(X,expexted_mean,a_significance_level=0.05,deg_of_freedom = None):
+def is_fit_by_critical_value(X1_obs, X2_obs,a_significance_level=0.05,deg_of_freedom = None):
 
-    t_stat, p_value = ttest_1samp(X, expexted_mean)
+    t_stat, p_value = ttest_ind(X1_obs, X2_obs, equal_var=False)
     if deg_of_freedom is None:
-        deg_of_freedom = len(X) - 1
+        m, n = len(X1_obs), len(X2_obs)
+        sx2 = ((X1_obs - numpy.mean(X1_obs)) ** 2).sum() / (m - 1)
+        sy2 = ((X2_obs - numpy.mean(X2_obs)) ** 2).sum() / (n - 1)
+        s2 = sx2 / m + sy2 / n
+        deg_of_freedom = s2 ** 2 / (sx2 ** 2 / ((m - 1) * m ** 2) + sy2 ** 2 / ((n - 1) * n ** 2))
+
     critical_value = t.ppf(1-a_significance_level/2, deg_of_freedom)
 
     if t_stat< critical_value:
@@ -65,21 +69,28 @@ def is_fit_by_critical_value(X,expexted_mean,a_significance_level=0.05,deg_of_fr
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
-def analyze_experiment(X_obs,expexted_mean):
+def analyze_experiment(X1_obs,X2_obs):
 
-    deg_of_freedom = len(X_obs) - 1
     a_significance_level = 0.05
+    m,n = len(X1_obs),len(X2_obs)
+    sx2 = ((X1_obs-numpy.mean(X1_obs))**2).sum()/(m-1)
+    sy2 = ((X2_obs-numpy.mean(X2_obs))**2).sum()/(n-1)
+    s2 = sx2/m + sy2/n
+    deg_of_freedom0 = s2**2/(sx2**2/((m-1)*m**2)+sy2**2/((n-1)*n**2))
+    deg_of_freedom = m+n-2
 
-    stat_value, p_value = ttest_1samp(X_obs, expexted_mean)
-    is_fit_by_critical_value(X_obs, expexted_mean,a_significance_level)
-    is_fit_by_p_value(X_obs, expexted_mean,a_significance_level)
+    stat_value, p_value = ttest_ind(X1_obs, X2_obs, equal_var=False)
+
+    is_fit_by_p_value(X1_obs, X2_obs, a_significance_level)
+    is_fit_by_critical_value(X1_obs, X2_obs,a_significance_level,deg_of_freedom)
     plot_t_stats(stat_value, deg_of_freedom, a_significance_level)
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_coin():
-    X_obs = numpy.array([0, 1, 1, 1, 1, 1, 1, 0])
-    analyze_experiment(X_obs, 0.5)
+    X1_obs = numpy.array([0, 1, 1, 1, 1, 1, 1, 1])
+    X2_obs = numpy.array([0, 0, 0, 1, 1, 1,0, 0, 0, 1, 1, 1,0, 0, 0, 1, 1, 1])
+    analyze_experiment(X1_obs, X2_obs)
     return
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
