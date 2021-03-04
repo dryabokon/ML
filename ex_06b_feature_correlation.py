@@ -2,13 +2,10 @@ import numpy
 import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
-import statsmodels as sm
 from statsmodels.regression.linear_model import OLS
 from statsmodels.stats.outliers_influence import variance_inflation_factor
-from statsmodels.tools.tools import add_constant
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_DF
-import tools_plot_v2
 # ----------------------------------------------------------------------------------------------------------------------
 folder_in = './data/ex_datasets/'
 folder_out = './data/output/'

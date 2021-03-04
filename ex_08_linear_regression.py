@@ -12,6 +12,8 @@ import tools_plot_v2
 folder_in = './data/ex_datasets/'
 folder_out = './data/output/'
 # ----------------------------------------------------------------------------------------------------------------------
+P = tools_plot_v2.Plotter(folder_out)
+# ----------------------------------------------------------------------------------------------------------------------
 def get_data_v1(filename_in,idx_target=0):
     df = pd.read_csv(filename_in, sep='\t')
 
@@ -44,6 +46,8 @@ def ex_regression_out_of_box(X_train, Y_train, X_test, Y_test):
     r2a_train = r2_score(Y_train_pred, Y_train)
     r2a_test = r2_score(Y_test_pred, Y_test)
 
+    P.plot_fact_predict(Y_test, Y_test_pred, filename_out='P.png')
+
     print('Method  \tTrain\tTest\n' + '-' * 30)
     print('MSE linrg:\t%1.4f\t%1.4f' % (math.sqrt(((Y_train - Y_train_pred) ** 2).mean()),math.sqrt(((Y_test - Y_test_pred) ** 2).mean())))
     print('R2  linrg:\t%1.4f\t%1.4f' % (r2a_train,r2a_test))
@@ -72,7 +76,6 @@ def ex_regression_in_house(X_train, Y_train, X_test, Y_test):
 if __name__ == '__main__':
 
     X_train, Y_train, X_test, Y_test = get_data_v3()
-    #tools_plot_v2.plot_fact_predict(Y_test, Y_test_pred_box, filename_out=folder_out + 'P.png')
 
     ex_regression_out_of_box(X_train, Y_train, X_test, Y_test)
     ex_regression_in_house  (X_train, Y_train, X_test, Y_test)

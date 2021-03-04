@@ -1,12 +1,15 @@
 import numpy
 import seaborn
 import matplotlib.pyplot as plt
-import squarify
 import pandas as pd
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_draw_numpy
+import tools_plot_v2
 # ----------------------------------------------------------------------------------------------------------------------
+folder_in = './data/ex_datasets/'
 folder_out = './data/output/'
+# ----------------------------------------------------------------------------------------------------------------------
+P = tools_plot_v2.Plotter(folder_out,dark_mode=True)
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_squarify_plot(df,idx_weights,idx_labels):
 
@@ -17,16 +20,7 @@ def ex_squarify_plot(df,idx_weights,idx_labels):
     weights = df_agg.loc[:, col_weights].to_numpy()
     labels = df_agg.index.to_numpy()
 
-    colors2 = (tools_draw_numpy.get_colors(1+len(labels),colormap = 'tab20',alpha_blend=0.25,shuffle=True)/255)[1:]
-    colors2 = numpy.hstack((colors2,numpy.full((len(labels),1),1)))
-
-
-    figure_squarify = plt.figure(figsize=(12, 4))
-    squarify.plot(sizes=weights, label=labels, color=colors2)
-    plt.axis('off')
-    plt.tight_layout()
-    plt.savefig(folder_out + 'squarify.png')
-
+    P.plot_squarify(weights,labels,'squarify.png')
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_pie_plot(df,idx_weights,idx_labels):
@@ -48,8 +42,6 @@ def ex_pie_plot(df,idx_weights,idx_labels):
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
-folder_in = './data/ex_datasets/'
-# ----------------------------------------------------------------------------------------------------------------------
 def ex_users():
     df = pd.read_csv(folder_in + 'users.csv', delimiter=',')
     df['user_id'] = 1
@@ -64,7 +56,7 @@ def ex_flights():
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_ML_areas():
-    df = pd.read_csv(folder_in + 'ML_areas.txt', delimiter=',')
+    df = pd.read_csv(folder_in + 'ML_areas.csv', delimiter=',')
     ex_squarify_plot(df, idx_weights=0, idx_labels=1)
     ex_pie_plot(df, idx_weights=0, idx_labels=1)
     return

@@ -6,7 +6,6 @@ from sklearn import linear_model
 from sklearn.metrics import r2_score
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_DF
-import tools_plot_v2
 # ----------------------------------------------------------------------------------------------------------------------
 folder_in = './data/ex_datasets/'
 folder_out = './data/output/'

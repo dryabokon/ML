@@ -92,9 +92,21 @@ def ex_02_inspect_index(df):
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def ex_remove(df):
+def ex_03_remove(df):
     df.drop(labels=['alive'], axis=1, inplace=True)
     return df
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_04_display_precision():
+    A = numpy.array([[1.00002]])
+    df = pd.DataFrame(A)
+    print(df)
+    print()
+
+    pd.set_option("display.precision", 2)
+    print(df)
+
+
+    return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_07_slicing_columns(df):
     df_sliced1 = df[['Product', '#']]
@@ -236,6 +248,7 @@ if __name__ == '__main__':
     # ex_02_inspect_columns(df_meal)
     # ex_02_inspect_index(df_ts)
 
+    ex_04_display_precision()
 
     #ex_07_slicing_columns(df_meal)
     #ex_07_slicing_rows(df_meal)
