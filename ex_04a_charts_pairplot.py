@@ -3,12 +3,11 @@ import pandas as pd
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_plot_v2
 import tools_IO
-import tools_DF
 # ----------------------------------------------------------------------------------------------------------------------
 folder_in = './data/ex_datasets/'
 folder_out = './data/output/'
 # ----------------------------------------------------------------------------------------------------------------------
-P = tools_plot_v2.Plotter(folder_out)
+P = tools_plot_v2.Plotter(folder_out,dark_mode=True)
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_heart():
     df = pd.read_csv(folder_in + 'dataset_heart.csv', delimiter=',')
@@ -26,17 +25,20 @@ def ex_titatic():
     # survived
     idx_target = 0
 
-    #P.pairplots_df(df, idx_target)
-    #P.pairplots_df_v2(df, idx_target, add_noise=False)
-    P.pairplots_df_v2(df, idx_target, add_noise=True)
+    #P.jointplots_df(df, idx_target)
+    #P.pairplots_df(df, idx_target, cumul_mode=True)
+    P.pairplots_df(df, idx_target, add_noise=True)
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     tools_IO.remove_files(folder_out,create=True)
-
     ex_titatic()
+
+
+
+
 
 
 

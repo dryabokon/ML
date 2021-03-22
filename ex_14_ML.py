@@ -2,12 +2,12 @@ import numpy
 import pandas as pd
 from sklearn.datasets import make_regression
 # ----------------------------------------------------------------------------------------------------------------------
-import classifier_KNN
-#import classifier_SVM
-import classifier_LM
-import classifier_DTree
-import classifier_RF
-import classifier_Ada
+from classifier import classifier_KNN
+from classifier import classifier_SVM
+from classifier import classifier_LM
+from classifier import classifier_DTree
+from classifier import classifier_RF
+from classifier import classifier_Ada
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_ML_v2
 import tools_plot_v2
@@ -18,14 +18,14 @@ folder_out = './data/output/'
 def ex_moon():
     C = classifier_KNN.classifier_KNN()
     df,target = pd.read_csv(folder_in+'dataset_moons.csv', sep='\t'),0
-    ML = tools_ML_v2.tools_ML_enhanced(C)
+    ML = tools_ML_v2.ML(C)
     ML.E2E_train_test_df(df,idx_target=target,idx_columns=[1,2])
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_heart():
     C = classifier_KNN.classifier_KNN()
     df,target = pd.read_csv(folder_in+'dataset_heart.csv', sep=','),-1
-    ML = tools_ML_v2.tools_ML_enhanced(C)
+    ML = tools_ML_v2.ML(C)
     ML.E2E_train_test_df(df,idx_target=target)
     return
 # ----------------------------------------------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ def ex_titanic():
     df,idx_target = pd.read_csv(folder_in+'dataset_titanic.csv', sep='\t'),0
     df.drop(labels=['alive', 'deck'], axis=1, inplace=True)
 
-    ML = tools_ML_v2.tools_ML_enhanced(C)
+    ML = tools_ML_v2.ML(C)
     ML.E2E_train_test_df(df,idx_target=idx_target)
     P.pairplots_df(df, idx_target=idx_target)
 
@@ -54,7 +54,7 @@ def ex_random():
     C = classifier_LM.classifier_LM()
     P = tools_plot_v2.Plotter(folder_out)
     df = pd.DataFrame(data=(numpy.hstack((Y.reshape((-1, 1)), X))),columns=['target'] + ['%d' % c for c in range(X.shape[1])])
-    ML = tools_ML_v2.tools_ML_enhanced(C,folder_out)
+    ML = tools_ML_v2.ML(C, folder_out)
     ML.E2E_train_test_df(df,idx_target=0)
     P.pairplots_df(df, idx_target=0)
 

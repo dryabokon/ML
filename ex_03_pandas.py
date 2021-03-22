@@ -1,3 +1,4 @@
+import datetime
 import cv2
 import numpy
 import pandas as pd
@@ -47,6 +48,15 @@ def ex_01_create_data_frame_meal():
 
     return df
 
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_01_create_data_frame_v2():
+    df = pd.DataFrame({
+        'a': [1, 1, 1],
+        'b': [2, 2, 2],
+        'c': [0, 1, 2],
+    })
+
+    return df
 
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_02_inspect_quick(df):
@@ -95,6 +105,20 @@ def ex_02_inspect_index(df):
 def ex_03_remove(df):
     df.drop(labels=['alive'], axis=1, inplace=True)
     return df
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_04_append(df):
+    idx_target = 0
+    c_new = 5
+
+    M = numpy.full((c_new,df.shape[1]),numpy.nan)
+    M[:,idx_target] = numpy.linspace(0,c_new-1,c_new)
+    df2 = pd.DataFrame(M,columns=df.columns)
+    print(df)
+    print('-'*10)
+    df = df.append(df2,ignore_index=True)
+
+    print(df)
+    return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_04_display_precision():
     A = numpy.array([[1.00002]])
@@ -236,23 +260,101 @@ def ex_14_hash_categoricasl(df):
     print(df.head())
     return
 # ----------------------------------------------------------------------------------------------------------------------
+def ex_concat():
+    delta = datetime.timedelta(minutes=0, seconds=1)
+    start = datetime.datetime.strptime('2020-11-26 12:10:35', "%Y-%m-%d %H:%M:%S")
+    idx1 = [start + delta * t for t in [0, 1, 2, 3]]
+    idx4 = [start + delta * t for t in [2, 3, 6, 7]]
+
+    df1 = pd.DataFrame(
+    {
+    "A": ["A0", "A1", "A2", "A3"],
+    "B": ["B0", "B1", "B2", "B3"],
+    "C": ["C0", "C1", "C2", "C3"],
+    "D": ["D0", "D1", "D2", "D3"],
+    },
+    index = idx1)
+
+    df4 = pd.DataFrame(
+        {
+        "B": ["B2", "B3", "B6", "B7"],
+        "D": ["D2", "D3", "D6", "D7"],
+        "F": ["F2", "F3", "F6", "F7"],
+        },index = idx4)
+
+    result = pd.concat([df1, df4], axis=1)
+
+    print(result)
+
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_join():
+
+    df1 = pd.DataFrame(
+    {
+    "A": ["A0", "A1", "A2"],
+    "B": ["B0", "B1", "B2"],
+    },
+    index = [0,1,2])
+
+    df2 = pd.DataFrame(
+        {
+        "B": ["B1", "B2", "B3"],
+        "C": ["C1", "C2", "C3"],
+        },index = [1,2,3])
+
+
+    print(df1)
+    print(df2)
+    print()
+
+    print('outer')
+    a1, a2 = df1.align(df2, join='outer', axis=1)
+    print(a1)
+    print(a2)
+    print()
+
+    print('inner')
+    a1, a2 = df1.align(df2, join='inner', axis=1)
+    print(a1)
+    print(a2)
+    print()
+
+    print('left')
+    a1, a2 = df1.align(df2, join='left', axis=1)
+    print(a1)
+    print(a2)
+    print()
+
+    print('right')
+    a1, a2 = df1.align(df2, join='right', axis=1)
+    print(a1)
+    print(a2)
+    print()
+
+    # xx = pd.concat([df1, df2], axis=1).iloc[:,df1.shape[1]:]
+    # print(xx)
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+
 if __name__ == '__main__':
     ex_01_create_data_series()
     df_ts = ex_01_create_data_frame_TS()
     df_meal = ex_01_create_data_frame_meal()
     df_titanic = pd.read_csv(folder_in + 'dataset_titanic.csv', delimiter='\t')
 
-    #ex_02_inspect_quick(df_meal)
+    # ex_02_inspect_quick(df_meal)
     # ex_02_inspect_body(df_meal)
     # ex_02_inspect_body_no_index(df_meal)
     # ex_02_inspect_columns(df_meal)
     # ex_02_inspect_index(df_ts)
 
-    ex_04_display_precision()
+    # ex_04_append(df_ts)
+    # ex_04_display_precision()
 
-    #ex_07_slicing_columns(df_meal)
-    #ex_07_slicing_rows(df_meal)
-    #ex_07_slicing_rows_v2(df_ts)
+    # ex_07_slicing_columns(df_meal)
+    # ex_07_slicing_rows(df_meal)
+    # ex_07_slicing_rows_v2(df_ts)
 
     # ex_08_order(df_meal)
     # ex_09_aggregates(df_meal, 0)
@@ -263,9 +365,8 @@ if __name__ == '__main__':
     # ex_14_hash(df_titanic)
     # ex_14_hash_categoricasl(df_titanic)
 
-
-
-
+    # ex_concat()
+    ex_join()
 
 
 

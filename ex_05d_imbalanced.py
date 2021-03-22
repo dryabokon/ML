@@ -1,14 +1,16 @@
+import seaborn as sns
 import numpy
 import pandas as pd
 from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score
 from sklearn.datasets import make_regression, make_classification
+from matplotlib import colors
 #from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
 from imblearn.pipeline import Pipeline
 # ----------------------------------------------------------------------------------------------------------------------
-import classifier_LM
+from classifier import classifier_LM
 import tools_ML_v2
 import tools_plot_v2
 # ----------------------------------------------------------------------------------------------------------------------
@@ -20,10 +22,15 @@ P = tools_plot_v2.Plotter(folder_out)
 def get_SMOTE(X, Y,do_debug=False):
     X_Sampled, Y_Sampled = SMOTE().fit_resample(X, Y)
     if do_debug:
-        x_range = numpy.array([X[:, 0].min(), X[:, 0].max()])
-        y_range = numpy.array([X[:, 1].min(), X[:, 1].max()])
-        P.plot_2D_features_multi_Y(X, Y, x_range=x_range,y_range=y_range,filename_out='original.png')
-        P.plot_2D_features_multi_Y(X_Sampled, Y_Sampled,x_range=x_range,y_range=y_range, filename_out='SMOTE.png')
+        x_range = numpy.array([X_Sampled[:, 0].min(), X_Sampled[:, 0].max()])
+        y_range = numpy.array([X_Sampled[:, 1].min(), X_Sampled[:, 1].max()])
+        df_sampled = pd.DataFrame(numpy.concatenate((Y_Sampled.reshape(-1, 1), X_Sampled), axis=1), columns=['Y', 'x0', 'x1'])
+        df         = pd.DataFrame(numpy.concatenate((Y.reshape(-1, 1), X), axis=1),columns=['Y', 'x0', 'x1'])
+
+        customPalette = ['#808080', '#C00000']
+
+        P.plot_2D_features_v3(df, x_range=x_range,y_range=y_range,palette=customPalette,transparency=0.75,figsize=(6,4),filename_out='original.png')
+        P.plot_2D_features_v3(df_sampled, x_range=x_range,y_range=y_range,palette=customPalette,transparency=0.75,figsize=(6,4), filename_out='SMOTE.png')
     return X_Sampled, Y_Sampled
 # ----------------------------------------------------------------------------------------------------------------------
 def get_SMOTE_UnderSampler(X, Y,do_debug=False):
@@ -32,9 +39,11 @@ def get_SMOTE_UnderSampler(X, Y,do_debug=False):
     if do_debug:
         x_range = numpy.array([X[:, 0].min(), X[:, 0].max()])
         y_range = numpy.array([X[:, 1].min(), X[:, 1].max()])
-
-        P.plot_2D_features_multi_Y(X, Y, x_range=x_range,y_range=y_range,filename_out='original.png')
-        P.plot_2D_features_multi_Y(X_Sampled, Y_Sampled, x_range=x_range,y_range=y_range,filename_out='SMOTE_UnderSampler.png')
+        df_sampled = pd.DataFrame(numpy.concatenate((Y_Sampled.reshape(-1, 1), X_Sampled), axis=1), columns=['Y', 'x0', 'x1'])
+        df         = pd.DataFrame(numpy.concatenate((Y.reshape(-1, 1), X), axis=1),columns=['Y', 'x0', 'x1'])
+        customPalette = ['#808080', '#C00000']
+        P.plot_2D_features_v3(df, x_range=x_range,y_range=y_range,palette=customPalette,transparency=0.5,figsize=(6,4),filename_out='original.png')
+        P.plot_2D_features_v3(df_sampled, x_range=x_range,y_range=y_range,palette=customPalette,transparency=0.5,figsize=(6,4),filename_out='SMOTE_UnderSampler.png')
     return X_Sampled, Y_Sampled
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_search(X, Y):
@@ -65,7 +74,7 @@ def ex_search(X, Y):
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_train_test(X,Y):
     C = classifier_LM.classifier_LM()
-    ML = tools_ML_v2.tools_ML_enhanced(C,folder_out+'original/')
+    ML = tools_ML_v2.ML(C, folder_out + 'original/')
     P = tools_plot_v2.Plotter(folder_out+'original/')
 
     df = pd.DataFrame(data=(numpy.hstack((Y.reshape((-1, 1)), X))),columns=['target'] + ['%d' % c for c in range(X.shape[1])])
@@ -73,7 +82,7 @@ def ex_train_test(X,Y):
     ML.E2E_train_test_df(df,idx_target=0)
 
 
-    ML = tools_ML_v2.tools_ML_enhanced(C, folder_out + 'sampled/')
+    ML = tools_ML_v2.ML(C, folder_out + 'sampled/')
     P = tools_plot_v2.Plotter(folder_out + 'sampled/')
     X_Sampled, Y_Sampled = get_SMOTE_UnderSampler(X,Y,do_debug=True)
     df_sampled = pd.DataFrame(data=(numpy.hstack((Y_Sampled.reshape((-1, 1)), X_Sampled))),columns=['target'] + ['%d' % c for c in range(X.shape[1])])

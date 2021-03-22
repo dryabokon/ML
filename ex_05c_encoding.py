@@ -1,6 +1,6 @@
 import numpy as numpy
 import pandas as pd
-from sklearn.preprocessing import OrdinalEncoder, OneHotEncoder
+from sklearn.preprocessing import OrdinalEncoder, OneHotEncoder, LabelEncoder
 # ----------------------------------------------------------------------------------------------------------------------
 folder_in = './data/ex_datasets/'
 folder_out = './data/output/'
@@ -63,6 +63,19 @@ def ex_encode_OneHot():
     print(df2.to_string(index=False))
 
     return
+# ----------------------------------------------------------------------------------------------------------------------
+def encode_label():
+    df = pd.DataFrame(numpy.array([['Male ', 4],
+                                   ['Fmale', 1],
+                                   ['Fmale', 2]]))
+
+
+    encoder = LabelEncoder()
+    encoder.fit_transform(df[:,0])
+
+
+    return
+
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 

@@ -61,7 +61,14 @@ def ex_ML_areas():
     ex_pie_plot(df, idx_weights=0, idx_labels=1)
     return
 # ----------------------------------------------------------------------------------------------------------------------
+def ex_vacancies():
+    df = pd.read_csv(folder_in + 'vacancies_GL.csv', delimiter='\t')
+    ex_squarify_plot(df, idx_weights=0, idx_labels=1)
+    ex_pie_plot(df, idx_weights=0, idx_labels=1)
+    return
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     #ex_flights()
     #ex_users()
-    ex_ML_areas()
+    #ex_ML_areas()
+    ex_vacancies()
