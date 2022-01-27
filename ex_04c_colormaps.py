@@ -61,30 +61,17 @@ def ex_bars():
         cv2.imwrite(folder_out + '%s.png' % cm_name, res)
     return
 # ---------------------------------------------------------------------------------------------------------------------
-def ex_dark_light_scatter_matplotlib():
+def ex_dark_light_scatter():
     X, Y = make_regression(n_samples=100, n_features=2, noise=50.0)
     Y[Y <= 0] = 0
     Y[Y > 0] = 1
 
     P = tools_plot_v2.Plotter(folder_out, dark_mode=False)
-    P.plot_2D_features_multi_Y_v0(X, Y, filename_out='matplotlib_scatter_light.png')
+    df = pd.DataFrame({'Y':Y,'x1':X[:,0],'x2':X[:,1]})
+    P.plot_2D_features(df, filename_out='seaborn_scatter_light.png')
 
     P = tools_plot_v2.Plotter(folder_out,dark_mode=True)
-    P.plot_2D_features_multi_Y_v0(X, Y, filename_out='matplotlib_scatter_dark.png')
-
-    return
-# ---------------------------------------------------------------------------------------------------------------------
-def ex_dark_light_scatter_sns():
-    X, Y = make_regression(n_samples=100, n_features=2, noise=50.0)
-    Y[Y <= 0] = 0
-    Y[Y > 0] = 1
-
-    P = tools_plot_v2.Plotter(folder_out, dark_mode=False)
-    P.plot_2D_features_multi_Y(X, Y, filename_out='seaborn_scatter_light.png')
-
-    P = tools_plot_v2.Plotter(folder_out,dark_mode=True)
-    P.plot_2D_features_multi_Y(X, Y, filename_out='seaborn_scatter_dark.png')
-
+    P.plot_2D_features(df, filename_out='seaborn_scatter_dark.png')
     return
 # ---------------------------------------------------------------------------------------------------------------------
 def ex_dark_light_line():
@@ -102,7 +89,7 @@ def ex_dark_light_line():
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    ex_dark_light_line()
+    #ex_dark_light_line()
 
-    # ex_dark_light_scatter_matplotlib()
-    # ex_dark_light_scatter_sns()
+    ex_dark_light_scatter()
+

@@ -1,3 +1,5 @@
+import tools_IO
+
 import numpy
 import pickle
 
@@ -198,6 +200,7 @@ def ex_10_IO_bin_npy():
     numpy.save('./A', A)
     B = numpy.load('./A.npy')
 
+
     return
 
 
@@ -299,24 +302,20 @@ def ex_14_nan():
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     ex_01_create()
-    ex_02_inspect()
-    ex_03_combine()
-    ex_04_insert()
-    ex_05_delete()
-    ex_06_reshape()
-    ex_07_slicing()
-    ex_08_order()
-    ex_09_aggregates()
-    ex_10_IO_bin_npy()
-    ex_10_IO_bin_pickle()
-    ex_10_IO_text()
-    ex_11_copies()
-    ex_12_ravel()
-    ex_13_printoptions()
+    # ex_02_inspect()
+    # ex_03_combine()
+    # ex_04_insert()
+    # ex_05_delete()
+    # ex_06_reshape()
+    # ex_07_slicing()
+    # ex_08_order()
+    # ex_09_aggregates()
+    # ex_10_IO_bin_npy()
+    # ex_10_IO_bin_pickle()
+    # ex_10_IO_text()
+    # ex_11_copies()
+    # ex_12_ravel()
+    # ex_13_printoptions()
+    #
 
-
-
-
-
-
-
+    #ex_10_IO_bin_npy()

@@ -36,6 +36,6 @@ if __name__ == '__main__':
 
     df = tools_DF.hash_categoricals(df)
 
-    P.plot_TS_separatly(df, idx_target)
-    #plot_all_in_one(df, idx_target)
+    #P.plot_TS_separatly(df, idx_target)
+    plot_all_in_one(df, idx_target)
     #P.plot_target_feature(df, idx_target)

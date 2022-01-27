@@ -88,7 +88,7 @@ def analyze_experiment(X1_obs,X2_obs):
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_coin():
-    X1_obs = numpy.array([0, 1, 1, 1, 1, 1, 1, 1])
+    X1_obs = numpy.array([0, 0, 1, 1, 1, 1, 1, 1])
     X2_obs = numpy.array([0, 0, 0, 1, 1, 1,0, 0, 0, 1, 1, 1,0, 0, 0, 1, 1, 1])
     analyze_experiment(X1_obs, X2_obs)
     return

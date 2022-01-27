@@ -14,7 +14,7 @@ def ex_titanic():
     df.drop(labels = ['alive'], axis = 1, inplace = True)
     FI = tools_feature_importance.evaluate_feature_importance(df, idx_target)
     print(FI.sort_values(by=FI.columns[0], ascending=False).to_string(index=False))
-    for t in ['F_score','R2','C','XGB']:
+    for t in ['F_score','R2','C','XGB','SHAP','I']:
         P.plot_hor_bars(FI[t].to_numpy(), FI['features'].to_numpy(), legend=t,filename_out='FI_%s.png'%t)
 
     return
@@ -41,7 +41,18 @@ def ex_apnea():
     print(FI.sort_values(by=FI.columns[0], ascending=False).to_string(index=False))
     return
 # ----------------------------------------------------------------------------------------------------------------------
+def ex_flights():
+
+    df,idx_target = pd.read_csv(folder_in+'dataset_kibana_flights.csv', sep=','),10
+    FI = tools_feature_importance.evaluate_feature_importance(df, idx_target)
+    print(FI.sort_values(by=FI.columns[0], ascending=False).to_string(index=False))
+    for t in ['F_score','R2','C','XGB','SHAP','I']:
+        P.plot_hor_bars(FI[t].to_numpy(), FI['features'].to_numpy(), legend=t,filename_out='FI_%s.png'%t)
+
+    return
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     #ex_apnea()
     ex_titanic()
+    #ex_flights()

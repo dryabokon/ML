@@ -20,7 +20,7 @@ def ex_squarify_plot(df,idx_weights,idx_labels):
     weights = df_agg.loc[:, col_weights].to_numpy()
     labels = df_agg.index.to_numpy()
 
-    P.plot_squarify(weights,labels,'squarify.png')
+    P.plot_squarify(weights,labels,filename_out='squarify.png')
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_pie_plot(df,idx_weights,idx_labels):
@@ -62,7 +62,7 @@ def ex_ML_areas():
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_vacancies():
-    df = pd.read_csv(folder_in + 'vacancies_GL.csv', delimiter='\t')
+    df = pd.read_csv(folder_in + 'vacancies.csv', delimiter='\t')
     ex_squarify_plot(df, idx_weights=0, idx_labels=1)
     ex_pie_plot(df, idx_weights=0, idx_labels=1)
     return

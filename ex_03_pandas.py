@@ -1,3 +1,4 @@
+import re
 import datetime
 import cv2
 import numpy
@@ -61,6 +62,7 @@ def ex_01_create_data_frame_v2():
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_02_inspect_quick(df):
     print('--------HEAD--------')
+    print (df.to_string(index=False))
     print(df.head())
     print('\n--------TAIL--------')
     print(df.tail())
@@ -288,7 +290,7 @@ def ex_concat():
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
-def ex_join():
+def ex_align():
 
     df1 = pd.DataFrame(
     {
@@ -309,25 +311,25 @@ def ex_join():
     print()
 
     print('outer')
-    a1, a2 = df1.align(df2, join='outer', axis=1)
+    a1, a2 = df1.align(df2, join='outer', axis=0)
     print(a1)
     print(a2)
     print()
 
     print('inner')
-    a1, a2 = df1.align(df2, join='inner', axis=1)
+    a1, a2 = df1.align(df2, join='inner', axis=0)
     print(a1)
     print(a2)
     print()
 
     print('left')
-    a1, a2 = df1.align(df2, join='left', axis=1)
+    a1, a2 = df1.align(df2, join='left', axis=0)
     print(a1)
     print(a2)
     print()
 
     print('right')
-    a1, a2 = df1.align(df2, join='right', axis=1)
+    a1, a2 = df1.align(df2, join='right', axis=0)
     print(a1)
     print(a2)
     print()
@@ -336,12 +338,50 @@ def ex_join():
     # print(xx)
     return
 # ----------------------------------------------------------------------------------------------------------------------
+def ex_merge():
+    df_left = pd.DataFrame(
+        {
+            "key1": ["K0", "K0", "K1", "K2"],
+            "key2": ["K0", "K1", "K0", "K1"],
+            "A": ["A0", "A1", "A2", "A3"],
+            "B": ["B0", "B1", "B2", "B3"],
+        }
+    )
+
+    df_right = pd.DataFrame(
+        {
+            "key1": ["K0", "K1", "K1", "K2"],
+            "key2": ["K0", "K0", "K0", "K0"],
+            "C": ["C0", "C1", "C2", "C3"],
+            "D": ["D0", "D1", "D2", "D3"],
+        }
+    )
+
+    print(df_left)
+    print()
+    print(df_right)
+    print('\n'+''.join(['-']*48))
+
+    # left  - LEFT OUTER JOIN  - Use keys from left frame only
+    # right - RIGHT OUTER JOIN - Use keys from right frame only
+    # outer - FULL OUTER JOIN  - Use union of keys from both frames
+    # inner - INNER JOIN Use   - intersection of keys from both frames
+
+    how = 'right'
+    key = 'key1'
+    df_result = pd.merge(df_left, df_right, how=how, on=[key])
+    print('{how} on {key}'.format(how=how,key=key))
+    print(df_result)
+    print('\n' + ''.join(['-'] * 48))
+
+    return
+# ----------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    ex_01_create_data_series()
-    df_ts = ex_01_create_data_frame_TS()
-    df_meal = ex_01_create_data_frame_meal()
-    df_titanic = pd.read_csv(folder_in + 'dataset_titanic.csv', delimiter='\t')
+    # ex_01_create_data_series()
+    # df_ts = ex_01_create_data_frame_TS()
+    # df_meal = ex_01_create_data_frame_meal()
+    # df_titanic = pd.read_csv(folder_in + 'dataset_titanic.csv', delimiter='\t')
 
     # ex_02_inspect_quick(df_meal)
     # ex_02_inspect_body(df_meal)
@@ -366,7 +406,6 @@ if __name__ == '__main__':
     # ex_14_hash_categoricasl(df_titanic)
 
     # ex_concat()
-    ex_join()
-
-
+    #ex_align()
+    ex_merge()
 

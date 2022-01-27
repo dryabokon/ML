@@ -2,6 +2,7 @@ import numpy
 import pandas as pd
 import datetime
 from sklearn.model_selection import train_test_split
+import seaborn
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_plot_v2
 import tools_DF
@@ -36,7 +37,7 @@ def ex_multi_TS_range_date(A,B):
     df2  = pd.concat([df_A, df_B], axis=1)
 
     df2.to_csv(folder_out+'multi_TS_date.csv',sep='\t')
-    P.TS_seaborn(df2, idxs_target=[0,1], idx_feature=None, remove_xticks=False, major_step=10,filename_out='multi_TS_date_pointplot_sns.png')
+    P.TS_seaborn(df2, idxs_target=[0,1], idx_time=None, remove_xticks=False, major_step=10, filename_out='multi_TS_date_pointplot_sns.png')
 
 
     return
@@ -53,7 +54,7 @@ def ex_multi_TS_range_num(A,B):
 
     df2.to_csv(folder_out + 'multi_TS_num.csv', sep='\t')
 
-    P.TS_seaborn(df2, idxs_target=[0, 1], idx_feature=None, remove_xticks=False, major_step=10,filename_out='multi_TS_num_pointplot_sns.png')
+    P.TS_seaborn(df2, idxs_target=[0, 1], idx_time=None, remove_xticks=False, major_step=10, filename_out='multi_TS_num_pointplot_sns.png')
 
 
     return
@@ -82,31 +83,32 @@ def ex_split(A):
     df_merge.to_csv(folder_out + 'merged.csv', sep='\t')
 
 
-    P.TS_seaborn(df , idxs_target=[0], idx_feature=None, remove_xticks=False, major_step=10,filename_out='all.png')
-    P.TS_seaborn(df1, idxs_target=[0], idx_feature=None, remove_xticks=False, major_step=10,filename_out='part1.png')
-    P.TS_seaborn(df2, idxs_target=[0], idx_feature=None, remove_xticks=False, major_step=10,filename_out='part2.png')
-    P.TS_seaborn(df_merge, idxs_target=[0], idx_feature=None, remove_xticks=False, major_step=10,filename_out='merged.png')
+    P.TS_seaborn(df, idxs_target=[0], idx_time=None, remove_xticks=False, major_step=10, filename_out='all.png')
+    P.TS_seaborn(df1, idxs_target=[0], idx_time=None, remove_xticks=False, major_step=10, filename_out='part1.png')
+    P.TS_seaborn(df2, idxs_target=[0], idx_time=None, remove_xticks=False, major_step=10, filename_out='part2.png')
+    P.TS_seaborn(df_merge, idxs_target=[0], idx_time=None, remove_xticks=False, major_step=10, filename_out='merged.png')
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_electricity():
     df,idx_target = pd.read_csv(folder_in + 'dataset_electricity.csv', delimiter=','),1
     df.iloc[numpy.random.choice(df.shape[0], int(df.shape[0] * 0.4)), idx_target] = numpy.nan
-    idx_feature = None
+    idx_time = 5
 
-    P.TS_matplotlib(df, idx_target, idx_feature, filename_out='matplotlib.png')
-    P.TS_seaborn(df, idx_target, idx_feature, filename_out='seaborn_pointplot.png')
-    P.TS_seaborn(df, idx_target, idx_feature, mode='lineplot', filename_out='seaborn_lineplot.png')
+    P.TS_seaborn(df, idx_target, None    , mode='pointplot',remove_xticks=False, major_step=100,filename_out='seaborn_pointplot_idx.png')
+    P.TS_seaborn(df, idx_target, idx_time, mode='pointplot',remove_xticks=False, major_step=7,filename_out='seaborn_pointplot_time.png')
+    P.TS_seaborn(df, idx_target, idx_time, mode='lineplot' ,remove_xticks=False, major_step=7, filename_out='seaborn_lineplot_time.png')
+
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
 
-    #ex_electricity()
+    ex_electricity()
 
-    A,B = get_raw_data()
+    # A,B = get_raw_data()
     # ex_multi_TS_range_num(A,B)
     # ex_multi_TS_range_date(A,B)
 
-    ex_split(A)
+    #ex_split(A)

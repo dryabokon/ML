@@ -20,7 +20,7 @@ def ex_predict_ahead_once(df, idx_target,n_steps = 25):
     C2 = TS_ARIMA.TS_ARIMA(folder_out,do_debug=do_debug)
     C3 = TS_SARIMA.TS_SARIMA(folder_out,do_debug=do_debug)
 
-    for C in [C1]:
+    for C in [C1,C2,C3]:
         TS = tools_TS.tools_TS(C, dark_mode=dark_mode, folder_out=folder_out)
         TS.predict_n_steps_ahead(df, idx_target,n_steps,do_debug=True)
 

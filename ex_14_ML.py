@@ -40,9 +40,26 @@ def ex_titanic():
     df,idx_target = pd.read_csv(folder_in+'dataset_titanic.csv', sep='\t'),0
     df.drop(labels=['alive', 'deck'], axis=1, inplace=True)
 
-    ML = tools_ML_v2.ML(C)
+    ML = tools_ML_v2.ML(C,folder_out)
     ML.E2E_train_test_df(df,idx_target=idx_target)
     P.pairplots_df(df, idx_target=idx_target)
+
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_flights_kibana():
+    #C = classifier_KNN.classifier_KNN()
+    #C = classifier_DTree.classifier_DT(folder_out=folder_out)
+    #C = classifier_RF.classifier_RF()
+    #C = classifier_Ada.classifier_Ada()
+    C = classifier_LM.classifier_LM()
+    P = tools_plot_v2.Plotter(folder_out)
+
+    df,idx_target = pd.read_csv(folder_in+'dataset_kibana_flights.csv', sep=','),10
+    df.drop(labels=['_source.FlightDelayMin','_source.FlightDelayType'], axis=1, inplace=True)
+
+    ML = tools_ML_v2.ML(C,folder_out)
+    ML.E2E_train_test_df(df,idx_target=idx_target)
+    #P.pairplots_df(df, idx_target=idx_target)
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
@@ -54,15 +71,17 @@ def ex_random():
     C = classifier_LM.classifier_LM()
     P = tools_plot_v2.Plotter(folder_out)
     df = pd.DataFrame(data=(numpy.hstack((Y.reshape((-1, 1)), X))),columns=['target'] + ['%d' % c for c in range(X.shape[1])])
+    P.pairplots_df(df, idx_target=0)
+
     ML = tools_ML_v2.ML(C, folder_out)
     ML.E2E_train_test_df(df,idx_target=0)
-    P.pairplots_df(df, idx_target=0)
+
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-
     #ex_titanic()
-    ex_random()
+    #ex_random()
+    ex_flights_kibana()
 
