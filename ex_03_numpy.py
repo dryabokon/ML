@@ -1,8 +1,5 @@
-import tools_IO
-
 import numpy
 import pickle
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_01_create():
@@ -134,7 +131,7 @@ def ex_08_order():
     A = numpy.array(
         (('Apple ', 2, 4000),
          ('Lemon ', 3, 1000),
-         ('Milk  ', 7, 2000),
+         ('Milk  ', 17, 2000),
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000)))
 
@@ -149,13 +146,13 @@ def ex_08_order():
     C = A[idx1]
     D = A[idx2]
 
-    B2 = numpy.array(sorted(A, key=lambda A: A[0]))
-    C2 = numpy.array(sorted(A, key=lambda A: A[1]))
-    D2 = numpy.array(sorted(A, key=lambda A: A[2]))
+    # B2 = numpy.array(sorted(A, key=lambda A: A[0]))
+    # C2 = numpy.array(sorted(A, key=lambda A: A[1]))
+    # D2 = numpy.array(sorted(A, key=lambda A: A[2]))
 
     # print(B)
     # print()
-    # print(C)
+    print(C)
     # print()
     # print(D)
 
@@ -172,9 +169,9 @@ def ex_09_aggregates():
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000))).astype(numpy.chararray)
 
-    #AA = A.copy()
+    AA = A.copy()
     #AA = A[:, [1, 2]].astype(numpy.chararray)
-    AA = A[:, [1, 2]].astype(numpy.int)
+    #AA = A[:, [1, 2]].astype(numpy.int)
 
     A_sum = numpy.sum(AA, axis=0)
     A_sum = numpy.sum(AA, axis=0)
@@ -276,9 +273,9 @@ def ex_12_ravel():
 
     A[idx_cr] = numpy.nan
     #idx_cr_custom  = numpy.array([[0, 2], [1, 1], [1, 2]])
-    A[idx_cr] = numpy.nan
+    #A[idx_cr] = numpy.nan
 
-    # print(A)
+    print(A)
     return
 
 
@@ -301,21 +298,24 @@ def ex_14_nan():
     return
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
-    ex_01_create()
-    # ex_02_inspect()
+    #ex_01_create()
+    #ex_02_inspect()
     # ex_03_combine()
     # ex_04_insert()
     # ex_05_delete()
     # ex_06_reshape()
     # ex_07_slicing()
-    # ex_08_order()
-    # ex_09_aggregates()
+    #ex_08_order()
+    #ex_09_aggregates()
     # ex_10_IO_bin_npy()
     # ex_10_IO_bin_pickle()
     # ex_10_IO_text()
     # ex_11_copies()
-    # ex_12_ravel()
+    ex_12_ravel()
     # ex_13_printoptions()
     #
 
     #ex_10_IO_bin_npy()
+
+
+

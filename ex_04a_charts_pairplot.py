@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import tools_plot_v2
 import tools_IO
 import tools_Hyptest
+import tools_feature_importance
 # ----------------------------------------------------------------------------------------------------------------------
 folder_in = './data/ex_datasets/'
 folder_out = './data/output/'
@@ -15,7 +16,7 @@ HT = tools_Hyptest.HypTest()
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_heart():
     df = pd.read_csv(folder_in + 'dataset_heart.csv', delimiter=',')
-    P.pairplots_df(df, idx_target=-1)
+    P.pairplots_df(df, add_noise=True,idx_target=-1)
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_houses():
@@ -39,11 +40,16 @@ def ex_titatic():
 
     # sex
     # idx_target = df.columns.get_loc('sex')
-    # df['sex'] = df['sex'].map({'male':0,'female':1})
+    #df['sex'] = df['sex'].map({'male':0,'female':1})
 
-    #P.histoplots_df(df, idx_target)
+    df['survived'] = df['survived'].map({0: '0-not survived', 1: '1-survived'})
+
+
+    P.set_color('0-not survived',P.color_red)
+    P.set_color('1-survived',P.color_blue)
+    #P.histoplots_df(df, idx_target,transparency=0.5)
     P.pairplots_df(df, idx_target, df_Q, add_noise=True,remove_legend=False)
-    #P.pairplots_df(df, idx_target,df_Q, cumul_mode=True)
+
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
@@ -51,6 +57,7 @@ if __name__ == '__main__':
 
     tools_IO.remove_files(folder_out,create=True)
     ex_titatic()
+
 
 
 

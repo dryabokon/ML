@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from sklearn.datasets import make_regression
 # ----------------------------------------------------------------------------------------------------------------------
-import classifier_LM
+from classifier import classifier_LM
 import tools_DF
 import tools_plot_v2
 # ----------------------------------------------------------------------------------------------------------------------

@@ -1,46 +1,15 @@
 import numpy
-import seaborn as sns
 import pandas as pd
-import matplotlib.pyplot as plt
 from statsmodels.regression.linear_model import OLS
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_DF
+import tools_ML_v2
 # ----------------------------------------------------------------------------------------------------------------------
 folder_in = './data/ex_datasets/'
 folder_out = './data/output/'
 # ----------------------------------------------------------------------------------------------------------------------
-def ex_feature_correlation(df):
-
-    df = tools_DF.hash_categoricals(df)
-    columns = df.columns.to_numpy()
-    corrmat = abs(df.corr()).to_numpy()
-
-    for i in range(corrmat.shape[0]):corrmat[i,i]=0
-
-    ranks = []
-    while len(ranks)<corrmat.shape[1]:
-        idx = numpy.argmax(corrmat)
-        r,c = numpy.unravel_index(idx,corrmat.shape)
-        corrmat[r, c] = 0
-        if r not in ranks:
-            ranks.append(r)
-        if c not in ranks:
-            ranks.append(c)
-
-    ranks = numpy.array(ranks)
-
-    corrmat = abs(df[columns[ranks]].corr())
-
-    for i in range(corrmat.shape[0]):
-        corrmat.iloc[i,i]=numpy.nan
-
-
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(corrmat, vmax=1, square=True, annot=True, fmt='.2f', cmap='GnBu', cbar_kws={"shrink": .5},robust=True)
-    plt.savefig(folder_out+'corr.png')
-
-    return
+ML = tools_ML_v2.ML(None,folder_out)
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_VIF(df):
 
@@ -54,7 +23,6 @@ def ex_VIF(df):
         print('%1.2f\t%s'%(VIFs[i],columns[i]))
 
     return
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_VIF2(df):
@@ -80,11 +48,9 @@ def ex_VIF2(df):
 
 if __name__ == '__main__':
 
-
-    df = pd.read_csv(folder_in + 'dataset_kc_house_data.csv', delimiter=',')
+    #df = pd.read_csv(folder_in + 'dataset_kc_house_data.csv', delimiter=',')
     #df = pd.read_csv(folder_in + 'dataset_tips.txt', delimiter='\t')
-    #df = pd.read_csv(folder_in + 'dataset_titanic.txt', delimiter='\t')
+    df = pd.read_csv(folder_in + 'dataset_titanic.csv', delimiter='\t')
 
-    #ex_feature_correlation(df)
-    ex_VIF(df)
-    ex_VIF2(df)
+    ML.feature_correlation(df)
+

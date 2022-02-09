@@ -43,7 +43,7 @@ def ex_01_create_data_frame_meal():
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000)))
 
-    df = pd.DataFrame(data=A, index=None, columns=['Product', '#', 'Price'])
+    df = pd.DataFrame(data=A, columns=['Product', '#', 'Price'])
     df = df.astype({'#': 'int32','Price': 'int32'})
 
 
@@ -52,20 +52,24 @@ def ex_01_create_data_frame_meal():
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_01_create_data_frame_v2():
     df = pd.DataFrame({
-        'a': [1, 1, 1],
+        'a': [str(i) for i in numpy.array([122, 1222, 33333])],
         'b': [2, 2, 2],
         'c': [0, 1, 2],
     })
+
+
+    types = df.dtypes
 
     return df
 
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_02_inspect_quick(df):
     print('--------HEAD--------')
-    print (df.to_string(index=False))
+    print (df[-2:].to_string(index=False))
+    print()
     print(df.head())
     print('\n--------TAIL--------')
-    print(df.tail())
+
 
     return
 
@@ -380,10 +384,10 @@ def ex_merge():
 if __name__ == '__main__':
     # ex_01_create_data_series()
     # df_ts = ex_01_create_data_frame_TS()
-    # df_meal = ex_01_create_data_frame_meal()
+    df_meal = ex_01_create_data_frame_meal()
     # df_titanic = pd.read_csv(folder_in + 'dataset_titanic.csv', delimiter='\t')
 
-    # ex_02_inspect_quick(df_meal)
+    #ex_02_inspect_quick(df_meal)
     # ex_02_inspect_body(df_meal)
     # ex_02_inspect_body_no_index(df_meal)
     # ex_02_inspect_columns(df_meal)
@@ -396,7 +400,7 @@ if __name__ == '__main__':
     # ex_07_slicing_rows(df_meal)
     # ex_07_slicing_rows_v2(df_ts)
 
-    # ex_08_order(df_meal)
+    ex_08_order(df_meal)
     # ex_09_aggregates(df_meal, 0)
     # ex_09_interpolate()
     # ex_10_IO_read()
@@ -407,5 +411,7 @@ if __name__ == '__main__':
 
     # ex_concat()
     #ex_align()
-    ex_merge()
+    #ex_merge()
+
+    #ex_01_create_data_frame_v2()
 
