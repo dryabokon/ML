@@ -46,10 +46,13 @@ def ex_titanic():
     df=df[['sex','who','survived']]
     df = tools_DF.hash_categoricals(df)
 
-    ML = tools_ML_v2.ML(C,folder_out)
-    ML.E2E_train_test_df(df,idx_target=df.columns.get_loc('survived'),do_charts=True,do_density=True,do_pca = True)
+    #ML = tools_ML_v2.ML(C,folder_out)
+    #ML.E2E_train_test_df(df,idx_target=df.columns.get_loc('survived'),do_charts=True,do_density=True,do_pca = True)
     #P.pairplots_df(df, idx_target=df.columns.get_loc('survived'),marker_size=6,transparency=0.90,add_noise=True)
-    #P.histoplots_df(df0, idx_target=df0.columns.get_loc('survived'))
+
+    P.set_color(0,P.color_blue)
+    P.set_color(1,P.color_red)
+    P.histoplots_df(df0, idx_target=df0.columns.get_loc('survived'))
 
     return
 # ----------------------------------------------------------------------------------------------------------------------

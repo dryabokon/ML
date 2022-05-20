@@ -13,7 +13,7 @@ P = tools_plot_v2.Plotter(folder_out,dark_mode=True)
 def plot_all_in_one(df0, idx_target):
 
     df0 = tools_DF.hash_categoricals(df0)
-    df0 = tools_DF.scale(df0)
+    #df0 = tools_DF.scale(df0)
 
     target = df0.columns[idx_target]
     features = df0.columns.to_numpy()[numpy.delete(numpy.arange(0, df0.shape[1]), idx_target)]

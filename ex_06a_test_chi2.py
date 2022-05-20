@@ -107,11 +107,11 @@ def ex_coin():
     # delta = 24
     # X_obs,X_exp = [100-delta, 100+delta],[130, 130]
 
-    X_obs, X_exp = [10, 11], [10, 10]
-    X_obs, X_exp = [2000, 2300], [60000, 60000]
+    X_obs, X_exp = [8, 1], [100, 100]
+    #X_obs, X_exp = [2000, 2300], [60000, 60000]
 
-    Htest.is_same_distribution_chi2(X_obs, X_exp, a_significance_level=0.05, verbose=True,do_cross_check=True)
-    #Htest.is_same_distribution_fisher(X_obs, X_exp, a_significance_level=0.05, verbose=True)
+    #Htest.is_same_distribution_chi2(X_obs, X_exp, a_significance_level=0.05, verbose=True,do_cross_check=True)
+    Htest.is_same_distribution_fisher(X_obs, X_exp, a_significance_level=0.05, verbose=True)
 
 
     return
@@ -138,14 +138,14 @@ def ex_MI(x,y):
 if __name__ == '__main__':
 
 
-    #ex_coin()
+    ex_coin()
     #ex_dice()
 
     #X_obs, X_exp = [0.80, 0.2000], [0.40, 0.60]
     #X_obs, X_exp = [800, 200], [4500, 6500]
 
-    X_obs = [10, 12, 13, 7, 12, 18]
-    X_exp = [10, 10, 10, 10, 10, 10]
+    # X_obs = [10, 12, 13, 7, 12, 18]
+    # X_exp = [10, 10, 10, 10, 10, 10]
 
-    print(mutual_info_score(X_obs, X_exp))
-    print(mutual_info_score(X_exp,X_obs))
+    # print(mutual_info_score(X_obs, X_exp))
+    # print(mutual_info_score(X_exp,X_obs))

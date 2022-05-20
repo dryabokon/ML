@@ -1,4 +1,3 @@
-import re
 import datetime
 import cv2
 import numpy
@@ -26,10 +25,9 @@ def ex_01_create_data_series():
 def ex_01_create_data_frame_TS():
     rows, cols = 10, 3
     idx_dates = pd.date_range("20210101", periods=rows)
-    columns = [chr(ord('A') + c) for c in range(cols)]
-    A = (99 * numpy.random.random((rows, cols))).astype(int)
-    df = pd.DataFrame(data=A, index=idx_dates, columns=columns)
-
+    df = pd.DataFrame({'t':numpy.arange(0,rows),
+                       'key':[(chr(65+int(a))) for a in numpy.random.rand(rows)*3],
+                       'value':[int(a) for a in numpy.random.rand(rows)*10]},index=idx_dates)
     return df
 
 
@@ -39,7 +37,9 @@ def ex_01_create_data_frame_meal():
         (('Apple ', 2, 4000),
          ('Lemon ', 3, 1000),
          ('Lemon ', 9, 7000),
+         ('Lemon ', 3, 7000),
          ('Milk  ', 7, 2000),
+         ('Milk  ', 3, 2000),
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000)))
 
@@ -207,15 +207,30 @@ def ex_08_order(df):
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-
 def ex_09_aggregates(df, idx_agg=0):
 
-    col_label = df.columns.to_numpy()[idx_agg]
-    df_agg = df.groupby(col_label).sum()
-    print(df_agg)
+    print(tools_DF.prettify(df))
+    df_agg = tools_DF.my_agg(df,['Product'],['#'],['sum'],order_idx=-1,ascending=True)
+    print(tools_DF.prettify(df_agg,showindex=False))
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
+def ex_09_pivot(df, idx_agg=0):
+
+
+    print(tools_DF.prettify(df,showindex=True))
+    # df_agg = tools_DF.my_agg(df, ['Product'], ['#'], ['sum'], order_idx=-1, ascending=True)
+    # df_agg['label'] = df_agg['Product'].apply({'Apple':'F','Lemon':'F','Banana':'F','Coffee':'D','Milk':'D'})
+    # print(tools_DF.prettify(df_agg, showindex=False))
+    #
+    df_pivot = tools_DF.to_multi_column(df, idx_time=0, idx_label=1, idx_value=2, replace_nan=True, order_by_value=False)
+    print(tools_DF.prettify(df_pivot,showindex=False))
+
+    return
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
 def ex_09_interpolate():
     S = [1, 3, 5, numpy.nan, 6, 8]
     S_avg = pd.Series(S).interpolate().values
@@ -345,18 +360,18 @@ def ex_align():
 def ex_merge():
     df_left = pd.DataFrame(
         {
-            "key1": ["K0", "K0", "K1", "K2"],
-            "key2": ["K0", "K1", "K0", "K1"],
+            "key1": ["K0", "K1", "K2", "K3"],
+            "key2": ["L0", "L0", "L1", "L1"],
             "A": ["A0", "A1", "A2", "A3"],
-            "B": ["B0", "B1", "B2", "B3"],
+            #"B": ["B0", "B1", "B2", "B3"],
         }
     )
 
     df_right = pd.DataFrame(
         {
-            "key1": ["K0", "K1", "K1", "K2"],
-            "key2": ["K0", "K0", "K0", "K0"],
-            "C": ["C0", "C1", "C2", "C3"],
+            "key1": ["K0", "K1", "K4", "K5"],
+            "key2": ["L0", "L0", "L0", "L1"],
+            #"C": ["C0", "C1", "C2", "C3"],
             "D": ["D0", "D1", "D2", "D3"],
         }
     )
@@ -371,10 +386,11 @@ def ex_merge():
     # outer - FULL OUTER JOIN  - Use union of keys from both frames
     # inner - INNER JOIN Use   - intersection of keys from both frames
 
-    how = 'right'
-    key = 'key1'
-    df_result = pd.merge(df_left, df_right, how=how, on=[key])
-    print('{how} on {key}'.format(how=how,key=key))
+    how = 'left'
+    key1 = 'key1'
+    key2 = 'key2'
+    df_result = pd.merge(df_left, df_right, how=how, on=[key1])
+    print('{how} on {key}'.format(how=how,key=key1))
     print(df_result)
     print('\n' + ''.join(['-'] * 48))
 
@@ -383,8 +399,8 @@ def ex_merge():
 
 if __name__ == '__main__':
     # ex_01_create_data_series()
-    # df_ts = ex_01_create_data_frame_TS()
-    df_meal = ex_01_create_data_frame_meal()
+    df_ts = ex_01_create_data_frame_TS()
+    # df_meal = ex_01_create_data_frame_meal()
     # df_titanic = pd.read_csv(folder_in + 'dataset_titanic.csv', delimiter='\t')
 
     #ex_02_inspect_quick(df_meal)
@@ -400,8 +416,9 @@ if __name__ == '__main__':
     # ex_07_slicing_rows(df_meal)
     # ex_07_slicing_rows_v2(df_ts)
 
-    ex_08_order(df_meal)
-    # ex_09_aggregates(df_meal, 0)
+    # ex_08_order(df_meal)
+    #ex_09_aggregates(df_meal, 0)
+    #ex_09_pivot(df_ts)
     # ex_09_interpolate()
     # ex_10_IO_read()
     # ex_12_is_null(df_titanic)
@@ -411,7 +428,7 @@ if __name__ == '__main__':
 
     # ex_concat()
     #ex_align()
-    #ex_merge()
+    ex_merge()
 
     #ex_01_create_data_frame_v2()
 

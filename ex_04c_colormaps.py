@@ -2,7 +2,6 @@ import cv2
 import numpy
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.datasets import make_regression
 # ---------------------------------------------------------------------------------------------------------------------
 import tools_image
@@ -46,19 +45,17 @@ def ex_circles():
 # ---------------------------------------------------------------------------------------------------------------------
 def ex_bars():
 
-    W = 640
-    N = 32
-    image = numpy.full((N,W,3), 0, dtype=numpy.uint8)
-    colors = tools_draw_numpy.get_colors(N, colormap='gray')
-
-    for n in range(N - 1):
-        image[-50:,int(n * W / (N - 1)):int((n + 1) * W / (N - 1))] = colors[n]
-
+    W,H = 640,32
     tools_IO.remove_files(folder_out)
-    image = tools_image.desaturate_2d(image)
+    image = numpy.full((H,W,3), 0, dtype=numpy.uint8)
+
     for cm_name in cmap_names:
-        res = tools_image.hitmap2d_to_colormap(image, plt.get_cmap(cm_name))
-        cv2.imwrite(folder_out + '%s.png' % cm_name, res)
+        N = plt.get_cmap(cm_name).N
+        colors = tools_draw_numpy.get_colors(N, colormap=cm_name)
+        for n in range(N - 1):
+            image[:,int(n * W / (H - 1)):int((n + 1) * W / (H - 1))] = colors[n]
+
+        cv2.imwrite(folder_out + '%s.png' % cm_name, image)
     return
 # ---------------------------------------------------------------------------------------------------------------------
 def ex_dark_light_scatter():
@@ -90,6 +87,6 @@ def ex_dark_light_line():
 if __name__ == '__main__':
 
     #ex_dark_light_line()
+    #ex_dark_light_scatter()
 
-    ex_dark_light_scatter()
-
+    ex_bars()

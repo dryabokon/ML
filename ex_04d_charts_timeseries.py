@@ -1,16 +1,16 @@
+import cv2
 import numpy
 import pandas as pd
 import datetime
 from sklearn.model_selection import train_test_split
-import seaborn
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_plot_v2
-import tools_DF
+import tools_time_convertor
 # ----------------------------------------------------------------------------------------------------------------------
 folder_in = './data/ex_datasets/'
 folder_out = './data/output/'
 # ----------------------------------------------------------------------------------------------------------------------
-P = tools_plot_v2.Plotter(folder_out,dark_mode=True)
+P = tools_plot_v2.Plotter(folder_out,dark_mode=False)
 # ----------------------------------------------------------------------------------------------------------------------
 def get_raw_data():
     N = 100
@@ -95,9 +95,12 @@ def ex_electricity():
     df.iloc[numpy.random.choice(df.shape[0], int(df.shape[0] * 0.4)), idx_target] = numpy.nan
     idx_time = 5
 
+    df.iloc[:,idx_target]=100 + numpy.random.random(df.shape[0])*10
+    df.iloc[-100:, idx_target] = numpy.nan
+
     P.TS_seaborn(df, idx_target, None    , mode='pointplot',remove_xticks=False, major_step=100,filename_out='seaborn_pointplot_idx.png')
-    P.TS_seaborn(df, idx_target, idx_time, mode='pointplot',remove_xticks=False, major_step=7,filename_out='seaborn_pointplot_time.png')
-    P.TS_seaborn(df, idx_target, idx_time, mode='lineplot' ,remove_xticks=False, major_step=7, filename_out='seaborn_lineplot_time.png')
+    #P.TS_seaborn(df, idx_target, idx_time, mode='pointplot',remove_xticks=False, major_step=230,filename_out='seaborn_pointplot_time.png')
+    #P.TS_seaborn(df, idx_target, idx_time, mode='lineplot' ,remove_xticks=False, major_step=7, filename_out='seaborn_lineplot_time.png')
 
 
     return
@@ -107,8 +110,9 @@ if __name__ == '__main__':
 
     ex_electricity()
 
-    # A,B = get_raw_data()
-    # ex_multi_TS_range_num(A,B)
-    # ex_multi_TS_range_date(A,B)
-
+    #A,B = get_raw_data()
+    #ex_multi_TS_range_num(A,B)
+    #ex_multi_TS_range_date(A,B)
     #ex_split(A)
+
+

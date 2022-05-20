@@ -5,6 +5,7 @@ from sklearn.neighbors import LocalOutlierFactor
 from scipy.stats import multivariate_normal
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_plot_v2
+import tools_DF
 # ----------------------------------------------------------------------------------------------------------------------
 folder_in = './data/ex_datasets/'
 folder_out = './data/output/'
@@ -72,7 +73,7 @@ def predict_IsolationForest(X, fraction_outlier):
     A = IsolationForest(contamination=fraction_outlier)
     A.fit(X)
     Y = A.predict(X)
-    P.plot_2D_features_multi_Y(X, -Y, x_range=[x1 - d, x2 + d], y_range=[y1 - d, y2 + d],filename_out='3_pred_IsolationForest.png')
+    P.plot_2D_features(X, -Y,filename_out='3_pred_IsolationForest.png')
 
     confidence_mat = A.decision_function(numpy.c_[xx.ravel(), yy.ravel()])
     confidence_mat = confidence_mat / numpy.max(confidence_mat)
