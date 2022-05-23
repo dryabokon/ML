@@ -14,7 +14,6 @@ from mlflow.tracking import MlflowClient
 import tools_time_convertor
 # ---------------------------------------------------------------------------------------------------------------------
 folder_out = './mlruns_local'
-connection_string = 'mysql://root:flow1@34.121.155.59/tracking'
 # ---------------------------------------------------------------------------------------------------------------------
 def get_experiment_id(experiment_name, create=True):
     experiement = mlflow.get_experiment_by_name(experiment_name)
