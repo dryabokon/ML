@@ -297,7 +297,6 @@ def ex_14_nan():
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
-if __name__ == '__main__':
     #ex_01_create()
     #ex_02_inspect()
     # ex_03_combine()
@@ -311,11 +310,11 @@ if __name__ == '__main__':
     # ex_10_IO_bin_pickle()
     # ex_10_IO_text()
     # ex_11_copies()
-    ex_12_ravel()
+    # ex_12_ravel()
     # ex_13_printoptions()
-    #
-
     #ex_10_IO_bin_npy()
+if __name__ == '__main__':
+    print('OK')
 
 
 

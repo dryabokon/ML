@@ -13,7 +13,7 @@ from mlflow.tracking import MlflowClient
 # ---------------------------------------------------------------------------------------------------------------------
 import tools_time_convertor
 # ---------------------------------------------------------------------------------------------------------------------
-folder_out = './mlruns_local'
+folder_out = './mlruns_local2'
 # ---------------------------------------------------------------------------------------------------------------------
 def get_experiment_id(experiment_name, create=True):
     experiement = mlflow.get_experiment_by_name(experiment_name)
@@ -27,9 +27,9 @@ def get_experiment_id(experiment_name, create=True):
 def run_experiment_01_dummy(experiment_name,artifact_path=None):
     mlflow.end_run()
     ts = tools_time_convertor.now_str('%Y-%b-%d %H:%M:%S')
-    client = mlflow.tracking.MlflowClient()
+    #client = mlflow.tracking.MlflowClient()
 
-    with mlflow.start_run(experiment_id=get_experiment_id(experiment_name, create=True),run_name=ts) as run:
+    with mlflow.start_run(experiment_id=get_experiment_id(experiment_name, create=True), run_name=ts) as run:
         print('exp_id:', run.info.experiment_id)
         print('run_id:',run.info.run_id)
         log_param("param1", randint(0, 100))
@@ -46,6 +46,7 @@ def run_experiment_01_dummy(experiment_name,artifact_path=None):
     return
 # ---------------------------------------------------------------------------------------------------------------------
 def run_experiment_02_epochs(experiment_name):
+    mlflow.end_run()
     with mlflow.start_run(experiment_id=get_experiment_id(experiment_name, create=True)):
         for epoch in range(0, 3):
             mlflow.log_metric(key="F1", value=random(), step=epoch)
@@ -63,11 +64,12 @@ def run_experiment_ex03_sklearn_RF(experiment_name):
         rf = RandomForestRegressor(n_estimators=100, max_depth=6, max_features=3)
         rf.fit(X_train, y_train)
         rf.predict(X_test)
+        log_artifact(local_path='./data/output/brg.png')
         mlflow.last_active_run()
         mlflow.end_run()
     return
 # ---------------------------------------------------------------------------------------------------------------------
-def run_experiment_ex04_sklearn_DT_log_mode(experiment_name):
+def run_experiment_ex04_sklearn_DT_log_model(experiment_name):
     iris = load_iris()
     X, y = iris.data, iris.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=123)
@@ -98,6 +100,7 @@ def ex06():
 def set_tracking_local(folder_out):
     #Runs are recorded locally
     mlflow.set_tracking_uri(folder_out)
+    mlflow.set_registry_uri(folder_out)
     return
 # ---------------------------------------------------------------------------------------------------------------------
 def set_tracking_remote(connection_string):
@@ -121,9 +124,10 @@ def ex_tracking_local():
     set_tracking_local(folder_out)
     run_experiment_01_dummy(experiment_name='ex01')
     os.system('mlflow ui --backend-store-uri %s'%folder_out)
+
     return
 # ---------------------------------------------------------------------------------------------------------------------
-def ex_tracking_remote():
+def ex_tracking_remote(connection_string):
 
     set_tracking_remote(connection_string)
     run_experiment_ex03_sklearn_RF(experiment_name='ex03_RF')
@@ -137,11 +141,8 @@ def ex_tracking_remote():
 #mlflow.artifacts._download_artifact_from_uri('gs://testproj2-bf028.appspot.com/0/1a600a99c61a4bc985ac95b84e23acf1/artifacts/histo_alone.png', folder_out)
 if __name__ == "__main__":
 
-    set_tracking_remote(connection_string)
-    # artifact_uri = get_uris()
-    # artifact_uri = 'gs://testproj2-bf028.appspot.com/0'
-    # artifact_uri = None
-    run_experiment_ex04_sklearn_DT_log_mode(experiment_name='DT2')
-
-
-
+    #set_tracking_remote(connection_string)
+    set_tracking_local(folder_out)
+    #run_experiment_01_dummy(experiment_name='CI: integration tests')
+    run_experiment_ex03_sklearn_RF(experiment_name='Featurestore')
+    print('mlflow server --backend-store-uri %s --default-artifact-root %s'%(folder_out,folder_out))

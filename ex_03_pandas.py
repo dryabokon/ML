@@ -35,16 +35,16 @@ def ex_01_create_data_frame_TS():
 def ex_01_create_data_frame_meal():
     A = numpy.array(
         (('Apple ', 2, 4000),
-         ('Lemon ', 3, 1000),
+         ('Lemon ', 3, 5000),
          ('Lemon ', 9, 7000),
          ('Lemon ', 3, 7000),
-         ('Milk  ', 7, 2000),
+         ('Milk  ', 7, numpy.nan),
          ('Milk  ', 3, 2000),
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000)))
 
     df = pd.DataFrame(data=A, columns=['Product', '#', 'Price'])
-    df = df.astype({'#': 'int32','Price': 'int32'})
+    #df = df.astype({'#': 'int32','Price': 'int32'})
 
 
     return df
@@ -399,8 +399,8 @@ def ex_merge():
 
 if __name__ == '__main__':
     # ex_01_create_data_series()
-    df_ts = ex_01_create_data_frame_TS()
-    # df_meal = ex_01_create_data_frame_meal()
+    #df_ts = ex_01_create_data_frame_TS()
+    df_meal = ex_01_create_data_frame_meal()
     # df_titanic = pd.read_csv(folder_in + 'dataset_titanic.csv', delimiter='\t')
 
     #ex_02_inspect_quick(df_meal)
@@ -428,7 +428,13 @@ if __name__ == '__main__':
 
     # ex_concat()
     #ex_align()
-    ex_merge()
+    #ex_merge()
+    
+
 
     #ex_01_create_data_frame_v2()
+    print(df_meal)
+    i = df_meal.isnull()
+    print(i)
 
+    #print(df_meal[i])
