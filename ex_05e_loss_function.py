@@ -18,7 +18,7 @@ def ex2():
     df, idx_target = pd.read_csv(folder_in + 'dataset_titanic.csv', sep='\t'), 0
     tools_DF.get_entropy(df, idx_target=0, idx_c1=1, idx_c2=2)
     return
-# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------s------------------------------
 def ex3():
     df, idx_target = pd.read_csv(folder_in + 'dataset_titanic.csv', sep='\t'), 0
     df = df.dropna()

@@ -3,7 +3,7 @@ from random import random, randint
 from sklearn.datasets import load_diabetes
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.datasets import load_iris
-from sklearn.metrics import accuracy_score
+#from sklearn.metrics import accuracy_scored
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 # ---------------------------------------------------------------------------------------------------------------------
@@ -53,6 +53,8 @@ def run_experiment_02_epochs(experiment_name):
         mlflow.end_run()
     return
 # ---------------------------------------------------------------------------------------------------------------------
+
+
 def run_experiment_ex03_sklearn_RF(experiment_name):
     mlflow.end_run()
     with mlflow.start_run(experiment_id=get_experiment_id(experiment_name, create=True)) as run:
@@ -64,7 +66,7 @@ def run_experiment_ex03_sklearn_RF(experiment_name):
         rf = RandomForestRegressor(n_estimators=100, max_depth=6, max_features=3)
         rf.fit(X_train, y_train)
         rf.predict(X_test)
-        log_artifact(local_path='./data/output/brg.png')
+        log_artifact(local_path='./data/output/histo_age.png')
         mlflow.last_active_run()
         mlflow.end_run()
     return
@@ -141,7 +143,7 @@ def ex_tracking_remote(connection_string):
 #mlflow.artifacts._download_artifact_from_uri('gs://testproj2-bf028.appspot.com/0/1a600a99c61a4bc985ac95b84e23acf1/artifacts/histo_alone.png', folder_out)
 if __name__ == "__main__":
 
-    #set_tracking_remote(connection_string)
+    set_tracking_remote(connection_string)
     set_tracking_local(folder_out)
     #run_experiment_01_dummy(experiment_name='CI: integration tests')
     run_experiment_ex03_sklearn_RF(experiment_name='Featurestore')

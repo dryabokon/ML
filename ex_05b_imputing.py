@@ -62,10 +62,10 @@ def ex_imputer(df,idx_column,do_verbose=False,do_debug=False,):
 
     if do_debug:
         idx = numpy.arange(0, len(strategies) + 1)
-        P.TSs_seaborn(df_res, idxs_target=idx, idx_feature=None,filename_out='imputer_ALL.png')
+        P.TS_seaborn(df_res, idxs_target=idx, idx_hue=None,filename_out='imputer_ALL.png')
 
         for i in idx[1:]:
-            P.TSs_seaborn(df_res, idxs_target=[i, 0], idx_feature=None,filename_out='imputer_%s.png' % strategies[i-1])
+            P.TS_seaborn(df_res, idxs_target=[i, 0], idx_hue=None,filename_out='imputer_%s.png' % strategies[i-1])
 
 
     return
@@ -73,20 +73,31 @@ def ex_imputer(df,idx_column,do_verbose=False,do_debug=False,):
 if __name__ == '__main__':
     pd.set_option("display.precision", 2)
 
-    df_electro = pd.read_csv(folder_in + 'dataset_electricity.csv', delimiter=',')[:100]
-    idx = numpy.random.choice(df_electro.shape[0], int(df_electro.shape[0] * 0.6))
+    #df_electro = pd.read_csv(folder_in + 'dataset_electricity.csv', delimiter=',')[:100]
+    df_titanic = pd.read_csv(folder_in + 'dataset_titanic.csv',delimiter='\t')
 
-    df_electro.iloc[idx, 1] = numpy.nan
+    xx = pd.isna(df_titanic)
+    yy = pd.isnull(df_titanic)
 
-    df_dummy = pd.DataFrame(numpy.array([[5,9,-5,999,3],
-                                         [7,numpy.NaN,0,1,0],
-                                         [9,numpy.NaN,25,-1,numpy.NaN]]).T)
-
-    #ex_is_missing(df_dummy)
-    #ex_replace(df_dummy)
-    #ex_fillna(df)
-
-    #ex_imputer(df_dummy,idx_column=1,do_verbose=True,do_debug=False)
-    ex_imputer(df_electro,idx_column=1,do_verbose=False,do_debug=True)
-
-
+    i=0
+    #
+    # idx = numpy.random.choice(df_electro.shape[0], int(df_electro.shape[0] * 0.6))
+    #
+    # df_electro.iloc[idx, 1] = numpy.nan
+    #
+    # df_dummy = pd.DataFrame(numpy.array([[5,9,-5,999,3],
+    #                                      [7,numpy.NaN,0,1,0],
+    #                                      [9,numpy.NaN,25,-1,numpy.NaN]]).T)
+    #
+    #
+    #
+    #
+    # #ex_is_missing(df_dummy)
+    # #ex_replace(df_dummy)
+    # #ex_fillna(df)
+    #
+    # #ex_imputer(df_dummy,idx_column=1,do_verbose=True,do_debug=False)
+    # ex_imputer(df_electro,idx_column=1,do_verbose=False,do_debug=True)
+    #
+    #
+    #

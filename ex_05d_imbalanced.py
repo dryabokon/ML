@@ -29,8 +29,8 @@ def get_SMOTE(X, Y,do_debug=False):
 
         customPalette = ['#808080', '#C00000']
 
-        P.plot_2D_features_v3(df, x_range=x_range,y_range=y_range,palette=customPalette,transparency=0.75,figsize=(6,4),filename_out='original.png')
-        P.plot_2D_features_v3(df_sampled, x_range=x_range,y_range=y_range,palette=customPalette,transparency=0.75,figsize=(6,4), filename_out='SMOTE.png')
+        P.plot_2D_features(df, x_range=x_range,y_range=y_range,palette=customPalette,transparency=0.75,figsize=(6,4),filename_out='original.png')
+        P.plot_2D_features(df_sampled, x_range=x_range,y_range=y_range,palette=customPalette,transparency=0.75,figsize=(6,4), filename_out='SMOTE.png')
     return X_Sampled, Y_Sampled
 # ----------------------------------------------------------------------------------------------------------------------
 def get_SMOTE_UnderSampler(X, Y,do_debug=False):
@@ -42,8 +42,8 @@ def get_SMOTE_UnderSampler(X, Y,do_debug=False):
         df_sampled = pd.DataFrame(numpy.concatenate((Y_Sampled.reshape(-1, 1), X_Sampled), axis=1), columns=['Y', 'x0', 'x1'])
         df         = pd.DataFrame(numpy.concatenate((Y.reshape(-1, 1), X), axis=1),columns=['Y', 'x0', 'x1'])
         customPalette = ['#808080', '#C00000']
-        P.plot_2D_features_v3(df, x_range=x_range,y_range=y_range,palette=customPalette,transparency=0.5,figsize=(6,4),filename_out='original.png')
-        P.plot_2D_features_v3(df_sampled, x_range=x_range,y_range=y_range,palette=customPalette,transparency=0.5,figsize=(6,4),filename_out='SMOTE_UnderSampler.png')
+        P.plot_2D_features(df, x_range=x_range,y_range=y_range,palette=customPalette,transparency=0.5,figsize=(6,4),filename_out='original.png')
+        P.plot_2D_features(df_sampled, x_range=x_range,y_range=y_range,palette=customPalette,transparency=0.5,figsize=(6,4),filename_out='SMOTE_UnderSampler.png')
     return X_Sampled, Y_Sampled
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_search(X, Y):

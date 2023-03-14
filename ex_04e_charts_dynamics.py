@@ -7,7 +7,13 @@ folder_out = './data/output/'
 # ---------------------------------------------------------------------------------------------------------------------
 PD = tools_plot_dancing.Plotter_dancing(folder_out,dark_mode=False)
 # ---------------------------------------------------------------------------------------------------------------------
-df = pd.read_csv('./data/ex_vacancies/bak/dou.csv',sep='\t')
+#df = pd.read_csv('./data/ex_vacancies/bak/dou.csv',sep='\t')
+# ---------------------------------------------------------------------------------------------------------------------
+df = pd.read_csv('./data/ex_vacancies/input_02_yearly_hack.csv',sep='\t')
+df = tools_DF.from_multi_column(df,idx_time=0)
+# ---------------------------------------------------------------------------------------------------------------------
+# df = pd.read_csv('./data/ex_population/population2.csv')
+# df = df[df['time']>=1800]
 # ---------------------------------------------------------------------------------------------------------------------
 def ex01_static_timeline():
     PD.plot_static_timeline_chart(df, filename_out='EDA_plot_static_timeline_chart.png',to_ratios=False)
@@ -25,6 +31,6 @@ def ex03_dynamic_timeline():
     return
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
-    ex01_static_timeline()
+    #ex01_static_timeline()
     #ex02_plot_stacked_data()
-    #ex03_dynamic_timeline()
+    ex03_dynamic_timeline()

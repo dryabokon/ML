@@ -9,10 +9,11 @@ folder_in = './data/ex_datasets/'
 folder_out = './data/output/'
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_plot_v2
+P = tools_plot_v2.Plotter(folder_out)
 # ----------------------------------------------------------------------------------------------------------------------
 def get_data_v3(n_samples=250, n_features = 3):
-
-    X, Y = make_regression(n_samples=n_samples, n_features=n_features,noise=50.0)
+    n_targets = 1
+    X, Y = make_regression(n_samples=n_samples, n_features=n_features,noise=50.0,n_targets=n_targets)
     Y[Y<=0]=0
     Y[Y >0]=1
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.5)
@@ -66,4 +67,4 @@ if __name__ == '__main__':
     ex_regression_in_house(X_train, Y_train, X_test, Y_test)
 
     df = pd.DataFrame(data=(numpy.hstack((Y_train.reshape((-1,1)),X_train))),columns=['target']+['%d'%c for c in range(X_train.shape[1])])
-    tools_plot_v2.pairplots_df(df,idx_target=0,folder_out=folder_out)
+    P.pairplots_df(df,idx_target=0)

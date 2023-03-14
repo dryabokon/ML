@@ -316,5 +316,4 @@ def ex_14_nan():
 if __name__ == '__main__':
     print('OK')
 
-
-
+    ex_12_ravel()

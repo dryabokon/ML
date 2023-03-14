@@ -13,14 +13,21 @@ P = tools_plot_v2.Plotter(folder_out,dark_mode=True)
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_squarify_plot(df,idx_weights,idx_labels):
 
-    col_label = df.columns.to_numpy()[idx_labels]
-    col_weights = df.columns.to_numpy()[idx_weights]
-    df_agg = df.groupby(col_label).sum()
+    # col_label = df.columns.to_numpy()[idx_labels]
+    # col_weights = df.columns.to_numpy()[idx_weights]
+    # df_agg = df.groupby(col_label).sum()
+    #
+    # weights = df_agg.loc[:, col_weights].to_numpy()
+    # labels = df_agg.index.to_numpy()
+    #P.plot_squarify(weights,labels,filename_out='squarify.png')
 
-    weights = df_agg.loc[:, col_weights].to_numpy()
-    labels = df_agg.index.to_numpy()
+    colors = (tools_draw_numpy.get_colors(100, colormap='ocean', alpha_blend=0.25, shuffle=False) )[10:50]
 
-    P.plot_squarify(weights,labels,filename_out='squarify.png')
+    #P.plot_squarify(df, idx_label=idx_labels, idx_size=idx_weights, palette='~viridis', stat='%', alpha=0, filename_out='squarify.png')
+
+    P.plot_squarify(df, idx_label=idx_labels, idx_size=idx_weights, colors=colors, stat='%', alpha=0, filename_out='squarify.png')
+
+
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_pie_plot(df,idx_weights,idx_labels):
@@ -69,6 +76,6 @@ def ex_vacancies():
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     #ex_flights()
-    #ex_users()
-    #ex_ML_areas()
-    ex_vacancies()
+
+    ex_ML_areas()
+    #ex_vacancies()

@@ -11,7 +11,7 @@ import tools_plot_v2
 # ---------------------------------------------------------------------------------------------------------------------
 folder_out = './data/output/'
 # ---------------------------------------------------------------------------------------------------------------------
-P = tools_plot_v2.Plotter(folder_out)
+#P = tools_plot_v2.Plotter(folder_out)
 # ---------------------------------------------------------------------------------------------------------------------
 #cmap_names =['viridis', 'plasma', 'inferno', 'magma', 'cividis']
 #cmap_names =['Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds','YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu','GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn']
@@ -50,10 +50,13 @@ def ex_bars():
     image = numpy.full((H,W,3), 0, dtype=numpy.uint8)
 
     for cm_name in cmap_names:
+
         N = plt.get_cmap(cm_name).N
-        colors = tools_draw_numpy.get_colors(N, colormap=cm_name)
+        colors = tools_draw_numpy.get_colors(N, colormap=cm_name,interpolate=False)
         for n in range(N - 1):
-            image[:,int(n * W / (H - 1)):int((n + 1) * W / (H - 1))] = colors[n]
+            j1 = int(n * W / (N - 1))
+            j2 = int((n + 1) * W / (N - 1))
+            image[:,j1:j2,:] = colors[n]
 
         cv2.imwrite(folder_out + '%s.png' % cm_name, image)
     return
@@ -89,4 +92,5 @@ if __name__ == '__main__':
     #ex_dark_light_line()
     #ex_dark_light_scatter()
 
-    ex_bars()
+    #ex_bars()
+    ex_circles()

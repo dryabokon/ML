@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 import os
 import struct
@@ -21,7 +22,7 @@ def from_symbol(str_u=u'\u2713'):
 
     return bytes0
 # ----------------------------------------------------------------------------------------------------------------------
-def from_bytes(bytes0):
+def int_from_bytes(bytes0):
     I = int.from_bytes(bytes0, byteorder='big', signed=False)
     str_u3 = bytes0.decode("utf-8")
     bytes1 = str_u3.encode("utf-8")
@@ -33,6 +34,29 @@ def from_bytes(bytes0):
 
     return str_u3
 # ----------------------------------------------------------------------------------------------------------------------
+def float_from_bytes(bytes0):
+
+    bytes1 = bytes([b for b in bytes0])
+
+    str_hex = bytes(bytes0).hex()
+    str_hex = ''.join(format(b, '02x') for b in bytes0)
+
+    #bb = [str_hex[i:i + 2] for i in range(0, len(str_hex), 2)]
+    #bytes2 = b''.join([bytes.fromhex(b) for b in bb])
+    bytes2 = b''.join([bytes.fromhex(str_hex[i:i + 2]) for i in range(0, len(str_hex), 2)])
+
+
+    flt = struct.unpack('f', bytes2)[0]
+
+    print(bytes0)
+    print(bytes1)
+    print(str_hex)
+    print(flt)
+    # print(str_u3)
+    # print(bytes1)
+
+    return
+# ----------------------------------------------------------------------------------------------------------------------
 def ex_01():
     str_u = u'\u2713'
     from_symbol(str_u)
@@ -41,10 +65,17 @@ def ex_01():
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_02():
     bytes0 = bytes([226, 156, 147])
-    from_bytes(bytes0)
+    int_from_bytes(bytes0)
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_03():
+    value = 1.0
+    bytes1 = bytearray(struct.pack('f', value))
+    float_from_bytes(bytes1)
+
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_04():
 
     res_char, res_I = [],[]
     for b1 in range(226,227):
@@ -65,11 +96,11 @@ def ex_03():
     print(''.join(res_char))
 
     return
+
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
-    ex_02()
 
-
-
+    #ex_02()
+    ex_03()
 
 

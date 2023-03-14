@@ -44,7 +44,7 @@ def ex_01_create_data_frame_meal():
          ('Coffee', 7, 6000)))
 
     df = pd.DataFrame(data=A, columns=['Product', '#', 'Price'])
-    #df = df.astype({'#': 'int32','Price': 'int32'})
+    df = df.astype({'#': 'int32'})
 
 
     return df
@@ -218,7 +218,7 @@ def ex_09_aggregates(df, idx_agg=0):
 def ex_09_pivot(df, idx_agg=0):
 
 
-    print(tools_DF.prettify(df,showindex=True))
+    print(tools_DF.prettify(df,showindex=True,showheader=False))
     # df_agg = tools_DF.my_agg(df, ['Product'], ['#'], ['sum'], order_idx=-1, ascending=True)
     # df_agg['label'] = df_agg['Product'].apply({'Apple':'F','Lemon':'F','Banana':'F','Coffee':'D','Milk':'D'})
     # print(tools_DF.prettify(df_agg, showindex=False))
@@ -274,7 +274,7 @@ def ex_14_hash(df):
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_14_hash_categoricasl(df):
-    df = df.dropna()
+    #df = df.dropna()
     print(df.head())
     print()
     df = tools_DF.hash_categoricals(df)
@@ -398,10 +398,10 @@ def ex_merge():
 # ----------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    # ex_01_create_data_series()
+    #ex_01_create_data_series()
     #df_ts = ex_01_create_data_frame_TS()
-    df_meal = ex_01_create_data_frame_meal()
-    # df_titanic = pd.read_csv(folder_in + 'dataset_titanic.csv', delimiter='\t')
+    #df_meal = ex_01_create_data_frame_meal()
+    df_titanic = pd.read_csv(folder_in + 'dataset_titanic.csv', delimiter='\t')
 
     #ex_02_inspect_quick(df_meal)
     # ex_02_inspect_body(df_meal)
@@ -423,18 +423,11 @@ if __name__ == '__main__':
     # ex_10_IO_read()
     # ex_12_is_null(df_titanic)
     # ex_13_is_missing(df_titanic)
-    # ex_14_hash(df_titanic)
-    # ex_14_hash_categoricasl(df_titanic)
+    #ex_14_hash(df_titanic)
+    ex_14_hash_categoricasl(df_titanic)
 
     # ex_concat()
     #ex_align()
     #ex_merge()
-    
 
-
-    #ex_01_create_data_frame_v2()
-    print(df_meal)
-    i = df_meal.isnull()
-    print(i)
-
-    #print(df_meal[i])
+    #ex_01_create_data_frame_meal()

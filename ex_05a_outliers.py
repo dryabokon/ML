@@ -34,8 +34,8 @@ def get_data(fraction_outlier):
     confidence_mat = numpy.array([(10**8*multivariate_normal.pdf(x, mean, cov)).astype(int) for x in numpy.c_[xx.flatten(), yy.flatten()]])
     confidence_mat=confidence_mat/numpy.max(confidence_mat)
     grid_confidence = -numpy.log(confidence_mat+(1e-5)).reshape((100, 100))
-    P.plot_contourf(X[Y <= 0], X[Y > 0], xx, yy, grid_confidence, x_range=[x1 - d, x2 + d], y_range=[y1 - d, y2 + d],filename_out='1_GT_density.png')
-    P.plot_2D_features_multi_Y(X, Y,x_range=[x1 - d, x2 + d], y_range=[y1 - d, y2 + d], filename_out='1_GT.png')
+    P.plot_contourf(X[Y <= 0], X[Y > 0], xx, yy, grid_confidence, xlim=[x1 - d, x2 + d], ylim=[y1 - d, y2 + d],filename_out='1_GT_density.png')
+    #P.plot_2D_features(X, Y,x_range=[x1 - d, x2 + d], y_range=[y1 - d, y2 + d], filename_out='1_GT.png')
     return X,Y
 # ----------------------------------------------------------------------------------------------------------------------
 def get_meshgrid(X):
@@ -60,8 +60,8 @@ def normal_fit_predict(X, fraction_outlier):
     confidence_mat = numpy.array([(10 ** 8 * multivariate_normal.pdf(x, mean, cov)).astype(int) for x in numpy.c_[xx.flatten(), yy.flatten()]])
     confidence_mat = confidence_mat / numpy.max(confidence_mat)
     grid_confidence = -numpy.log(confidence_mat + (1e-5)).reshape((100, 100))
-    P.plot_contourf(X[Y > 0], X[Y <= 0], xx, yy, grid_confidence, x_range=[x1-d,x2+d],y_range=[y1-d,y2+d],filename_out='2_pred_Normal_density.png')
-    P.plot_2D_features_multi_Y(X, -Y, x_range=[x1-d,x2+d],y_range=[y1-d,y2+d],filename_out='2_pred_Normal.png')
+    P.plot_contourf(X[Y > 0], X[Y <= 0], xx, yy, grid_confidence, xlim=[x1-d,x2+d],ylim=[y1-d,y2+d],filename_out='2_pred_Normal_density.png')
+    P.plot_2D_features(X, -Y, x_range=[x1-d,x2+d],y_range=[y1-d,y2+d],filename_out='2_pred_Normal.png')
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def predict_IsolationForest(X, fraction_outlier):
@@ -109,14 +109,14 @@ def predict_LocalOutlierFactor(X, fraction_outlier):
 
     confidence_mat = numpy.array([(A.predict(x.reshape(-1,2))).astype(int) for x in numpy.c_[xx.flatten(), yy.flatten()]])
     grid_confidence = (confidence_mat).reshape((100, 100))
-    P.plot_contourf(X[Y > 0], X[Y <= 0], xx, yy, grid_confidence, x_range=[x1 - d, x2 + d], y_range=[y1 - d, y2 + d],filename_out='5_pred_LocalOutlierFactor_density.png')
+    P.plot_contourf(X[Y > 0], X[Y <= 0], xx, yy, grid_confidence, xlim=[x1 - d, x2 + d], ylim=[y1 - d, y2 + d],filename_out='5_pred_LocalOutlierFactor_density.png')
     P.plot_2D_features_multi_Y(X, -Y, x_range=[x1 - d, x2 + d], y_range=[y1 - d, y2 + d],filename_out='5_pred_LocalOutlierFactor.png')
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_simple():
     fraction_outlier = 0.05
     X, Y = get_data(fraction_outlier)
-    P.plot_2D_features_multi_Y(X, -IsolationForest(contamination=fraction_outlier).fit_predict(X), filename_out='3_pred_IsolationForest.png')
+    P.plot_2D_features(X, -IsolationForest(contamination=fraction_outlier).fit_predict(X), filename_out='3_pred_IsolationForest.png')
     P.plot_2D_features_multi_Y(X, -EllipticEnvelope(contamination=fraction_outlier).fit_predict(X), filename_out='4_pred_EllipticEnvelope.png')
     P.plot_2D_features_multi_Y(X, -LocalOutlierFactor(contamination=fraction_outlier, novelty=True).fit(X).predict(X), filename_out='5_pred_LocalOutlierFactor.png')
     return
