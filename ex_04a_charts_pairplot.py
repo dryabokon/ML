@@ -25,7 +25,7 @@ def ex_houses():
     P.pairplots_df(df, idx_target=-1)
     return
 # ----------------------------------------------------------------------------------------------------------------------
-def plot_bars_CV(image,values,vmin=None,vmax=None):
+def plot_bars_CV(image,values,vmin=None,vmax=None,width=1.0):
     if vmin is None:
         vmin=numpy.min(values)
     if vmax is None:
@@ -34,8 +34,10 @@ def plot_bars_CV(image,values,vmin=None,vmax=None):
     H,W = image.shape[:2]
     x_pos = numpy.linspace(0,W,values.shape[0]+1)
 
+    d = 0.5*W*width/(values.shape[0])
     y_pos = [0+H*(v-vmin)/(vmax-vmin) for v in values]
-    rects = numpy.array([[[x1,H-1],[x2,H-y]] for x1,x2,y in zip(x_pos[:-1],x_pos[1:],y_pos)])
+    rects = numpy.array([[[(x1+x2)/2-d,H-1],[(x1+x2)/2+d,H-y]] for x1,x2,y in zip(x_pos[:-1],x_pos[1:],y_pos)])
+
 
     image = tools_draw_numpy.draw_rects(image, rects, color=(0,0,200), w=2, alpha_transp=0.8)
 
@@ -94,6 +96,6 @@ if __name__ == '__main__':
 
     image = numpy.full((240,320,3),255,dtype=numpy.uint8)
     values = numpy.array([128,50,20,30])
-    image = plot_bars_CV(image,values,vmin=0,vmax=255)
+    image = plot_bars_CV(image,values,vmin=0,vmax=255,width=0.7)
     cv2.imwrite(folder_out+'histo.png',image)
 
