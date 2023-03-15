@@ -25,21 +25,20 @@ def ex_houses():
     P.pairplots_df(df, idx_target=-1)
     return
 # ----------------------------------------------------------------------------------------------------------------------
-def plot_bars_CV(image,values,vmin=None,vmax=None,width=1.0):
+def plot_bars_CV(image,values,vmin=None,vmax=None,width=0.7,pad=0.1):
     if vmin is None:
         vmin=numpy.min(values)
     if vmax is None:
         vmax = numpy.max(values)
 
     H,W = image.shape[:2]
-    x_pos = numpy.linspace(0,W,values.shape[0]+1)
+    x_pos = numpy.linspace(W*pad,W*(1-pad),values.shape[0]+1)
 
-    d = 0.5*W*width/(values.shape[0])
-    y_pos = [0+H*(v-vmin)/(vmax-vmin) for v in values]
-    rects = numpy.array([[[(x1+x2)/2-d,H-1],[(x1+x2)/2+d,H-y]] for x1,x2,y in zip(x_pos[:-1],x_pos[1:],y_pos)])
+    d = 0.5*W*(1-2*pad)*width/(values.shape[0])
+    y_pos = [H*pad+(H*(1-pad)-H*pad)*(v-vmin)/(vmax-vmin) for v in values]
+    rects = numpy.array([[[(x1+x2)/2-d,H*(1-pad)],[(x1+x2)/2+d,H-y]] for x1,x2,y in zip(x_pos[:-1],x_pos[1:],y_pos)])
 
-
-    image = tools_draw_numpy.draw_rects(image, rects, color=(0,0,200), w=2, alpha_transp=0.8)
+    image = tools_draw_numpy.draw_rects(image, rects, color=(187,187,0), w=2, alpha_transp=0.8)
 
     return image
 # ----------------------------------------------------------------------------------------------------------------------
