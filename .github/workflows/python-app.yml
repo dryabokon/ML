@@ -1,0 +1,16 @@
+name: CI with ML flow 
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  print_secret:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: python print secret
+      env:
+        SECRET_LOGIN: ${{ secrets.SECRET_LOGIN }}
+        SECRET_DB: ${{ secrets.SECRET_DB }}
+      run: python ex_28b_mlflow_GH_Actions.py
