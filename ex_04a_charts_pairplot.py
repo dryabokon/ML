@@ -38,7 +38,7 @@ def plot_bars_CV(image,values,vmin=None,vmax=None,width=0.7,pad=0.1):
     y_pos = [H*pad+(H*(1-pad)-H*pad)*(v-vmin)/(vmax-vmin) for v in values]
     rects = numpy.array([[[(x1+x2)/2-d,H*(1-pad)],[(x1+x2)/2+d,H-y]] for x1,x2,y in zip(x_pos[:-1],x_pos[1:],y_pos)])
 
-    image = tools_draw_numpy.draw_rects(image, rects, color=(187,187,0), w=2, alpha_transp=0.8)
+    image = tools_draw_numpy.draw_rects(image, rects,colors=(100,0,0))
 
     return image
 # ----------------------------------------------------------------------------------------------------------------------
@@ -88,13 +88,13 @@ def ex_iris_pairplot():
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    #tools_IO.remove_files(folder_out,create=True)
+    tools_IO.remove_files(folder_out,create=True)
 
-    #ex_titatic_pairplot()
+    ex_titatic_pairplot()
     #ex_iris_pairplot()
 
-    image = numpy.full((240,320,3),255,dtype=numpy.uint8)
-    values = numpy.array([128,50,20,30])
-    image = plot_bars_CV(image,values,vmin=0,vmax=255,width=0.7)
-    cv2.imwrite(folder_out+'histo.png',image)
+    # image = numpy.full((240,320,3),128,dtype=numpy.uint8)
+    # values = numpy.array([128,50,20,30])
+    # image = plot_bars_CV(image,values,vmin=0,vmax=255,width=0.7)
+    # cv2.imwrite(folder_out+'histo.png',image)
 

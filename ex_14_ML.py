@@ -104,11 +104,7 @@ if __name__ == '__main__':
     tools_IO.remove_files(folder_out)
     #ex_moon()
     #ex_heart()
-    ex_random()
+    #ex_random()
     #ex_flights_kibana()
 
-    #ex_titanic()
-
-
-
-
+    ex_titanic()

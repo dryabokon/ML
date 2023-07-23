@@ -27,7 +27,7 @@ def detrend_v1(X):
     return detrended
 # ----------------------------------------------------------------------------------------------------------------------
 def detrend_v2(X):
-    detrended = X - seasonal_decompose(X, model='multiplicative',freq=30).trend
+    detrended = X - seasonal_decompose(X, model='multiplicative',period=30).trend
     return detrended
 # ----------------------------------------------------------------------------------------------------------------------
 def detrend_v3(X):
@@ -55,4 +55,4 @@ if __name__ == '__main__':
                         'detrend_v3 diff log': detrend_v3(X)})
 
 
-    P.TS_matplotlib(df2, idxs_target=[0,3],idx_feature=None,remove_legend=False,lw=3,x_range=None,y_range=None, palette='tab10', figsize=(8,6), filename_out='detrend.png')
+    P.TS_seaborn(df2, idxs_target=[0,1,2],idx_time=None,remove_legend=False,lw=3,x_range=None,y_range=None, figsize=(8,6), filename_out='detrend.png')

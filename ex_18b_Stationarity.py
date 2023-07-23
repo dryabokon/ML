@@ -62,10 +62,10 @@ def test_kpss(ts):
 #df,idx_target = pd.DataFrame({'data': numpy.sin(numpy.arange(1000)/10)}, index=numpy.arange(1000)),0
 #df,idx_target = pd.DataFrame({'data': numpy.sin(numpy.arange(1000)/10)+numpy.linspace(0,5,1000)}, index=numpy.arange(1000)),0
 #df,idx_target = sm.datasets.sunspots.load_pandas().data,1
-#df, idx_target = pd.read_csv(folder_in + 'traffic_hourly_small.txt', delimiter=','), 1
+df, idx_target = pd.read_csv(folder_in + 'traffic_hourly_small.txt', delimiter=','), 1
 #df, idx_target = pd.read_csv(folder_in + 'electricity_hourly_small.txt', delimiter=','), 1
 #df, idx_target = pd.read_csv(folder_in + 'Monthly_passengers.txt', delimiter='\t'), 1
-df, idx_target = pd.read_csv(folder_in + 'daily-total-female-births.txt', delimiter='\t'), 1
+#df, idx_target = pd.read_csv(folder_in + 'daily-total-female-births.txt', delimiter='\t'), 1
 # ----------------------------------------------------------------------------------------------------------------------
 # df, idx_target = pd.read_csv(folder_in + 'YX_sine.txt', delimiter='\t'), 0
 # df.iloc[:, idx_target]+=numpy.linspace(0,2,df.shape[0])

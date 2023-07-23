@@ -29,13 +29,14 @@ def plot_all_in_one(df0, idx_target):
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
-df, idx_target = pd.read_csv(folder_in + 'traffic_hourly_small.txt', delimiter=','), 1
-#df, idx_target = pd.read_csv(folder_in + 'electricity_hourly_small.txt', delimiter=','), 1
+#df, idx_target = pd.read_csv(folder_in + 'traffic_hourly_small.txt', delimiter=','), 1
+df, idx_target = pd.read_csv(folder_in + 'electricity_hourly_small.txt', delimiter=','), 1
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     df = tools_DF.hash_categoricals(df)
 
     #P.plot_TS_separatly(df, idx_target)
-    plot_all_in_one(df, idx_target)
+    #plot_all_in_one(df, idx_target)
     #P.plot_target_feature(df, idx_target)
+    P.TS_seaborn(df, idxs_target=idx_target, idx_time=5, filename_out='xxx.png',major_step=30,out_format_x='%Y-%M')

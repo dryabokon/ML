@@ -64,13 +64,13 @@ def ex_UnobservedComponents(df, idx_target):
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
-#df,idx_target = pd.DataFrame({'data': 2+numpy.sin(numpy.arange(1000)/10)+numpy.linspace(0,5,1000)}, index=numpy.arange(1000)),0
-df, idx_target = pd.read_csv(folder_in + 'traffic_hourly_small.txt', delimiter=','), 1
+df,idx_target = pd.DataFrame({'data': 2+numpy.sin(numpy.arange(100)/0.5)+numpy.linspace(0,5,100)}, index=numpy.arange(100)),0
+#df, idx_target = pd.read_csv(folder_in + 'traffic_hourly_small.txt', delimiter=','), 1
 #df, idx_target = pd.read_csv(folder_in + 'electricity_hourly_small.txt', delimiter=','), 1
 #df, idx_target = pd.read_csv(folder_in + 'monthly_passengers.txt', delimiter='\t'), 1
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     #P.TS_matplotlib(df, idx_target, None, filename_out='Target.png')
-    #ex_decompose(df.iloc[:, idx_target])
+    ex_decompose(df.iloc[:, idx_target])
     ex_UnobservedComponents(df, idx_target)
