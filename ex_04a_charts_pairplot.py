@@ -90,7 +90,8 @@ if __name__ == '__main__':
 
     tools_IO.remove_files(folder_out,create=True)
 
-    ex_titatic_pairplot()
+    P.empty(filename_out='xxx.png')
+    #ex_titatic_pairplot()
     #ex_iris_pairplot()
 
     # image = numpy.full((240,320,3),128,dtype=numpy.uint8)
