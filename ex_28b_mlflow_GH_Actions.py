@@ -26,7 +26,7 @@ port = os.environ.get("SECRET_PORT")
 remote_username = os.environ.get("SECRET_USERNAME")
 ppk_value = os.environ.get("SECRET_PPK_VALUE")
 ppk_key_path = './private_key'
-with open(ppk_key_path, mode='0o400', encoding='utf-8') as f:
+with open(ppk_key_path, mode='r', encoding='utf-8') as f:
     f.write(ppk_value)
 F = tools_MLflower.MLFlower(host,port,remote_storage_folder='~/sources/ex_mlflow',remote_username=remote_username, ppk_key_path=ppk_key_path)
 # ---------------------------------------------------------------------------------------------------------------------
