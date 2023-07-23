@@ -1,5 +1,7 @@
 import os
 import sys
+
+import numpy.random
 import pandas as pd
 # ---------------------------------------------------------------------------------------------------------------------
 sys.path.insert(1, './tools/')
@@ -26,8 +28,9 @@ port = os.environ.get("SECRET_PORT")
 remote_username = os.environ.get("SECRET_USERNAME")
 ppk_value = os.environ.get("SECRET_PPK_VALUE")
 ppk_key_path = './private_key'
-with open(ppk_key_path, mode='r', encoding='utf-8') as f:
+with open(ppk_key_path, mode='w', encoding='utf-8') as f:
     f.write(ppk_value)
+os.system('chmod 400 %s'%ppk_key_path)
 F = tools_MLflower.MLFlower(host,port,remote_storage_folder='~/sources/ex_mlflow',remote_username=remote_username, ppk_key_path=ppk_key_path)
 # ---------------------------------------------------------------------------------------------------------------------
 C = classifier_LM.classifier_LM()
@@ -45,6 +48,7 @@ if __name__ == "__main__":
     P.set_color(0, P.color_blue)
     P.set_color(1, P.color_amber)
     df = tools_DF.hash_categoricals(df)
+    df = df[numpy.random.choice(df.shape[0],int(0.75*df.shape[0]),replace=False)]
     T.tic('E2E_train_test_df')
     df_metrics = ML.E2E_train_test_df(df, idx_target=idx_target, do_charts=True, do_pca=True)
     duration = T.print_duration('E2E_train_test_df')
