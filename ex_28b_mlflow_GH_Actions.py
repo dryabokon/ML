@@ -53,5 +53,5 @@ if __name__ == "__main__":
     metrics = {'F1 train': df_metrics.iloc[-1, 1], 'F1 test': df_metrics.iloc[-1, 2],'train time': int(duration.split(':')[0]) * 60 + int(duration.split(':')[1])}
     params = {}
 
-    artifacts = [folder_out + f for f in tools_IO.get_filenames(folder_out,'*.png')]
+    artifacts = [folder_out + f for f in tools_IO.get_filenames(folder_out,'*.png')] 
     #F.save_experiment(experiment_name='CI: integration tests',params=params,metrics=metrics,artifacts=artifacts)
