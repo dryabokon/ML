@@ -18,14 +18,14 @@ folder_out = './data/output/'
 # ppk_key_path = 'C:/Users/Anna/.ssh/ssh_rsa_dima_OpenSSH'
 # F = tools_MLflower.MLFlower(host,port,remote_storage_folder='~/sources/ex_mlflow',remote_username=remote_username, ppk_key_path=ppk_key_path)
 # ---------------------------------------------------------------------------------------------------------------------
-host = os.environ.get("SECRET_HOST")
-port = os.environ.get("SECRET_PORT")
-remote_username = os.environ.get("SECRET_USERNAME")
-ppk_value = os.environ.get("SECRET_PPK_VALUE")
-ppk_key_path = './private_key'
-with open(ppk_key_path, 'w+', encoding='utf-8') as f:
-    f.write(ppk_value)
-F = tools_MLflower.MLFlower(host,port,remote_storage_folder='~/sources/ex_mlflow',remote_username=remote_username, ppk_key_path=ppk_key_path)
+# host = os.environ.get("SECRET_HOST")
+# port = os.environ.get("SECRET_PORT")
+# remote_username = os.environ.get("SECRET_USERNAME")
+# ppk_value = os.environ.get("SECRET_PPK_VALUE")
+# ppk_key_path = './private_key'
+# with open(ppk_key_path, 'w+', encoding='utf-8') as f:
+#     f.write(ppk_value)
+# F = tools_MLflower.MLFlower(host,port,remote_storage_folder='~/sources/ex_mlflow',remote_username=remote_username, ppk_key_path=ppk_key_path)
 # ---------------------------------------------------------------------------------------------------------------------
 C = classifier_LM.classifier_LM()
 P = tools_plot_v2.Plotter(folder_out)
@@ -51,4 +51,4 @@ if __name__ == "__main__":
     params = {}
 
     artifacts = [folder_out + f for f in tools_IO.get_filenames(folder_out,'*.png')]
-    F.save_experiment(experiment_name='CI: integration tests',params=params,metrics=metrics,artifacts=artifacts)
+    #F.save_experiment(experiment_name='CI: integration tests',params=params,metrics=metrics,artifacts=artifacts)
