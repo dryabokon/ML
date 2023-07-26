@@ -46,7 +46,7 @@ if __name__ == "__main__":
     P.set_color(0, P.color_blue)
     P.set_color(1, P.color_amber)
     df = tools_DF.hash_categoricals(df)
-    df = df.iloc[numpy.random.choice(df.shape[0],int(0.75*df.shape[0]),replace=False)]
+    df = df.iloc[numpy.random.choice(df.shape[0],int(0.50*df.shape[0]),replace=False)]
     T.tic('E2E_train_test_df')
     df_metrics = ML.E2E_train_test_df(df, idx_target=idx_target, do_charts=True, do_pca=True)
     duration = T.print_duration('E2E_train_test_df')
@@ -59,5 +59,5 @@ if __name__ == "__main__":
     params = {}
 
     artifacts = [folder_out + f for f in tools_IO.get_filenames(folder_out,'*.png')]
-    F.save_experiment(experiment_name='CI: integration tests',params=params,metrics=metrics,artifacts=artifacts) 
+    F.save_experiment(experiment_name='CI: integration tests',params=params,metrics=metrics,artifacts=artifacts)
 
