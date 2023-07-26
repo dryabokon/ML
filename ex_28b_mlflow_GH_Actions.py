@@ -1,6 +1,5 @@
 import os
 import sys
-
 import numpy.random
 import pandas as pd
 # ---------------------------------------------------------------------------------------------------------------------
@@ -36,7 +35,6 @@ F = tools_MLflower.MLFlower(host,port,remote_storage_folder='~/sources/ex_mlflow
 C = classifier_LM.classifier_LM()
 P = tools_plot_v2.Plotter(folder_out)
 ML = tools_ML_v2.ML(C, folder_out=folder_out)
-
 T = tools_time_profiler.Time_Profiler(verbose=False)
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
@@ -54,7 +52,10 @@ if __name__ == "__main__":
     duration = T.print_duration('E2E_train_test_df')
     print(tools_DF.prettify(df_metrics, showindex=False))
 
-    metrics = {'F1 train': df_metrics.iloc[-1, 1], 'F1 test': df_metrics.iloc[-1, 2],'train time': int(duration.split(':')[0]) * 60 + int(duration.split(':')[1])}
+    metrics = {'F1 train': df_metrics.iloc[-1, 1],
+               'F1 test': df_metrics.iloc[-1, 2],
+               'train time': int(duration.split(':')[0]) * 60 + int(duration.split(':')[1])}
+
     params = {}
 
     artifacts = [folder_out + f for f in tools_IO.get_filenames(folder_out,'*.png')]
