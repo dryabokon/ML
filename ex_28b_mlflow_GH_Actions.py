@@ -60,3 +60,5 @@ if __name__ == "__main__":
 
     artifacts = [folder_out + f for f in tools_IO.get_filenames(folder_out,'*.png')]
     F.save_experiment(experiment_name='CI: integration tests',params=params,metrics=metrics,artifacts=artifacts)
+
+    
