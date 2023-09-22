@@ -53,7 +53,8 @@ def ex_titatic_histo():
     P.set_color('1-survived',P.color_blue)
 
     idx_target = df.columns.get_loc('survived')
-    #P.histoplots_df(df, idx_target,transparency=0.5)
+    #df.iloc[:,idx_target]=0
+    P.histoplots_df(df, idx_target,transparency=0.5)
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
@@ -67,10 +68,19 @@ def ex_titatic_pairplot():
     P.set_color('0-not survived', P.color_blue)
     P.set_color('1-survived', P.color_amber)
     idx_target = df.columns.get_loc('survived')
-
-
-
     P.pairplots_df(df, idx_target, None, add_noise=False,remove_legend=True)
+
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_titatic_PCA():
+    df = seaborn.load_dataset('titanic')
+    df = df.drop(columns=['alive'])
+
+    idx_target = df.columns.get_loc('survived')
+    df = tools_DF.hash_categoricals(df)
+    df = tools_DF.impute_na(df, strategy='mean')
+    P.plot_PCA(df, idx_target,method='tSNE',filename_out='titanic_tSNE.png')
+    P.plot_PCA(df, idx_target, method='UMAP', filename_out='titanic_UMAP.png')
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
@@ -86,16 +96,21 @@ def ex_iris_pairplot():
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
+def ex_iris_PCA():
+    df,idx_target = pd.read_csv(folder_in + 'dataset_iris.csv'),0
+    df = tools_DF.hash_categoricals(df)
+    df = tools_DF.impute_na(df, strategy='mean')
+    P.plot_PCA(df, idx_target,method='tSNE',filename_out='iris_tSNE.png')
+    return
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     tools_IO.remove_files(folder_out,create=True)
 
-    P.empty(filename_out='xxx.png')
+    #P.empty(filename_out='xxx.png')
+    #ex_titatic_histo()
     #ex_titatic_pairplot()
     #ex_iris_pairplot()
-
-    # image = numpy.full((240,320,3),128,dtype=numpy.uint8)
-    # values = numpy.array([128,50,20,30])
-    # image = plot_bars_CV(image,values,vmin=0,vmax=255,width=0.7)
-    # cv2.imwrite(folder_out+'histo.png',image)
+    ex_titatic_PCA()
+    #ex_iris_PCA()
 
