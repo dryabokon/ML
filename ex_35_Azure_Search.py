@@ -36,9 +36,19 @@ def ex_search():
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
+def ex_search2():
+    index_name = 'idx-hyperawareness'
+    C.search_client = C.get_search_client(index_name)
+    df = C.search_document(query='',select=['uuid','text'])
+    #df = C.search_document(query='Eco*',select=['hotelName'])
+    #df = C.search_document_hybrid(query='',field_embedding='descriptionVector',select=['hotelName','category','description'])
+    print(tools_DF.prettify(df, showheader=True, showindex=False))
+
+    return
+# ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     #print(C.get_document(key=23))
     # C.delete_document(index_name='hotels-sample-index',dict_doc={"hotelId": "1000"})
     #ex_tokenize_and_upload()
-    ex_search()
+    ex_search2()
