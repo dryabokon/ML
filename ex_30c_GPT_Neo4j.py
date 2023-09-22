@@ -14,7 +14,7 @@ import tools_neo4j
 filename_config_neo4j = './private_config_neo4j.yaml'
 filename_config_ssh = './private_config_ssh.yaml'
 NEO4J = tools_neo4j.processor_Neo4j(filename_config_neo4j,filename_config_ssh,folder_out)
-A = tools_Langchain.Assistant(pinecone_api_key='788a0515-aa52-4d1d-ac1c-a1ae44fc9460', pinecone_index_name="idx5", filename_openai_key='openaiapikey_private_D.txt', chain_type='Neo4j')
+A = tools_Langchain.Assistant(pinecone_api_key='', pinecone_index_name="idx5", filename_openai_key='openaiapikey_private_D.txt', chain_type='Neo4j')
 # ----------------------------------------------------------------------------------------------------------------------
 def prepare_dataset_titanic(flat_struct_for_classification=True):
     filename_in = folder_in + 'dataset_titanic.csv'
