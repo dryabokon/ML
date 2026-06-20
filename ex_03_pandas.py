@@ -399,10 +399,15 @@ def ex_merge():
 if __name__ == '__main__':
     #ex_01_create_data_series()
     #df_ts = ex_01_create_data_frame_TS()
-    #df_meal = ex_01_create_data_frame_meal()
+    df_meal = ex_01_create_data_frame_meal()
     df_titanic = pd.read_csv(folder_in + 'dataset_titanic.csv', delimiter='\t')
 
-    #ex_02_inspect_quick(df_meal)
+
+
+
+
+
+    #ex_02_inspect_quick(df_titanic)
     # ex_02_inspect_body(df_meal)
     # ex_02_inspect_body_no_index(df_meal)
     # ex_02_inspect_columns(df_meal)
@@ -415,15 +420,15 @@ if __name__ == '__main__':
     # ex_07_slicing_rows(df_meal)
     # ex_07_slicing_rows_v2(df_ts)
 
-    # ex_08_order(df_meal)
+    #ex_08_order(df_meal)
     #ex_09_aggregates(df_meal, 0)
     #ex_09_pivot(df_ts)
     # ex_09_interpolate()
     # ex_10_IO_read()
     # ex_12_is_null(df_titanic)
     # ex_13_is_missing(df_titanic)
-    #ex_14_hash(df_titanic)
-    ex_14_hash_categoricasl(df_titanic)
+    ex_14_hash(df_titanic)
+    #ex_14_hash_categoricasl(df_titanic)
 
     # ex_concat()
     #ex_align()

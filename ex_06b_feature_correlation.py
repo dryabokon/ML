@@ -1,7 +1,7 @@
 import numpy
 import pandas as pd
-from statsmodels.regression.linear_model import OLS
-from statsmodels.stats.outliers_influence import variance_inflation_factor
+# from statsmodels.regression.linear_model import OLS
+# from statsmodels.stats.outliers_influence import variance_inflation_factor
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_DF
 import tools_ML_v2

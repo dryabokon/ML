@@ -6,6 +6,7 @@ from matplotlib.ticker import ScalarFormatter,MultipleLocator
 # ----------------------------------------------------------------------------------------------------------------------
 import tools_plot_v2
 import tools_draw_numpy
+import tools_DF
 # ----------------------------------------------------------------------------------------------------------------------
 folder_in = './data/ex_datasets/'
 folder_out = './data/output/'
@@ -48,8 +49,10 @@ def ex_multi_TS_range_num():
     out_locator_x  = MultipleLocator(base=10)
     x_range = [0,df.shape[0]]
 
-    P.TS_seaborn(df   , idxs_target=idxs_target, idx_time=-1,                                out_format_x=out_format_x,out_locator_x=out_locator_x,x_range=x_range,filename_out='multi_TS_num_pointplot_sns.png')
-    P.TS_matplotlib(df, idxs_target=idxs_target, idx_time=-1, colors=colors[:,[2,1,0]]/255.0,out_format_x=out_format_x,out_locator_x=out_locator_x,x_range=x_range,filename_out='multi_TS_num_pointplot_mpl.png')
+    P.TS_seaborn   (df, idxs_target=idxs_target, idx_time=None,                                lw=1,out_format_x=out_format_x,out_locator_x=out_locator_x,x_range=x_range,filename_out='multi_TS_num_pointplot_sns.png')
+    #P.TS_matplotlib(df, idxs_target=idxs_target, idx_time=-1, colors=colors[:,[2,1,0]]/255.0,out_format_x=out_format_x,out_locator_x=out_locator_x,x_range=x_range,filename_out='multi_TS_num_pointplot_mpl.png')
+
+    print(tools_DF.prettify(df,showindex=False))
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
@@ -103,5 +106,7 @@ if __name__ == '__main__':
     idx_time = 0
     idxs_target = [x for x in numpy.arange(1, df.shape[1])]
 
-    #ex_multi_TS_range_num()
-    ex_multi_TS_range_date(df,idx_time,idxs_target)
+    ex_multi_TS_range_num()
+    #ex_multi_TS_range_date(df,idx_time,idxs_target)
+
+

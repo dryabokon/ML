@@ -3,6 +3,13 @@ import pickle
 
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_01_create():
+    #create me an numpy aray of int elements (3,4)
+
+
+
+
+
+
     A = numpy.zeros(4)
 
     B = numpy.empty((3, 2))
@@ -25,9 +32,9 @@ def ex_01_create():
 
     K = numpy.array((('00', '01', '02'), ('10', '11', '12')))
 
-    L = numpy.linspace(10, 25, 9)
+    L = numpy.linspace(10, 25, 9) #[10,11.3,,25]
 
-    M = numpy.arange(10, 25, 5)
+    M = numpy.arange(10, 25, 5)#10,20
 
     return
 
@@ -53,6 +60,9 @@ def ex_03_combine():
     B = numpy.full((5, 3), 3)
     C = numpy.full((2, 4), 2)
     D = numpy.full((2, 3), 4)
+
+
+
 
     K1 = numpy.vstack((A, B))
     L1 = numpy.hstack((A, C))
@@ -210,7 +220,7 @@ def ex_10_IO_bin_pickle():
          ('Banana', 9, 3000),
          ('Coffee', 7, 6000)))
 
-    AA = A[:, [1, 2]].astype(numpy.int)
+    AA = A[:, [1, 2]].astype(str)
 
     with open('./A.dat', "wb") as f:
         pickle.dump(A, f)
@@ -234,6 +244,11 @@ def ex_10_IO_text():
 
     numpy.savetxt('A.txt', A, fmt='%s', delimiter='\t')
     B = numpy.loadtxt('A.txt', dtype=data_type, delimiter='\t')
+
+    import pandas as pd
+    df = pd.DataFrame(A,columns=['Name','Qty','Price'])
+    df.to_csv('A2.txt', index=True, header=True,sep='\t')
+
     return
 
 
@@ -313,7 +328,7 @@ def ex_14_nan():
     # ex_12_ravel()
     # ex_13_printoptions()
     #ex_10_IO_bin_npy()
-if __name__ == '__main__':
-    print('OK')
 
-    ex_12_ravel()
+if __name__ == '__main__':
+
+    ex_10_IO_text()

@@ -18,7 +18,7 @@ def ex_encode_ordinal_01():
     print()
     df.iloc[:,2] = encoder.fit_transform(df.iloc[:, 2].values.reshape((-1, 1)))
     print(df)
-
+    print(''.join(['-']*50))
     # drawback: missing value is encoded as a separate class
     # drawback: order of data is not respected
 
@@ -42,7 +42,7 @@ def ex_encode_ordinal_02():
     labels, unique = pd.factorize(cat, sort=True)
     df.edu_level = labels
     print(df)
-
+    print(''.join(['-'] * 50))
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_encode_OneHot():
@@ -52,7 +52,7 @@ def ex_encode_OneHot():
                                    ['F', 'AB'],
                                    ['F', 'B+']]))
     df.columns = ['sex', 'blood_type']
-    onehot = OneHotEncoder(dtype=numpy.int, sparse=True)
+    onehot = OneHotEncoder(dtype=int)
 
     df2 = pd.DataFrame(onehot.fit_transform(df[['sex', 'blood_type']]).toarray())
     df2.columns = numpy.unique(df['sex']).tolist() + numpy.unique(df['blood_type']).tolist()
@@ -61,7 +61,7 @@ def ex_encode_OneHot():
     print(df.to_string(index=False))
     print()
     print(df2.to_string(index=False))
-
+    print(''.join(['-'] * 50))
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def encode_label():
@@ -79,6 +79,6 @@ def encode_label():
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
 
-    #ex_encode_ordinal_01()
-    #ex_encode_ordinal_02()
-    ex_encode_OneHot()
+    ex_encode_ordinal_01()
+    ex_encode_ordinal_02()
+    #ex_encode_OneHot()

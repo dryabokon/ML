@@ -1,5 +1,4 @@
 import cv2
-import pandas as pd
 from PIL import Image
 import requests
 # ----------------------------------------------------------------------------------------------------------------------
@@ -30,6 +29,16 @@ def ex_text_features(text):
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
+def ex_image_features(image):
+    # get embeddings for image
+    inputs = processor(images=image, return_tensors="pt", padding=True)
+    image_emb = model.get_image_features(**inputs)
+    image_emb = image_emb.cpu().detach().numpy()
+    print(image_emb)
+
+
+    return
+# ----------------------------------------------------------------------------------------------------------------------
 def ex_image_text_similarity(image,text):
 
     inputs = processor(text=text, images=image, return_tensors="pt", padding=True)
@@ -46,5 +55,8 @@ def ex_image_text_similarity(image,text):
 if __name__ == '__main__':
 
     # inputs = tokenizer(texts, return_tensors="pt")
-    # image = Image.open(requests.get("http://images.cocodataset.org/val2017/000000039769.jpg", stream=True).raw)
-    ex_image_text_similarity(images,texts)
+    image = Image.open(requests.get("http://images.cocodataset.org/val2017/000000039769.jpg", stream=True).raw)
+    #ex_image_text_similarity(images,texts)
+    ex_image_features(image)
+
+

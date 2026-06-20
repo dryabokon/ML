@@ -31,6 +31,6 @@ def ex03_dynamic_timeline():
     return
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
-    #ex01_static_timeline()
+    ex01_static_timeline()
     #ex02_plot_stacked_data()
-    ex03_dynamic_timeline()
+    #ex03_dynamic_timeline()

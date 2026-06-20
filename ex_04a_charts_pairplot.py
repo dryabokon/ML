@@ -1,4 +1,3 @@
-import cv2
 import numpy
 import seaborn
 import pandas as pd
@@ -68,7 +67,8 @@ def ex_titatic_pairplot():
     P.set_color('0-not survived', P.color_blue)
     P.set_color('1-survived', P.color_amber)
     idx_target = df.columns.get_loc('survived')
-    P.pairplots_df(df, idx_target, None, add_noise=False,remove_legend=True)
+    P.pairplots_df(df, idx_target, None, add_noise=True,remove_legend=True)
+    #P.pairplots_df(df, idx_target, None, add_noise=False,cumul_mode=True,remove_legend=True)
 
     return
 # ----------------------------------------------------------------------------------------------------------------------
@@ -79,9 +79,37 @@ def ex_titatic_PCA():
     idx_target = df.columns.get_loc('survived')
     df = tools_DF.hash_categoricals(df)
     df = tools_DF.impute_na(df, strategy='mean')
-    P.plot_PCA(df, idx_target,method='tSNE',filename_out='titanic_tSNE.png')
-    P.plot_PCA(df, idx_target, method='UMAP', filename_out='titanic_UMAP.png')
+    #P.plot_PCA(df, idx_target,method='tSNE',filename_out='titanic_tSNE.png')
+    #P.plot_PCA(df, idx_target, method='UMAP', filename_out='titanic_UMAP.png')
 
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_churn_histo():
+    df = pd.read_csv(folder_in + 'dataset_churn.csv')
+    P.set_color('Yes', P.color_red)
+    P.set_color('No', P.color_blue)
+    P.histoplots_df(df, idx_target=-1,transparency=0.5)
+
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_churn_pairplots():
+    df = pd.read_csv(folder_in + 'dataset_churn.csv')
+    df = df.drop(columns=['customerID'])
+    P.set_color('Yes', P.color_red)
+    P.set_color('No', P.color_blue)
+    P.pairplots_df(df, -1, None, add_noise=True, remove_legend=True)
+    return
+# ----------------------------------------------------------------------------------------------------------------------
+def ex_churn_PCA():
+    df = pd.read_csv(folder_in + 'dataset_churn.csv')
+    idx_target = -1
+    df = tools_DF.hash_categoricals(df)
+    df = tools_DF.impute_na(df, strategy='mean')
+    #P.plot_PCA(df, idx_target,method='tSNE',filename_out='churn_tSNE.png')
+    #P.plot_PCA(df, idx_target, method='PCA', filename_out='churn_PCA.png')
+    #P.plot_PCA(df, idx_target, method='UMAP', filename_out='churn_UMAP.png')
+    P.plot_PCA(df, idx_target, method='LLE', filename_out='churn_LLE.png')
+    P.plot_PCA(df, idx_target, method='ISOMAP', filename_out='churn_ISOMAP.png')
     return
 # ----------------------------------------------------------------------------------------------------------------------
 def ex_iris_pairplot():
@@ -109,8 +137,12 @@ if __name__ == '__main__':
 
     #P.empty(filename_out='xxx.png')
     #ex_titatic_histo()
-    #ex_titatic_pairplot()
+    ex_titatic_pairplot()
     #ex_iris_pairplot()
-    ex_titatic_PCA()
+    #ex_titatic_PCA()
     #ex_iris_PCA()
+
+    #ex_churn_histo()
+    #ex_churn_pairplots()
+    #ex_churn_PCA()
 

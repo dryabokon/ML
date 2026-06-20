@@ -77,5 +77,5 @@ def ex_vacancies():
 if __name__ == '__main__':
     #ex_flights()
 
-    ex_ML_areas()
-    #ex_vacancies()
+    #ex_ML_areas()
+    ex_vacancies()

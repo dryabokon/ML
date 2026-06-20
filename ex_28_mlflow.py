@@ -15,6 +15,7 @@ import mlflow
 from mlflow import log_metric, log_param, log_artifacts,log_artifact, log_figure,log_image,log_text,artifacts
 from mlflow.tracking import MlflowClient
 # ---------------------------------------------------------------------------------------------------------------------
+import tools_MLflower
 folder_out = './mlruns'
 # ---------------------------------------------------------------------------------------------------------------------
 def get_experiment_id(experiment_name, create=True):

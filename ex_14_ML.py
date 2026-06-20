@@ -1,14 +1,19 @@
+import time
+import sys
 import numpy
 import pandas as pd
 from sklearn.datasets import make_regression
 # ----------------------------------------------------------------------------------------------------------------------
-from classifier import classifier_KNN
-from classifier import classifier_SVM
-from classifier import classifier_LM
-from classifier import classifier_DTree
-#from classifier import classifier_RF
-from classifier import classifier_Ada
+sys.path.append('../tools/')
 # ----------------------------------------------------------------------------------------------------------------------
+#from classifier import classifier_KNN
+#from classifier import classifier_SVM
+from classifier import classifier_LM
+#from classifier import classifier_DTree
+##from classifier import classifier_RF
+#from classifier import classifier_Ada
+# ----------------------------------------------------------------------------------------------------------------------
+
 import tools_ML_v2
 import tools_plot_v2
 import tools_DF
@@ -84,6 +89,8 @@ def ex_titanic():
 
     df = pd.read_csv(folder_in+'dataset_titanic.csv', sep='\t')
     df.drop(columns=['alive','deck'],inplace=True)
+    df = tools_DF.hash_categoricals(df)
+
     idx_target = df.columns.get_loc('survived')
     df_metrics = ML.E2E_train_test_df(df, idx_target=idx_target, do_charts=True, do_pca=True)
     print(tools_DF.prettify(df_metrics, showindex=False))
@@ -97,9 +104,11 @@ def ex_titanic():
     return
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
-    tools_IO.remove_files(folder_out)
+    #tools_IO.remove_files(folder_out)
     #ex_moon()
     #ex_heart()
-    ex_random()
+    #ex_random()
     #ex_flights_kibana()
-    #ex_titanic()
+    ex_titanic()
+
+
