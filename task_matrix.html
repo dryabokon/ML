@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Matrix</title>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Dark Theme (Default) - Sleek Monochromatic */
+      --bg-color: #0e0e10;
+      --bg-gradient: linear-gradient(180deg, #141417 0%, #0e0e10 100%);
+      --card-bg: rgba(24, 24, 28, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --label-bg: #383842;
+      --label-border: rgba(255, 255, 255, 0.24);
+      --label-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+      --text-main: #f5f5f7;
+      --quadrant-do: #ff453a;
+      --quadrant-plan: #30d158;
+      --quadrant-protect: #ff9f0a;
+      --quadrant-backlog: #64d2ff;
+      --text-muted: #8e8e93;
+      
+      --accent: #ffffff;
+      --accent-hover: #e5e5ea;
+      --accent-bg: #ffffff;
+      --accent-text: #000000;
+      
+      --btn-sec-bg: rgba(255, 255, 255, 0.04);
+      --btn-sec-hover: rgba(255, 255, 255, 0.08);
+      --btn-sec-border: rgba(255, 255, 255, 0.08);
+      
+      --btn-danger-bg: rgba(255, 255, 255, 0.06);
+      --btn-danger-hover: rgba(255, 255, 255, 0.12);
+      --btn-danger-text: #ff453a;
+      --btn-danger-border: rgba(255, 255, 255, 0.08);
+      
+      --input-bg: rgba(0, 0, 0, 0.25);
+      --input-focus: rgba(255, 255, 255, 0.08);
+      
+      --font-sans: 'Outfit', sans-serif;
+    }
+
+    body.light-theme {
+      /* Light Theme - Clean Monochromatic */
+      --bg-color: #f5f5f7;
+      --bg-gradient: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --label-bg: #f0f0f5;
+      --label-border: rgba(0, 0, 0, 0.18);
+      --label-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      --text-main: #1d1d1f;
+      --quadrant-do: #ff3b30;
+      --quadrant-plan: #34c759;
+      --quadrant-protect: #ff9500;
+      --quadrant-backlog: #5ac8fa;
+      --text-muted: #86868b;
+      
+      --accent: #000000;
+      --accent-hover: #1d1d1f;
+      --accent-bg: #000000;
+      --accent-text: #ffffff;
+      
+      --btn-sec-bg: rgba(0, 0, 0, 0.03);
+      --btn-sec-hover: rgba(0, 0, 0, 0.06);
+      --btn-sec-border: rgba(0, 0, 0, 0.08);
+      
+      --btn-danger-bg: rgba(0, 0, 0, 0.03);
+      --btn-danger-hover: rgba(0, 0, 0, 0.08);
+      --btn-danger-text: #ff3b30;
+      --btn-danger-border: rgba(0, 0, 0, 0.08);
+      
+      --input-bg: rgba(255, 255, 255, 0.8);
+      --input-focus: rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-color);
+      background-image: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem;
+      overflow-x: hidden;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* Minimal Top Navigation */
+    .top-nav {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.75rem;
+    }
+
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn.btn-icon {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+    }
+
+    .btn.btn-icon svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .theme-toggle {
+      background: var(--btn-sec-bg);
+      border: 1px solid var(--btn-sec-border);
+      color: var(--text-main);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle:hover {
+      background: var(--btn-sec-hover);
+      border-color: var(--text-muted);
+    }
+
+    .theme-toggle svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    body.light-theme .theme-toggle .sun-icon {
+      display: none;
+    }
+    body:not(.light-theme) .theme-toggle .moon-icon {
+      display: none;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* Floating Search Overlay */
+    .search-overlay {
+      position: fixed;
+      top: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(-150%);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 2rem;
+      padding: 0.4rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+      opacity: 0;
+      z-index: 1000;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .search-overlay.active {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .overlay-search-input {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      outline: none;
+      width: 100%;
+    }
+
+    .overlay-search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-icon {
+      color: var(--text-muted);
+      width: 14px;
+      height: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .esc-badge {
+      font-size: 0.65rem;
+      font-weight: 600;
+      border: 1px solid var(--card-border);
+      padding: 0.15rem 0.35rem;
+      border-radius: 0.25rem;
+      color: var(--text-muted);
+    }
+
+    .btn {
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent-bg);
+      color: var(--accent-text);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: var(--btn-sec-bg);
+      color: var(--text-main);
+      border-color: var(--btn-sec-border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--btn-sec-hover);
+    }
+
+    .btn-danger {
+      background: var(--btn-danger-bg);
+      color: var(--btn-danger-text);
+      border-color: var(--btn-danger-border);
+    }
+
+    .btn-danger:hover {
+      background: var(--btn-danger-hover);
+    }
+
+    #file-import {
+      display: none;
+    }
+
+    /* Table Container & Table */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 0.75rem;
+      overflow-x: auto;
+      position: relative;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background: rgba(0, 0, 0, 0.15);
+      padding: 1rem 1.25rem;
+      font-weight: 600;
+      color: var(--text-main);
+      border-bottom: 1px solid var(--card-border);
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      transition: background-color 0.2s;
+    }
+
+    body.light-theme th {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    th:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    body.light-theme th:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .th-content {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Draggable Column Headers styling */
+    .draggable-header {
+      cursor: grab;
+      user-select: none;
+      transition: background-color 0.2s, border-left 0.2s, border-right 0.2s;
+    }
+
+    .draggable-header:active {
+      cursor: grabbing;
+    }
+
+    .draggable-header.dragging {
+      opacity: 0.4;
+      background: rgba(255, 255, 255, 0.05) !important;
+    }
+    body.light-theme .draggable-header.dragging {
+      background: rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .draggable-header.drag-over {
+      border-left: 2px dashed var(--accent) !important;
+      background: rgba(255, 255, 255, 0.04);
+    }
+    body.light-theme .draggable-header.drag-over {
+      border-left: 2px dashed var(--accent) !important;
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .sort-indicator {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 16px;
+      height: 16px;
+      position: relative;
+    }
+
+    .sort-arrow {
+      font-size: 0.55rem;
+      color: var(--text-muted);
+      opacity: 0.25;
+      transition: all 0.2s;
+      line-height: 1;
+    }
+
+    .sort-arrow.active {
+      color: var(--text-main);
+      opacity: 1;
+      font-weight: bold;
+    }
+
+    .sort-arrow.secondary-active {
+      color: var(--text-muted);
+      opacity: 0.65;
+      font-weight: bold;
+    }
+
+    td {
+      padding: 0.5rem 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr {
+      transition: background-color 0.2s ease;
+    }
+
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.015);
+    }
+    body.light-theme tr:hover {
+      background-color: rgba(0, 0, 0, 0.01);
+    }
+
+    /* Form Fields Styling (Inside Table) */
+    .cell-input {
+      width: 100%;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      padding: 0.4rem 0.6rem;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+      outline: none;
+    }
+
+    .cell-input:focus {
+      background: var(--input-focus);
+      border-color: var(--card-border);
+    }
+
+    .cell-id {
+      text-align: center;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      max-width: 80px;
+    }
+
+    .cell-id.error {
+      border-color: var(--btn-danger-text) !important;
+      background: rgba(255, 59, 48, 0.05) !important;
+    }
+
+    .cell-task {
+      min-width: 250px;
+    }
+
+    /* Custom Ratings Segment Bars (Urgency, Impact, Complexity) */
+    .rating-widget {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      user-select: none;
+    }
+
+    .rating-btn {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      opacity: 0.35;
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .rating-btn:hover {
+      background: var(--btn-sec-hover);
+      color: var(--text-main);
+      opacity: 1;
+    }
+    
+    .rating-btn:active {
+      transform: scale(0.9);
+    }
+
+    .rating-segments {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+      height: 8px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      width: 61px;
+    }
+
+    .segment {
+      flex: 1;
+      height: 8px;
+      border-radius: 1px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: background-color 0.15s, opacity 0.15s;
+    }
+    
+    body.light-theme .segment {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    /* 3-Color Band Scale (Muted Green, Amber Gold, Crimson Red) */
+    .rating-segments.val-0 { --rating-color: transparent; }
+    .rating-segments.val-1, .rating-segments.val-2, .rating-segments.val-3 { --rating-color: #10b981; } /* Muted Green */
+    .rating-segments.val-4, .rating-segments.val-5, .rating-segments.val-6 { --rating-color: #ebab00; } /* Amber Gold */
+    .rating-segments.val-7, .rating-segments.val-8, .rating-segments.val-9 { --rating-color: #bd2600; } /* Crimson Red */
+
+    .rating-segments .segment.filled {
+      background: var(--rating-color);
+      box-shadow: 0 0 2px var(--rating-color);
+    }
+
+    /* Disable glow in light theme for cleaner contrast */
+    body.light-theme .rating-segments .segment.filled {
+      box-shadow: none;
+    }
+
+    /* Actions styling */
+    .action-cell {
+      text-align: center;
+      width: 60px;
+    }
+
+    th.action-cell {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .btn-delete {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.4rem;
+      border-radius: 0.25rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      opacity: 0;
+    }
+
+    tr:hover .btn-delete {
+      opacity: 0.2;
+    }
+
+    .btn-delete:hover {
+      color: var(--btn-danger-text);
+      background: var(--btn-danger-bg);
+      opacity: 1 !important;
+    }
+
+    .btn-delete svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    /* Empty state */
+    .empty-state {
+      padding: 3rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      stroke: var(--text-muted);
+      opacity: 0.4;
+      margin-bottom: 1rem;
+    }
+
+    /* Notification Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--text-muted);
+      color: var(--text-main);
+      padding: 0.8rem 1.2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transform: translateY(150%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      font-size: 0.9rem;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+    }
+
+    .toast-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.75rem;
+      color: var(--accent-text);
+    }
+
+    /* Bubble Chart Card & Elements */
+    .chart-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.25rem;
+    }
+
+    .chart-header {
+      margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chart-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .chart-container {
+      width: 100%;
+      position: relative;
+    }
+
+    /* Interactive Bubble styles */
+    .bubble-group {
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bubble-group circle {
+      transition: stroke-width 0.2s, stroke-opacity 0.2s, fill-opacity 0.2s;
+    }
+
+    .bubble-group:hover circle,
+    .bubble-group.highlighted circle,
+    .bubble-group.selected-active circle {
+      stroke-dasharray: none;
+      stroke-width: 3.5px;
+      fill-opacity: 0.35;
+    }
+
+    .bubble-group text {
+      transition: font-size 0.2s, fill 0.2s, font-weight 0.2s;
+      pointer-events: none;
+    }
+
+    .bubble-group .bubble-label {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .bubble-label-pill {
+      display: inline-flex;
+      align-items: center;
+      background: var(--label-bg);
+      border: 1px solid var(--label-border);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      box-shadow: var(--label-shadow);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 260px;
+      transition: border-color 0.2s, box-shadow 0.2s, font-weight 0.2s, transform 0.2s;
+    }
+ 
+    .label-pill-id {
+      font-family: monospace;
+      font-weight: 700;
+      background: var(--btn-sec-hover);
+      color: var(--text-main);
+      padding: 2px 5px;
+      border-radius: 3px;
+      margin-right: 8px;
+      font-size: 9px;
+    }
+ 
+    /* Complexity dot widget inside pills */
+    .complexity-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+    .complexity-dot.c-lvl-low {
+      background: #10b981;
+      box-shadow: 0 0 4px rgba(16, 185, 129, 0.4);
+    }
+    .complexity-dot.c-lvl-mid {
+      background: #ebab00;
+      box-shadow: 0 0 4px rgba(235, 171, 0, 0.4);
+    }
+    .complexity-dot.c-lvl-high {
+      background: #bd2600;
+      box-shadow: 0 0 4px rgba(189, 38, 0, 0.4);
+    }
+ 
+    .bubble-group:hover .bubble-label-pill,
+    .bubble-group.highlighted .bubble-label-pill {
+      border-color: var(--text-muted);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+      transform: scale(1.08);
+    }
+ 
+    .bubble-group.selected-active .bubble-label-pill {
+      border-color: var(--text-main);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+      font-weight: 700;
+      transform: scale(1.08);
+    }
+ 
+    /* Quadrant Watermarks */
+    .quadrant-watermark {
+      font-size: 54px;
+      font-weight: 800;
+      fill: var(--text-muted);
+      opacity: 0.15;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      letter-spacing: 0.12em;
+      pointer-events: none;
+      user-select: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    body.light-theme .quadrant-watermark {
+      opacity: 0.12;
+    }
+ 
+    /* Axis Titles */
+    .axis-title {
+      font-size: 13px;
+      font-weight: 600;
+      fill: var(--text-main);
+      letter-spacing: 0.05em;
+      pointer-events: none;
+      user-select: none;
+    }
+ 
+    /* Anchor Dots and Connectors (Sleek Monochromatic) */
+    .bubble-dot {
+      stroke-width: 1.5px;
+      stroke: var(--bg-color);
+      fill: var(--text-main);
+      transition: r 0.2s, fill 0.2s;
+    }
+ 
+    .bubble-connector {
+      stroke: var(--text-muted);
+      stroke-width: 1.2px;
+      stroke-dasharray: 2,2;
+      opacity: 0.35;
+      transition: opacity 0.2s, stroke-width 0.2s, stroke 0.2s;
+    }
+ 
+    .bubble-group:hover .bubble-dot,
+    .bubble-group.highlighted .bubble-dot,
+    .bubble-group.selected-active .bubble-dot {
+      r: 6.5px;
+      fill: var(--accent);
+    }
+ 
+    .bubble-group:hover .bubble-connector,
+    .bubble-group.highlighted .bubble-connector,
+    .bubble-group.selected-active .bubble-connector {
+      stroke-width: 1.8px;
+      stroke: var(--accent);
+      opacity: 0.85;
+      stroke-dasharray: none;
+    }
+
+    /* Sync highlight on table rows */
+    tr.bubble-highlight {
+      background-color: rgba(255, 255, 255, 0.04) !important;
+    }
+    body.light-theme tr.bubble-highlight {
+      background-color: rgba(0, 0, 0, 0.03) !important;
+    }
+
+    /* Persistent row selections triggered from chart */
+    tr.row-selected-active {
+      background-color: rgba(255, 255, 255, 0.06) !important;
+      border-left: 3px solid var(--accent);
+    }
+    body.light-theme tr.row-selected-active {
+      background-color: rgba(0, 0, 0, 0.04) !important;
+      border-left: 3px solid var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Search Overlay -->
+  <div id="search-overlay" class="search-overlay">
+    <span class="search-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    </span>
+    <input type="text" id="overlay-search-input" class="overlay-search-input" placeholder="Type to search..." oninput="handleSearch()">
+    <span class="esc-badge">ESC</span>
+  </div>
+
+  <!-- Minimal Top Navigation -->
+  <div class="top-nav">
+    <div class="brand">Tasks</div>
+    <div class="nav-actions">
+      <!-- Add Task -->
+      <button class="btn btn-primary btn-icon" onclick="handleAddRow()" title="Add Task">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+      <!-- Export -->
+      <button class="btn btn-secondary btn-icon" onclick="exportData()" title="Export CSV">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+      </button>
+      <!-- Import -->
+      <button class="btn btn-secondary btn-icon" onclick="triggerImport()" title="Import CSV">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      </button>
+      <input type="file" id="file-import" accept=".csv" onchange="importData(event)">
+      <!-- Reset -->
+      <button class="btn btn-danger btn-icon" onclick="confirmReset()" title="Reset Baseline">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+      </button>
+      <!-- Theme Toggle -->
+      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+        <!-- Sun Icon -->
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <!-- Moon Icon -->
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <main>
+    <!-- Main Table Card -->
+    <div class="table-container">
+      <table id="task-table">
+        <thead>
+          <tr id="header-row">
+            <!-- Rendered dynamically by JavaScript -->
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- Populated by JavaScript -->
+        </tbody>
+      </table>
+      <div id="no-tasks-state" class="empty-state" style="display: none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        <p>No tasks matches the criteria.</p>
+      </div>
+    </div>
+
+    <!-- Bubble Chart Card -->
+    <div class="chart-card">
+      <div class="chart-container">
+        <svg id="bubble-chart" viewBox="0 0 1000 562.5" width="100%" height="100%">
+          <!-- Dividers, labels and bubbles rendered dynamically by JS -->
+        </svg>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">
+    <div class="toast-icon">✓</div>
+    <span id="toast-message">Data updated</span>
+  </div>
+
+  <script>
+    // Initial standard task list
+    const defaultTasks = [
+      { id: "10", task: "Replace worn/bald tires", urgency: 9, impact: 3, complexity: 5 },
+      { id: "4C", task: "Renew mandatory car insurance before expiry", urgency: 9, impact: 9, complexity: 2 },
+      { id: "2F", task: "Install front & rear dashcam", urgency: 3, impact: 8, complexity: 4 },
+      { id: "8A", task: "Add custom ambient LED lighting", urgency: 1, impact: 2, complexity: 3 }
+    ];
+
+    // Main App State
+    let tasks = [];
+    let searchQuery = "";
+    let ratingColumns = ['urgency', 'impact', 'complexity'];
+    let isDraggingColumn = false;
+    let selectedBubbleId = null;
+
+    // Sorting state (primary and secondary)
+    let primarySort = { key: null, dir: null }; // dir: 'asc' | 'desc'
+    let secondarySort = { key: null, dir: null };
+    let isSortDirty = false;
+
+    // Initialization
+    window.onload = function() {
+      initTheme();
+      loadState();
+      renderTable();
+    };
+
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem("matrix_theme");
+      if (savedTheme === "light") {
+        document.body.classList.add("light-theme");
+      }
+    }
+
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle("light-theme");
+      localStorage.setItem("matrix_theme", isLight ? "light" : "dark");
+    }
+
+    // Load from local storage or set default values
+    function loadState() {
+      const stored = localStorage.getItem("matrix_tasks");
+      const storedPrimary = localStorage.getItem("matrix_primary_sort");
+      const storedSecondary = localStorage.getItem("matrix_secondary_sort");
+      const storedColumns = localStorage.getItem("matrix_column_order");
+
+      if (stored) {
+        try {
+          tasks = JSON.parse(stored);
+          // If stored state contains legacy developer task specs or old car tasks, migrate automatically to new set
+          if (tasks.some(t => t.task === "Refactor auth and session middleware" || t.task === "Install CarPlay" || t.task === "Replace worn brake pads" || t.task === "Change weak key remote battery" || (t.task === "Replace worn/bald tires" && t.impact === 9))) {
+            tasks = [...defaultTasks];
+            saveState();
+          }
+        } catch (e) {
+          tasks = [...defaultTasks];
+        }
+      } else {
+        tasks = [...defaultTasks];
+        saveState();
+      }
+
+      if (storedPrimary) {
+        try { primarySort = JSON.parse(storedPrimary); } catch (e) {}
+      }
+      if (storedSecondary) {
+        try { secondarySort = JSON.parse(storedSecondary); } catch (e) {}
+      }
+      if (storedColumns) {
+        try { ratingColumns = JSON.parse(storedColumns); } catch (e) {}
+      }
+    }
+
+    // Save to local storage
+    function saveState() {
+      localStorage.setItem("matrix_tasks", JSON.stringify(tasks));
+      localStorage.setItem("matrix_primary_sort", JSON.stringify(primarySort));
+      localStorage.setItem("matrix_secondary_sort", JSON.stringify(secondarySort));
+      localStorage.setItem("matrix_column_order", JSON.stringify(ratingColumns));
+    }
+
+
+    // Helper to check valid hex (00..FF)
+    function isValidHex(val) {
+      if (!/^[0-9A-Fa-f]{1,2}$/.test(val)) return false;
+      const num = parseInt(val, 16);
+      return num >= 0 && num <= 255;
+    }
+
+    // Generate neat, unused 2-char hex values sequentially or randomly
+    function generateNextHexID() {
+      const existingHexes = new Set(tasks.map(t => t.id.toUpperCase()));
+      for (let i = 1; i < 256; i++) {
+        const hex = i.toString(16).padStart(2, '0').toUpperCase();
+        if (!existingHexes.has(hex)) {
+          return hex;
+        }
+      }
+      return "FF"; // Fallback if full
+    }
+
+    // Render dynamic table header
+    function renderHeader() {
+      const headerRow = document.getElementById("header-row");
+      if (!headerRow) return;
+
+      let html = `
+        <th onclick="toggleSort('id')" style="width: 100px;">
+          <div class="th-content">
+            ID
+            <span class="sort-indicator" id="indicator-id">
+              <span class="sort-arrow asc">▲</span>
+              <span class="sort-arrow desc">▼</span>
+            </span>
+          </div>
+        </th>
+        <th onclick="toggleSort('task')">
+          <div class="th-content">
+            Task Description
+            <span class="sort-indicator" id="indicator-task">
+              <span class="sort-arrow asc">▲</span>
+              <span class="sort-arrow desc">▼</span>
+            </span>
+          </div>
+        </th>
+      `;
+
+      ratingColumns.forEach(col => {
+        let title = col.charAt(0).toUpperCase() + col.slice(1);
+        if (col === 'urgency') title = 'Cost of Delay';
+        if (col === 'impact') title = 'Business Value';
+        html += `
+          <th onclick="toggleSort('${col}')" 
+              style="width: 120px;" 
+              draggable="true" 
+              class="draggable-header" 
+              data-col="${col}"
+              ondragstart="handleDragStart(event)"
+              ondragover="handleDragOver(event)"
+              ondragleave="handleDragLeave(event)"
+              ondrop="handleDrop(event)"
+              ondragend="handleDragEnd(event)">
+            <div class="th-content drag-handle">
+              ${title}
+              <span class="sort-indicator" id="indicator-${col}">
+                <span class="sort-arrow asc">▲</span>
+                <span class="sort-arrow desc">▼</span>
+              </span>
+            </div>
+          </th>
+        `;
+      });
+
+      html += `<th class="action-cell"></th>`;
+      headerRow.innerHTML = html;
+    }
+
+    // Drag and Drop Column Reordering Handlers
+    let dragSrcCol = null;
+
+    function handleDragStart(e) {
+      isDraggingColumn = true;
+      const th = e.currentTarget;
+      dragSrcCol = th.getAttribute('data-col');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', dragSrcCol);
+      th.classList.add('dragging');
+    }
+
+    function handleDragOver(e) {
+      if (e.preventDefault) {
+        e.preventDefault();
+      }
+      e.dataTransfer.dropEffect = 'move';
+      e.currentTarget.classList.add('drag-over');
+      return false;
+    }
+
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+      if (e.stopPropagation) {
+        e.stopPropagation();
+      }
+      
+      const targetCol = e.currentTarget.getAttribute('data-col');
+      const srcCol = e.dataTransfer.getData('text/plain');
+      
+      if (srcCol && targetCol && srcCol !== targetCol) {
+        const srcIndex = ratingColumns.indexOf(srcCol);
+        const targetIndex = ratingColumns.indexOf(targetCol);
+        
+        if (srcIndex !== -1 && targetIndex !== -1) {
+          // Reorder the array
+          ratingColumns.splice(srcIndex, 1);
+          ratingColumns.splice(targetIndex, 0, srcCol);
+          
+          // Save column order to localStorage
+          localStorage.setItem('matrix_column_order', JSON.stringify(ratingColumns));
+        }
+      }
+      
+      handleDragEnd(e);
+      renderTable();
+      return false;
+    }
+
+    function handleDragEnd(e) {
+      ratingColumns.forEach(col => {
+        const el = document.querySelector(`[data-col="${col}"]`);
+        if (el) {
+          el.classList.remove('drag-over');
+          el.classList.remove('dragging');
+        }
+      });
+      setTimeout(() => {
+        isDraggingColumn = false;
+      }, 50);
+    }
+
+    function getQuadrantClass(urgency, impact) {
+      if (urgency >= 5 && impact >= 5) return 'do';
+      if (urgency < 5 && impact >= 5) return 'plan';
+      if (urgency >= 5 && impact < 5) return 'protect';
+      return 'backlog';
+    }
+
+    function getComplexityLvl(value) {
+      const val = Number(value);
+      if (val <= 3) return 'low';
+      if (val <= 6) return 'mid';
+      return 'high';
+    }
+
+    // Render dynamic priority bubble chart
+    function renderBubbleChart() {
+      const svg = document.getElementById("bubble-chart");
+      if (!svg) return;
+
+      const width = 1000;
+      const height = 562.5;
+      const margin = 55;
+
+      const plotWidth = width - 2 * margin;
+      const plotHeight = height - 2 * margin;
+
+      let html = `
+        <!-- Quadrant Watermark Labels (Large, bold, centered background text) -->
+        <text x="${margin + plotWidth / 4}" y="${margin + plotHeight / 4}" class="quadrant-watermark">PLAN</text>
+        <text x="${margin + 3 * plotWidth / 4}" y="${margin + plotHeight / 4}" class="quadrant-watermark">DO</text>
+        <text x="${margin + plotWidth / 4}" y="${margin + 3 * plotHeight / 4}" class="quadrant-watermark">BACKLOG</text>
+        <text x="${margin + 3 * plotWidth / 4}" y="${margin + 3 * plotHeight / 4}" class="quadrant-watermark">MAINTAIN</text>
+
+        <!-- Quadrant divider lines (Dashed & Subtle) -->
+        <line x1="${margin}" y1="${height / 2}" x2="${width - margin}" y2="${height / 2}" stroke="var(--card-border)" stroke-width="1.2" stroke-dasharray="4,4" opacity="0.45" />
+        <line x1="${width / 2}" y1="${margin}" x2="${width / 2}" y2="${height - margin}" stroke="var(--card-border)" stroke-width="1.2" stroke-dasharray="4,4" opacity="0.45" />
+
+        <!-- Axis Titles -->
+        <text x="${width / 2}" y="${margin - 20}" text-anchor="middle" class="axis-title">Business Value ↑</text>
+        <text x="${margin + 10}" y="${height / 2 - 10}" text-anchor="start" class="axis-title">Cost of Delay →</text>
+      `;
+
+      // Filter tasks according to active search query (sync visual filter)
+      const filteredTasks = tasks.filter(t => {
+        return t.id.toLowerCase().includes(searchQuery) ||
+               t.task.toLowerCase().includes(searchQuery);
+      });
+
+      filteredTasks.forEach(task => {
+        const u = Number(task.urgency);
+        const imp = Number(task.impact);
+
+        // Map values 0-9 to coordinates
+        const cx = margin + (u / 9) * plotWidth;
+        const cy = (height - margin) - (imp / 9) * plotHeight;
+
+        // Position label centered at (cx, cy)
+        const labelWidth = 280;
+        const labelHeight = 36;
+        
+        // Center horizontally and clamp to keep label inside SVG viewport bounds
+        let lx = cx - labelWidth / 2;
+        lx = Math.max(margin, Math.min(width - margin - labelWidth, lx));
+        
+        const quad = getQuadrantClass(u, imp);
+        let ly;
+        let connectionY;
+
+        // Position card above/below based on vertical position to avoid overlap
+        if (cy < height / 2) {
+          // Upper half: place label below point
+          ly = cy + 18;
+          connectionY = ly;
+        } else {
+          // Lower half: place label above point
+          ly = cy - labelHeight - 18;
+          connectionY = ly + labelHeight;
+        }
+
+        // Clamp vertically to keep label inside SVG boundaries
+        ly = Math.max(margin, Math.min(height - margin - labelHeight, ly));
+        
+        // Recalculate connectionY in case ly was clamped
+        if (cy < height / 2) {
+          connectionY = ly;
+        } else {
+          connectionY = ly + labelHeight;
+        }
+
+        // Clamped horizontal center of the card to draw connection line to the nearest card point
+        const cxClamped = Math.max(lx, Math.min(lx + labelWidth, cx));
+
+        const isSelected = selectedBubbleId === task.id ? 'selected-active' : '';
+        html += `
+          <g class="bubble-group ${isSelected}" 
+             data-id="${task.id}" 
+             onclick="handleBubbleClick('${task.id}', event)"
+             onmouseenter="highlightRow('${task.id}', true); highlightBubble('${task.id}', true)" 
+             onmouseleave="highlightRow('${task.id}', false); highlightBubble('${task.id}', false)">
+            
+            <!-- Connection Line -->
+            <line x1="${cx}" y1="${cy}" x2="${cxClamped}" y2="${connectionY}" class="bubble-connector" />
+
+            <!-- Anchor Dot -->
+            <circle cx="${cx}" cy="${cy}" r="4.5" class="bubble-dot" />
+
+            <!-- Centered label pill using foreignObject -->
+            <foreignObject x="${lx}" y="${ly}" width="${labelWidth}" height="${labelHeight}" class="bubble-label">
+              <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
+                <div class="bubble-label-pill">
+                  <span class="label-pill-id">${task.id}</span>
+                  <span class="complexity-dot c-lvl-${getComplexityLvl(task.complexity)}" title="Complexity: ${task.complexity}"></span>
+                  <span>${escapeHtml(task.task)}</span>
+                </div>
+              </div>
+            </foreignObject>
+          </g>
+        `;
+      });
+
+      svg.innerHTML = html;
+
+      // Restore Z-order priority on the selected bubble after rendering
+      if (selectedBubbleId) {
+        const activeBubble = svg.querySelector(`.bubble-group[data-id="${selectedBubbleId}"]`);
+        if (activeBubble) {
+          svg.appendChild(activeBubble);
+        }
+      }
+    }
+
+    // Interactivity Hover Synchronizers
+    function highlightRow(id, isHighlight) {
+      const row = document.querySelector(`tr[data-id="${id}"]`);
+      if (row) {
+        if (isHighlight) {
+          row.classList.add("bubble-highlight");
+        } else {
+          row.classList.remove("bubble-highlight");
+        }
+      }
+    }
+
+    function highlightBubble(id, isHighlight) {
+      const bubble = document.querySelector(`.bubble-group[data-id="${id}"]`);
+      if (bubble) {
+        if (isHighlight) {
+          bubble.classList.add("highlighted");
+        } else {
+          bubble.classList.remove("highlighted");
+        }
+      }
+    }
+
+    // Dynamic Bubble Click Selection & Z-order locking
+    function handleBubbleClick(id, e) {
+      if (e) e.stopPropagation();
+
+      if (selectedBubbleId === id) {
+        deselectAllBubbles();
+        return;
+      }
+
+      deselectAllBubbles();
+      selectedBubbleId = id;
+
+      const bubble = document.querySelector(`.bubble-group[data-id="${id}"]`);
+      if (bubble) {
+        bubble.classList.add("selected-active");
+        // Bring bubble element to absolute top of Z-order stack
+        const parent = bubble.parentNode;
+        if (bubble.nextSibling) {
+          parent.appendChild(bubble);
+        }
+      }
+
+      const row = document.querySelector(`tr[data-id="${id}"]`);
+      if (row) {
+        row.classList.add("row-selected-active");
+        row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    function deselectAllBubbles() {
+      selectedBubbleId = null;
+      document.querySelectorAll('.bubble-group').forEach(b => {
+        b.classList.remove('selected-active');
+      });
+      document.querySelectorAll('tr').forEach(r => {
+        r.classList.remove('row-selected-active');
+      });
+    }
+
+    // Toast alerts helper
+    function showToast(message, isSuccess = true) {
+      const toast = document.getElementById("toast");
+      const text = document.getElementById("toast-message");
+      const icon = toast.querySelector(".toast-icon");
+      
+      text.textContent = message;
+      if (isSuccess) {
+        icon.textContent = "✓";
+        icon.style.background = "var(--accent)";
+        icon.style.color = "var(--accent-text)";
+      } else {
+        icon.textContent = "✕";
+        icon.style.background = "var(--btn-danger-text)";
+        icon.style.color = "#ffffff";
+      }
+
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2500);
+    }
+
+    // Add row item
+    function handleAddRow() {
+      const newId = generateNextHexID();
+      const newRow = {
+        id: newId,
+        task: "New Task Description",
+        urgency: 5,
+        impact: 5,
+        complexity: 5
+      };
+      
+      tasks.push(newRow);
+      
+      if (primarySort.key) {
+        sortTasks();
+      }
+
+      saveState();
+      renderTable();
+      showToast("Task created");
+
+      // Focus on the newly created row's description
+      setTimeout(() => {
+        const rowInputs = document.querySelectorAll(`[data-id="${newId}"] .cell-task-input`);
+        if (rowInputs && rowInputs.length > 0) {
+          rowInputs[0].focus();
+          rowInputs[0].select();
+        }
+      }, 50);
+    }
+
+    // Delete row item
+    function handleDeleteRow(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      saveState();
+      renderTable();
+      showToast("Task removed");
+    }
+
+    // Handles inline cell update
+    function handleUpdateField(id, field, value) {
+      const index = tasks.findIndex(t => t.id === id);
+      if (index === -1) return;
+
+      let val = value.trim();
+
+      if (field === 'task' && val === '') {
+        val = "Untitled Task";
+      }
+
+      if (field === 'id') {
+        const originalVal = tasks[index].id;
+        const upperVal = val.toUpperCase();
+        
+        // Input validation checks
+        if (!isValidHex(val)) {
+          showToast("ID must be hex 00-FF", false);
+          renderTable();
+          return;
+        }
+
+        // Check duplicates (excluding current item)
+        const isDuplicate = tasks.some((t, i) => i !== index && t.id.toUpperCase() === upperVal);
+        if (isDuplicate) {
+          showToast(`ID '${upperVal}' already exists`, false);
+          renderTable();
+          return;
+        }
+
+        // Format to standard 2-char uppercase
+        val = upperVal.padStart(2, '0');
+      }
+
+      if (field === 'urgency' || field === 'impact' || field === 'complexity') {
+        val = parseInt(val, 10);
+        if (isNaN(val) || val < 0 || val > 9) {
+          val = 5; // Default safe fallback
+        }
+      }
+
+      // Update state
+      tasks[index][field] = val;
+
+      saveState();
+      isSortDirty = true;
+      
+      if (field === 'id' || field === 'urgency' || field === 'impact' || field === 'complexity') {
+        renderTable();
+      }
+    }
+
+    // Handles inline segment rating adjustment (+ / -)
+    function adjustRating(id, field, amount) {
+      const index = tasks.findIndex(t => t.id === id);
+      if (index === -1) return;
+
+      let val = Number(tasks[index][field]);
+      val += amount;
+
+      // Keep within bounds 0 to 9
+      if (val < 0) val = 0;
+      if (val > 9) val = 9;
+
+      tasks[index][field] = val;
+
+      saveState();
+      isSortDirty = true;
+      renderTable();
+    }
+
+    // Table search/filter handler
+    function handleSearch() {
+      const input = document.getElementById("overlay-search-input");
+      searchQuery = input.value.toLowerCase();
+      
+      const overlay = document.getElementById("search-overlay");
+      if (searchQuery === "") {
+        overlay.classList.remove("active");
+      } else {
+        overlay.classList.add("active");
+      }
+      renderTable();
+    }
+
+    // Get rating levels
+    function getRatingClass(value) {
+      const val = Number(value);
+      if (val <= 3) return 'lvl-low';
+      if (val <= 6) return 'lvl-mid';
+      return 'lvl-high';
+    }
+
+    // Render data elements
+    function renderTable() {
+      renderHeader();
+      const tbody = document.getElementById("table-body");
+      const emptyState = document.getElementById("no-tasks-state");
+      
+      tbody.innerHTML = "";
+
+      const filteredTasks = tasks.filter(t => {
+        return t.id.toLowerCase().includes(searchQuery) ||
+               t.task.toLowerCase().includes(searchQuery);
+      });
+
+      if (filteredTasks.length === 0) {
+        emptyState.style.display = "block";
+      } else {
+        emptyState.style.display = "none";
+      }
+
+      filteredTasks.forEach(task => {
+        const tr = document.createElement("tr");
+        tr.setAttribute("data-id", task.id);
+        tr.setAttribute("onmouseenter", `highlightBubble('${task.id}', true)`);
+        tr.setAttribute("onmouseleave", `highlightBubble('${task.id}', false)`);
+        
+        if (selectedBubbleId === task.id) {
+          tr.classList.add("row-selected-active");
+        }
+        
+        const makeRatingHtml = (field, currentVal) => {
+          const val = Number(currentVal);
+          let html = `<div class="rating-widget">`;
+          html += `<button class="rating-btn" onclick="adjustRating('${task.id}', '${field}', -1)" title="Decrease">-</button>`;
+          html += `<div class="rating-segments ${getRatingClass(val)} val-${val}">`;
+          for (let i = 0; i < 9; i++) {
+            const isFilled = i < val ? 'filled' : '';
+            html += `<div class="segment ${isFilled}"></div>`;
+          }
+          html += `</div>`;
+          html += `<button class="rating-btn" onclick="adjustRating('${task.id}', '${field}', 1)" title="Increase">+</button>`;
+          html += `</div>`;
+          return html;
+        };
+
+        let rowHtml = `
+          <td>
+            <input type="text" 
+                   class="cell-input cell-id" 
+                   value="${task.id}" 
+                   maxlength="2"
+                   onblur="handleUpdateField('${task.id}', 'id', this.value)"
+                   onkeydown="if(event.key==='Enter') this.blur()">
+          </td>
+          <td>
+            <input type="text" 
+                   class="cell-input cell-task-input" 
+                   value="${escapeHtml(task.task)}"
+                   onblur="handleUpdateField('${task.id}', 'task', this.value)"
+                   onkeydown="if(event.key==='Enter') this.blur()">
+          </td>
+        `;
+
+        ratingColumns.forEach(col => {
+          rowHtml += `<td>${makeRatingHtml(col, task[col])}</td>`;
+        });
+
+        rowHtml += `
+          <td class="action-cell">
+            <button class="btn-delete" onclick="handleDeleteRow('${task.id}')" title="Delete Task">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+            </button>
+          </td>
+        `;
+
+        tr.innerHTML = rowHtml;
+        tbody.appendChild(tr);
+      });
+
+      updateHeadersUI();
+      renderBubbleChart();
+    }
+
+    // Sort column handler (Main mechanism)
+    function toggleSort(columnKey) {
+      if (isDraggingColumn) return;
+      if (primarySort.key === columnKey) {
+        if (isSortDirty) {
+          isSortDirty = false;
+        } else {
+          primarySort.dir = primarySort.dir === 'asc' ? 'desc' : 'asc';
+        }
+      } else {
+        if (primarySort.key) {
+          secondarySort = { ...primarySort };
+        }
+        primarySort.key = columnKey;
+        primarySort.dir = 'asc';
+        isSortDirty = false;
+      }
+
+      sortTasks();
+      saveState();
+      renderTable();
+    }
+
+    // Actual sorting execution based on primary and secondary directions
+    function sortTasks() {
+      if (!primarySort.key) return;
+
+      tasks.sort((a, b) => {
+        let valA = a[primarySort.key];
+        let valB = b[primarySort.key];
+
+        let result = compareValues(valA, valB, primarySort.key);
+        if (result !== 0) {
+          return primarySort.dir === 'desc' ? -result : result;
+        }
+
+        // Secondary sorting when primary values match
+        if (secondarySort.key) {
+          let secA = a[secondarySort.key];
+          let secB = b[secondarySort.key];
+          let secResult = compareValues(secA, secB, secondarySort.key);
+          if (secResult !== 0) {
+            return secondarySort.dir === 'desc' ? -secResult : secResult;
+          }
+        }
+
+        // Tertiary fallback to ID for absolute deterministic stability
+        if (primarySort.key !== 'id' && secondarySort.key !== 'id') {
+          return compareValues(a.id, b.id, 'id');
+        }
+
+        return 0;
+      });
+    }
+
+    // Helper comparator
+    function compareValues(a, b, key) {
+      if (key === 'id') {
+        const intA = parseInt(a, 16);
+        const intB = parseInt(b, 16);
+        return intA - intB;
+      }
+      
+      if (key === 'urgency' || key === 'impact' || key === 'complexity') {
+        return Number(a) - Number(b);
+      }
+
+      return String(a).localeCompare(String(b));
+    }
+
+    // Header sort visualization
+    function updateHeadersUI() {
+      const keys = ['id', 'task', 'urgency', 'impact', 'complexity'];
+
+      keys.forEach(k => {
+        const ind = document.getElementById(`indicator-${k}`);
+        if (!ind) return;
+
+        const ascArrow = ind.querySelector('.asc');
+        const descArrow = ind.querySelector('.desc');
+        
+        ascArrow.className = 'sort-arrow asc';
+        descArrow.className = 'sort-arrow desc';
+
+        // Primary sort display
+        if (primarySort.key === k) {
+          if (primarySort.dir === 'asc') ascArrow.classList.add('active');
+          if (primarySort.dir === 'desc') descArrow.classList.add('active');
+        } 
+        // Secondary sort display (visual cue on arrow state without label text)
+        else if (secondarySort.key === k) {
+          if (secondarySort.dir === 'asc') ascArrow.classList.add('secondary-active');
+          if (secondarySort.dir === 'desc') descArrow.classList.add('secondary-active');
+        }
+      });
+    }
+
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
+    // Export database state
+    // Export database state to a CSV file download
+    function exportData() {
+      const filename = "task-matrix-export.csv";
+      
+      const escapeCSV = (val) => {
+        let stringVal = String(val);
+        if (stringVal.includes(',') || stringVal.includes('"') || stringVal.includes('\n') || stringVal.includes('\r')) {
+          return '"' + stringVal.replace(/"/g, '""') + '"';
+        }
+        return stringVal;
+      };
+
+      let csvContent = "ID,Task Description,Cost of Delay,Business Value,Complexity\n";
+      tasks.forEach(t => {
+        csvContent += `${escapeCSV(t.id)},${escapeCSV(t.task)},${t.urgency},${t.impact},${t.complexity}\n`;
+      });
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showToast("Data exported as CSV");
+    }
+
+    // Open file dialog for import
+    function triggerImport() {
+      document.getElementById('file-import').click();
+    }
+
+    // Compliant state-machine CSV parser
+    function parseCSV(text) {
+      const lines = [];
+      let currentLine = [];
+      let currentField = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+        
+        if (char === '"') {
+          if (inQuotes && nextChar === '"') {
+            currentField += '"';
+            i++; // skip next quote
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          currentLine.push(currentField);
+          currentField = '';
+        } else if ((char === '\r' || char === '\n') && !inQuotes) {
+          if (char === '\r' && nextChar === '\n') {
+            i++; // skip \n
+          }
+          currentLine.push(currentField);
+          lines.push(currentLine);
+          currentLine = [];
+          currentField = '';
+        } else {
+          currentField += char;
+        }
+      }
+      
+      if (currentField || currentLine.length > 0) {
+        currentLine.push(currentField);
+        lines.push(currentLine);
+      }
+      
+      return lines;
+    }
+
+    // Import from CSV logic
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const csvLines = parseCSV(e.target.result);
+          if (csvLines.length < 2) {
+            throw new Error("Invalid structure");
+          }
+
+          const headers = csvLines[0].map(h => h.trim().toLowerCase());
+          const idIdx = headers.indexOf("id");
+          const taskIdx = headers.indexOf("task description");
+          
+          let urgencyIdx = headers.indexOf("cost of delay");
+          if (urgencyIdx === -1) urgencyIdx = headers.indexOf("urgency");
+          
+          let impactIdx = headers.indexOf("business value");
+          if (impactIdx === -1) impactIdx = headers.indexOf("impact");
+          
+          const complexityIdx = headers.indexOf("complexity");
+
+          const getIdx = (idx, fallback) => idx !== -1 ? idx : fallback;
+
+          const validated = [];
+          const checkedHex = new Set();
+          
+          const parseRating = (val) => {
+            const parsed = parseInt(val, 10);
+            return isNaN(parsed) ? 5 : Math.max(0, Math.min(9, parsed));
+          };
+
+          for (let i = 1; i < csvLines.length; i++) {
+            const row = csvLines[i];
+            if (row.length < 2 || (row.length === 1 && row[0].trim() === "")) {
+              continue;
+            }
+
+            let rawId = String(row[getIdx(idIdx, 0)] || "").toUpperCase().trim();
+            
+            if (!isValidHex(rawId)) {
+              continue;
+            }
+            
+            rawId = rawId.padStart(2, '0');
+            if (checkedHex.has(rawId)) {
+              continue; 
+            }
+            checkedHex.add(rawId);
+
+            const valTask = String(row[getIdx(taskIdx, 1)] || "Task Description").trim();
+            const valUrgency = parseRating(row[getIdx(urgencyIdx, 2)]);
+            const valImpact = parseRating(row[getIdx(impactIdx, 3)]);
+            const valComplexity = parseRating(row[getIdx(complexityIdx, 4)]);
+
+            validated.push({
+              id: rawId,
+              task: valTask || "Untitled Task",
+              urgency: valUrgency,
+              impact: valImpact,
+              complexity: valComplexity
+            });
+          }
+
+          if (validated.length === 0) {
+            showToast("No valid CSV rows", false);
+            return;
+          }
+
+          tasks = validated;
+          if (primarySort.key) {
+            sortTasks();
+          }
+          
+          saveState();
+          renderTable();
+          showToast(`Imported ${validated.length} tasks`);
+        } catch (err) {
+          showToast("Error parsing CSV file", false);
+        }
+      };
+      
+      reader.readAsText(file);
+      event.target.value = "";
+    }
+
+    // Reset table matrix to baseline defaults
+    function confirmReset() {
+      if (confirm("Reset task list to default tasks? All custom changes will be lost.")) {
+        tasks = [...defaultTasks];
+        primarySort = { key: null, dir: null };
+        secondarySort = { key: null, dir: null };
+        ratingColumns = ['urgency', 'impact', 'complexity'];
+        localStorage.removeItem('matrix_column_order');
+        saveState();
+        renderTable();
+        showToast("Matrix reset");
+      }
+    }
+
+    // Global keyboard listener for search trigger
+    window.addEventListener("keydown", function(e) {
+      // Escape resets search
+      if (e.key === "Escape") {
+        const overlay = document.getElementById("search-overlay");
+        const input = document.getElementById("overlay-search-input");
+        if (overlay.classList.contains("active")) {
+          input.value = "";
+          searchQuery = "";
+          overlay.classList.remove("active");
+          input.blur();
+          renderTable();
+          e.preventDefault();
+        }
+        return;
+      }
+
+      // Check if user is typing in an input
+      if (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "SELECT") {
+        return;
+      }
+
+      // Ignore modifier keys
+      if (e.ctrlKey || e.altKey || e.metaKey) {
+        return;
+      }
+
+      // If printable character, start search
+      if (e.key.length === 1) {
+        const overlay = document.getElementById("search-overlay");
+        const input = document.getElementById("overlay-search-input");
+        
+        overlay.classList.add("active");
+        input.focus();
+        input.value = e.key;
+        searchQuery = e.key.toLowerCase();
+        renderTable();
+        e.preventDefault();
+      }
+    });
+
+    // Global click listener to deselect active selections when clicking outside
+    document.addEventListener("click", function(e) {
+      if (!e.target.closest('.chart-card') && !e.target.closest('.table-container')) {
+        deselectAllBubbles();
+      }
+    });
+  </script>
+</body>
+</html>
