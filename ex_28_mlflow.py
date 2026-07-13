@@ -1,7 +1,14 @@
 import cv2
 import os
+import sys
+import yaml
 from random import random, randint
 import pandas as pd
+
+if sys.platform == 'win32':
+    # mlflow prints an emoji in its run-URL banner, which crashes on the default cp1251 console encoding
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
 
 import numpy
 from sklearn.datasets import load_diabetes
@@ -14,9 +21,10 @@ from sklearn.tree import DecisionTreeClassifier
 import mlflow
 from mlflow import log_metric, log_param, log_artifacts,log_artifact, log_figure,log_image,log_text,artifacts
 from mlflow.tracking import MlflowClient
+from mlflow.entities import SpanType
 # ---------------------------------------------------------------------------------------------------------------------
-import tools_MLflower
 folder_out = './mlruns'
+filename_config_mlflow = './secrets/private_config_mlflow.yaml'
 # ---------------------------------------------------------------------------------------------------------------------
 def get_experiment_id(experiment_name, create=True):
     experiement = mlflow.get_experiment_by_name(experiment_name)
@@ -103,6 +111,30 @@ def run_experiment_04_sklearn_DT_log_model(experiment_name):
 
     return
 # ---------------------------------------------------------------------------------------------------------------------
+def run_experiment_05_llm_usage(experiment_name):
+    # Simulates LLM calls (no real API key needed) so the experiment's "Usage" tab in the MLflow UI,
+    # which aggregates token counts from GenAI traces, has data to show.
+    # NB: mlflow.start_span(..., trace_destination=...) is broken in mlflow==3.5.1 (it accesses the
+    # non-existent TraceLocation.experiment_id and silently falls back to a no-op span), so the
+    # active experiment is set explicitly instead and the default destination is used.
+    experiment_id = get_experiment_id(experiment_name, create=True)
+    mlflow.set_experiment(experiment_id=experiment_id)
+
+    prompts_and_answers = [
+        ("Summarize MLflow in one sentence.", "MLflow tracks experiments, models, and artifacts for ML projects."),
+        ("What does the Usage tab show?", "It shows token counts aggregated from GenAI traces."),
+    ]
+
+    for prompt, answer in prompts_and_answers:
+        input_tokens, output_tokens = len(prompt.split()), len(answer.split())
+        with mlflow.start_span(name="chat_completion", span_type=SpanType.LLM) as span:
+            span.set_inputs({"messages": [{"role": "user", "content": prompt}]})
+            span.set_outputs({"choices": [{"message": {"role": "assistant", "content": answer}}]})
+            span.set_attribute("mlflow.chat.tokenUsage", {"input_tokens": input_tokens, "output_tokens": output_tokens, "total_tokens": input_tokens + output_tokens})
+            print('trace_id:', span.trace_id)
+
+    return
+# ---------------------------------------------------------------------------------------------------------------------
 def ex06():
     print("Current tracking uri: %s"%mlflow.get_tracking_uri())
     # mlflow.set_tracking_uri("file:///tmp/my_tracking")
@@ -118,6 +150,18 @@ def set_tracking_remote(connection_string):
     # Runs are recorded remotely, Database is encoded as <dialect>+<driver>://<username>:<password>@<host>:<port>/<database>
     mlflow.set_tracking_uri(connection_string)
     return
+# ---------------------------------------------------------------------------------------------------------------------
+def set_tracking_remote_auth(filename_config):
+    # Runs are recorded on a remote MLflow tracking server protected with HTTP basic auth.
+    # Credentials are kept out of source control in a local yaml config (see secrets/private_config_mlflow.yaml).
+    with open(filename_config, 'r') as f:
+        cfg = yaml.safe_load(f)['mlflow']
+
+    os.environ['MLFLOW_TRACKING_USERNAME'] = cfg['username']
+    os.environ['MLFLOW_TRACKING_PASSWORD'] = cfg['password']
+    mlflow.set_tracking_uri(cfg['host'])
+
+    return cfg['host']
 # ---------------------------------------------------------------------------------------------------------------------
 def get_uris():
 
@@ -148,13 +192,29 @@ def ex_tracking_remote(connection_string):
     #os.system()
     return
 # ---------------------------------------------------------------------------------------------------------------------
+def ex_tracking_remote_auth():
+    # Showcases logging params/metrics/artifacts and a registered model against a hosted,
+    # login-protected MLflow tracking server (see secrets/private_config_mlflow.yaml for credentials).
+    host = set_tracking_remote_auth(filename_config_mlflow)
+
+    run_experiment_01_dummy(experiment_name='CI: integration tests')
+    run_experiment_03_sklearn_RF(experiment_name='Featurestore')
+    run_experiment_04_sklearn_DT_log_model(experiment_name='ex04_DT_log_model')
+    run_experiment_05_llm_usage(experiment_name='ex04_DT_log_model')
+
+    run = mlflow.last_active_run()
+    print('MLflow UI: %s/#/experiments/%s/runs/%s' % (host, run.info.experiment_id, run.info.run_id))
+    print('Usage tab: %s/#/experiments/%s/overview/usage' % (host, get_experiment_id('ex04_DT_log_model', create=False)))
+
+    return
+# ---------------------------------------------------------------------------------------------------------------------
 #artifact_uri = mlflow.get_artifact_uri()
 #mlflow.artifacts._download_artifact_from_uri('gs://testproj2-bf028.appspot.com/0/1a600a99c61a4bc985ac95b84e23acf1/artifacts/histo_alone.png', folder_out)
 if __name__ == "__main__":
 
-    # connection_string = 'http://34.122.102.32:5000'
-    # set_tracking_remote(connection_string)
-    set_tracking_local(folder_out)
-    run_experiment_01_dummy(experiment_name='CI: integration tests')
-    run_experiment_03_sklearn_RF(experiment_name='Featurestore')
-    print('mlflow server --backend-store-uri %s --default-artifact-root %s'%(folder_out,folder_out))
+    # set_tracking_local(folder_out)
+    # run_experiment_01_dummy(experiment_name='CI: integration tests')
+    # run_experiment_03_sklearn_RF(experiment_name='Featurestore')
+    # print('mlflow server --backend-store-uri %s --default-artifact-root %s'%(folder_out,folder_out))
+
+    ex_tracking_remote_auth()
