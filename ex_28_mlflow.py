@@ -1,5 +1,6 @@
 import cv2
 import os
+import subprocess
 import sys
 import yaml
 from random import random, randint
@@ -163,6 +164,50 @@ def set_tracking_remote_auth(filename_config):
 
     return cfg['host']
 # ---------------------------------------------------------------------------------------------------------------------
+def scp_artifact_to_remote_mlflow(filename_config, experiment_id, run_id, local_path, remote_filename=None):
+    # Bypasses the MLflow HTTP artifact proxy and writes straight onto the tracking server's disk over
+    # scp/ssh (via gcloud, since the VM uses OS Login rather than a static keypair). This is the path to
+    # reach for large files (model weights, datasets) where per-file HTTP upload overhead adds up -
+    # the server's LocalArtifactRepository lists whatever it finds on disk under <run>/artifacts, so
+    # nothing needs to be registered separately once the file is in place.
+    with open(filename_config, 'r') as f:
+        cfg = yaml.safe_load(f)['mlflow']
+
+    remote_filename = remote_filename or os.path.basename(local_path)
+    remote_dir = '%s/%s/%s/artifacts' % (cfg['remote_artifact_root'], experiment_id, run_id)
+    staging_path = '/tmp/%s' % remote_filename
+
+    subprocess.run(['gcloud', 'compute', 'scp', local_path, '%s:%s' % (cfg['gcloud_instance'], staging_path),
+                     '--zone', cfg['gcloud_zone']], check=True)
+
+    # the artifact store's directories are created root-owned by the mlflow server container, so a plain
+    # scp into them would fail with permission denied - stage to /tmp instead, then move into place with sudo.
+    remote_cmd = 'sudo mkdir -p %s && sudo cp %s %s/%s && sudo chown root:root %s/%s && rm %s' % (
+        remote_dir, staging_path, remote_dir, remote_filename, remote_dir, remote_filename, staging_path)
+    subprocess.run(['gcloud', 'compute', 'ssh', cfg['gcloud_instance'], '--zone', cfg['gcloud_zone'],
+                     '--command', remote_cmd], check=True)
+
+    return '%s/%s' % (remote_dir, remote_filename)
+# ---------------------------------------------------------------------------------------------------------------------
+def run_experiment_06_scp_large_artifact(experiment_name, filename_config):
+    # Showcases the scp-based transfer path: params/metrics still go through the normal REST API (they're
+    # tiny), but the artifact is placed directly onto the tracking server's disk via scp+ssh instead of
+    # mlflow.log_artifact()'s HTTP upload. Swap local_path for an actual model checkpoint/dataset to use
+    # this for real - the demo file here is a stand-in so the example runs without extra assets.
+    mlflow.end_run()
+    with mlflow.start_run(experiment_id=get_experiment_id(experiment_name, create=True), run_name='scp_demo') as run:
+        print('exp_id:', run.info.experiment_id)
+        print('run_id:', run.info.run_id)
+        mlflow.log_param("transfer_method", "scp")
+
+        local_path = './data/output/scp_demo_artifact.png'
+        cv2.imwrite(local_path, numpy.full((64, 64, 3), 128, dtype=numpy.uint8))
+        remote_path = scp_artifact_to_remote_mlflow(filename_config, run.info.experiment_id, run.info.run_id, local_path)
+        print('scp-ed artifact to:', remote_path)
+
+        mlflow.end_run()
+    return
+# ---------------------------------------------------------------------------------------------------------------------
 def get_uris():
 
     print('is_tracking_uri_set:', mlflow.tracking.is_tracking_uri_set())
@@ -201,6 +246,7 @@ def ex_tracking_remote_auth():
     run_experiment_03_sklearn_RF(experiment_name='Featurestore')
     run_experiment_04_sklearn_DT_log_model(experiment_name='ex04_DT_log_model')
     run_experiment_05_llm_usage(experiment_name='ex04_DT_log_model')
+    run_experiment_06_scp_large_artifact(experiment_name='CI: integration tests', filename_config=filename_config_mlflow)
 
     run = mlflow.last_active_run()
     print('MLflow UI: %s/#/experiments/%s/runs/%s' % (host, run.info.experiment_id, run.info.run_id))
